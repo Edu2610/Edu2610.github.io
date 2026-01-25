@@ -1,0 +1,28 @@
+---
+// src/layouts/BaseLayout.astro
+const { titulo } = Astro.props; // Recibimos el título como variable
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{titulo}</title>
+  </head>
+  <body>
+    <nav style="background: #333; padding: 1rem; margin-bottom: 2rem;">
+      <a href="/" style="color: white; text-decoration: none; margin-right: 15px;">Inicio</a>
+      <a href="/educacion/" style="color: white; text-decoration: none; margin-right: 15px;">Educación</a>
+      <a href="/informatica/" style="color: white; text-decoration: none; margin-right: 15px;">Informática</a>
+      <a href="/contacto" style="color: white; text-decoration: none;">Contacto</a>
+    </nav>
+
+    <main style="max-width: 800px; margin: 0 auto; padding: 0 1rem;">
+      <slot />  </main>
+
+    <footer style="text-align: center; margin-top: 3rem; padding: 1rem; background: #f4f4f4;">
+      <p>Desarrollado por Eduardo con Astro 🚀</p>
+    </footer>
+  </body>
+</html>
