@@ -1,14 +1,172 @@
 ---
-// Importamos el Layout (subimos 2 niveles: salir de informatica -> salir de pages -> entrar a layouts)
-import BaseLayout from '../layouts/Layout.astro';
+import Layout from '../layouts/Layout.astro';
 ---
 
-<BaseLayout titulo="Proyectos Informáticos | Eduardo">
-  <h1>Zona de Desarrollo</h1>
-  <p>Aquí documentaré mis proyectos de código, bases de datos y apps.</p>
+<Layout titulo="Eduardo | Ingeniero & Profesor">
   
-  <div style="background-color: #f0f0f0; padding: 15px; border-radius: 8px; margin-top: 20px;">
-    <h3>🚀 Proyecto en curso: Web Personal</h3>
-    <p>Estado: Construyendo la arquitectura con Astro.</p>
-  </div>
-</BaseLayout>
+  <section class="hero">
+    <div class="hero-content">
+      <span class="badge">Disponible para proyectos</span>
+      
+      <h1>
+        Hola, soy <span class="gradient-text">Eduardo</span>
+      </h1>
+      
+      <p class="tagline">
+        Transformo problemas complejos en soluciones lógicas. <br>
+        Fusionando la <span class="highlight-math">Pedagogía Matemática</span> con la <span class="highlight-code">Ingeniería de Software</span>.
+      </p>
+
+      <div class="cta-container">
+        <a href="/informatica" class="btn btn-code">
+          Ver Proyectos Dev 💻
+        </a>
+        <a href="/educacion" class="btn btn-teach">
+          Ver Material Educativo 🍎
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout titulo="Eduardo | Ingeniero & Profesor">
+  
+  <section class="hero">
+    <div class="hero-content">
+      <span class="badge">Disponible para proyectos</span>
+      
+      <h1>
+        Hola, soy <span class="gradient-text">Eduardo</span>
+      </h1>
+      
+      <p class="tagline">
+        Transformo problemas complejos en soluciones lógicas. <br>
+        Fusionando la <span class="highlight-math">Pedagogía Matemática</span> con la <span class="highlight-code">Ingeniería de Software</span>.
+      </p>
+
+      <div class="cta-container">
+        <a href="/informatica" class="btn btn-code">
+          Ver Proyectos Dev 💻
+        </a>
+        <a href="/educacion" class="btn btn-teach">
+          Ver Material Educativo 🍎
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  /* HERO SECTION */
+  .hero {
+    /* Ocupamos toda la altura disponible */
+    min-height: 80vh; 
+    
+    /* FLEXBOX PARA CENTRAR EL BLOQUE COMPLETO */
+    display: flex;
+    align-items: center;     /* Centrado Vertical */
+    justify-content: center; /* Centrado Horizontal */
+    
+    width: 100%;
+  }
+
+  .hero-content {
+    /* CENTRADO DE TEXTOS E HIJOS */
+    text-align: center;      /* Alinea el texto al centro */
+    display: flex;
+    flex-direction: column;  /* Apila los elementos */
+    align-items: center;     /* Centra los elementos (como botones y h1) */
+    
+    max-width: 800px;        /* Evita que el texto se estire demasiado a los lados */
+  }
+
+  /* Badge */
+  .badge {
+    background: rgba(45, 212, 191, 0.1);
+    color: var(--accent-mint);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid rgba(45, 212, 191, 0.2);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Título */
+  h1 {
+    font-size: 4rem;
+    margin: 1rem 0;
+    line-height: 1.1;
+    
+    /* TRUCO CRÍTICO PARA CENTRAR EL GRADIENTE */
+    width: fit-content;  /* Ajusta la caja al tamaño del texto */
+    margin-left: auto;   /* Margen automático a la izquierda */
+    margin-right: auto;  /* Margen automático a la derecha = CENTRADO */
+  }
+
+  .gradient-text {
+    background: var(--gradient-glow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .tagline {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin: 0 0 2.5rem 0;
+    line-height: 1.6;
+  }
+
+  .highlight-math { color: var(--accent-purple); font-weight: 600; }
+  .highlight-code { color: var(--accent-mint); font-weight: 600; }
+
+  /* BOTONES */
+  .cta-container {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center; /* Centra los botones en la fila */
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-code {
+    background: var(--accent-mint);
+    color: var(--bg-primary);
+  }
+  .btn-code:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(45, 212, 191, 0.3);
+  }
+
+  .btn-teach {
+    background: rgba(192, 132, 252, 0.1);
+    color: var(--accent-purple);
+    border: 1px solid rgba(192, 132, 252, 0.3);
+  }
+  .btn-teach:hover {
+    background: rgba(192, 132, 252, 0.2);
+    transform: translateY(-3px);
+  }
+
+  /* CELULARES */
+  @media (max-width: 768px) {
+    h1 { font-size: 2.8rem; }
+    .hero { padding: 2rem 0; }
+  }
+</style>

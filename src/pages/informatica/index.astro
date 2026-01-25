@@ -1,14 +1,155 @@
 ---
-// 1. Importamos el traje (Layout)
-// Usamos ../../ porque tenemos que salir de 'informatica' y luego de 'pages'
-import BaseLayout from '../../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
+import Card from '../../components/Card.astro';
+
+// Datos para la sección de aprendizaje (Podemos moverlos a un archivo JSON después)
+const learningStack = [
+  { tech: "Python Avanzado", status: "70%", desc: "Data Science y Pandas", icon: "🐍" },
+  { tech: "R & Estadística", status: "40%", desc: "Análisis inferencial", icon: "📊" },
+  { tech: "Astro & Web", status: "80%", desc: "Componentes y SSR", icon: "🚀" },
+  { tech: "Arquitectura de Software", status: "30%", desc: "Patrones de diseño", icon: "🏗️" },
+];
 ---
 
-<BaseLayout titulo="Proyectos de Informática | Eduardo">
+<Layout titulo="Informática | Eduardo">
   
-    <h1>Sección Informática</h1>
-    <p>Aquí irán mis proyectos y crecimiento como informático.</p>
-    
-    <a href="/">⬅ Volver al inicio</a>
+  <section class="intro">
+    <h1>Bitácora de <span class="text-gradient">Desarrollo</span></h1>
+    <p>
+      Aquí conviven mis proyectos terminados con mi proceso de aprendizaje continuo.
+      Creo firmemente en aprender construyendo y documentando el camino.
+    </p>
+  </section>
 
-</BaseLayout>
+  <h2 class="section-title">🚀 Proyectos Destacados</h2>
+  <div class="grid-proyectos">
+    <Card
+      titulo="EduAdapt App"
+      descripcion="Aplicación móvil para la preparación PAES personalizada. Algoritmos adaptativos en desarrollo."
+      enlace="#"
+    />
+    <Card
+      titulo="Análisis de Datos PAES"
+      descripcion="Script en Python para analizar brechas de puntajes por comuna y establecimiento."
+      enlace="#"
+    />
+    <Card
+      titulo="Portafolio Web V1"
+      descripcion="Este sitio. Desarrollado con Astro, GitHub Actions y diseño CSS moderno."
+      enlace="https://github.com/Edu2610/Edu2610.github.io"
+    />
+  </div>
+
+  <div class="learning-section">
+    <h2 class="section-title">🧪 En el Laboratorio (Learning Path)</h2>
+    <p class="subtitle">Tecnologías y conceptos que estoy estudiando activamente.</p>
+    
+    <div class="grid-learning">
+      {learningStack.map((item) => (
+        <div class="learning-card">
+          <div class="icon">{item.icon}</div>
+          <div class="info">
+            <h3>{item.tech}</h3>
+            <p>{item.desc}</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style={`width: ${item.status}`}></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="theory-section">
+    <h2 class="section-title">📚 Apuntes Teóricos</h2>
+    <div class="theory-placeholder">
+      <p>Próximamente: Artículos sobre algoritmos, lógica proposicional y teoría de grafos.</p>
+    </div>
+  </div>
+
+</Layout>
+
+<style>
+  /* ESTILOS GENERALES */
+  .intro { margin-bottom: 3rem; }
+  .intro p { color: var(--text-muted); font-size: 1.1rem; max-width: 800px; }
+  
+  .text-gradient {
+    background: var(--gradient-glow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    color: var(--text-main);
+    margin-top: 4rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--accent-mint); /* Detalle visual */
+    padding-left: 1rem;
+  }
+
+  /* GRID PROYECTOS */
+  .grid-proyectos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  /* ESTILOS NUEVOS: SECCIÓN DE APRENDIZAJE */
+  .learning-section { margin-top: 2rem; }
+  .subtitle { color: var(--text-muted); margin-bottom: 2rem; }
+
+  .grid-learning {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Tarjetas más pequeñas */
+    gap: 1.5rem;
+  }
+
+  .learning-card {
+    background: rgba(30, 41, 59, 0.4); /* Fondo más sutil que las Cards principales */
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: var(--radius-md);
+    padding: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.2s;
+  }
+  
+  .learning-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-purple); /* Hover en violeta para diferenciar */
+  }
+
+  .icon { font-size: 2rem; }
+  
+  .info h3 { margin: 0; font-size: 1rem; color: var(--text-main); }
+  .info p { margin: 0.2rem 0 0.5rem 0; font-size: 0.85rem; color: var(--text-muted); }
+
+  /* Barra de progreso */
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent-mint);
+    border-radius: 2px;
+  }
+
+  /* Placeholder de Teoría */
+  .theory-placeholder {
+    border: 1px dashed var(--text-muted);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    background: rgba(0,0,0,0.2);
+  }
+</style>
