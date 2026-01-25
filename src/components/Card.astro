@@ -1,0 +1,59 @@
+---
+interface Props {
+	titulo: string;
+	descripcion: string;
+	enlace: string;
+}
+
+const { titulo, descripcion, enlace } = Astro.props;
+---
+
+<a href={enlace} class="tarjeta">
+	<h3>{titulo}</h3>
+	<p>{descripcion}</p>
+	<div class="link-text">Ver proyecto &rarr;</div>
+</a>
+
+<style>
+	/* La tarjeta completa es un enlace (<a>) para mejor experiencia */
+	.tarjeta {
+		display: block; /* Ocupa el espacio necesario */
+		background-color: var(--bg-card);
+		border: 1px solid rgba(255,255,255,0.05); /* Borde sutil */
+		border-radius: var(--radius-md); /* Usamos la variable global */
+		padding: 1.5rem;
+		text-decoration: none; /* Quitamos el subrayado feo */
+		transition: all 0.3s ease;
+		position: relative;
+		overflow: hidden;
+	}
+
+	/* Efecto Hover: Inteligente y Sutil */
+	.tarjeta:hover {
+		transform: translateY(-4px); /* Se levanta un poco */
+		border-color: var(--accent-mint); /* El borde se pone menta */
+		box-shadow: 0 10px 30px -10px rgba(45, 212, 191, 0.15); /* Sombra menta suave */
+	}
+
+	h3 {
+		color: var(--text-main);
+		font-size: 1.25rem;
+		margin-top: 0;
+	}
+
+	.tarjeta:hover h3 {
+		color: var(--accent-mint); /* Título cambia de color */
+	}
+
+	p {
+		color: var(--text-muted);
+		line-height: 1.6;
+		margin-bottom: 1.5rem;
+	}
+
+	.link-text {
+		color: var(--accent-purple);
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+</style>

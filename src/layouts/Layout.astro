@@ -1,28 +1,149 @@
 ---
-// src/layouts/BaseLayout.astro
-const { titulo } = Astro.props; // Recibimos el título como variable
+// src/layouts/Layout.astro
+interface Props {
+	titulo: string;
+}
+
+const { titulo } = Astro.props;
 ---
 
+<!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{titulo}</title>
-  </head>
-  <body>
-    <nav style="background: #333; padding: 1rem; margin-bottom: 2rem;">
-      <a href="/" style="color: white; text-decoration: none; margin-right: 15px;">Inicio</a>
-      <a href="/educacion/" style="color: white; text-decoration: none; margin-right: 15px;">Educación</a>
-      <a href="/informatica/" style="color: white; text-decoration: none; margin-right: 15px;">Informática</a>
-      <a href="/contacto" style="color: white; text-decoration: none;">Contacto</a>
-    </nav>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Portafolio de Eduardo - Ingeniero y Profesor" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+		
+		<title>{titulo}</title>
+	</head>
+	<body>
+		<nav>
+			<div class="nav-content">
+				<a href="/" class="logo">Eduardo<span class="dot">.</span></a>
+				<div class="links">
+					<a href="/">Inicio</a>
+					<a href="/educacion/">Educación</a>
+					<a href="/informatica/">Informática</a>
+				</div>
+			</div>
+		</nav>
 
-    <main style="max-width: 800px; margin: 0 auto; padding: 0 1rem;">
-      <slot />  </main>
+		<main>
+			<slot />
+		</main>
 
-    <footer style="text-align: center; margin-top: 3rem; padding: 1rem; background: #f4f4f4;">
-      <p>Desarrollado por Eduardo con Astro 🚀</p>
-    </footer>
-  </body>
+		<footer>
+			<p>© 2026 Eduardo. Construido con lógica y café.</p>
+		</footer>
+	</body>
 </html>
+
+<style is:global>
+	/* --- POLÍTICA DE DISEÑO (Design System) --- */
+	:root {
+		/* COLORES (Paleta Dark Elegante) */
+		--bg-primary: #0f172a;   /* Azul noche profundo */
+		--bg-card:    #1e293b;   /* Gris azulado para tarjetas */
+		
+		--text-main:  #f1f5f9;   /* Blanco humo (no quema la vista) */
+		--text-muted: #94a3b8;   /* Gris para textos secundarios */
+		
+		--accent-mint:   #2dd4bf; /* Menta (Inteligencia/Tecnología) */
+		--accent-purple: #c084fc; /* Violeta (Creatividad/Filosofía) */
+		
+		/* GRADIENTE "AURORA" (Tu sello personal) */
+		--gradient-glow: linear-gradient(135deg, var(--accent-mint), var(--accent-purple));
+
+		/* TIPOGRAFÍA */
+		--font-heading: 'Outfit', sans-serif;
+		--font-body:    'Inter', sans-serif;
+
+		/* MEDIDAS (Para mantener consistencia) */
+		--radius-md: 12px;
+		--nav-height: 70px;
+	}
+
+	html {
+		background-color: var(--bg-primary);
+		color: var(--text-main);
+		font-family: var(--font-body); /* Todo el texto base usa Inter */
+	}
+	
+	body {
+		margin: 0;
+		min-height: 100vh;
+	}
+
+	/* REGLAS PARA TÍTULOS */
+	h1, h2, h3 {
+		font-family: var(--font-heading); /* Los títulos usan Outfit */
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+	}
+
+	h1 {
+		font-size: 2.5rem;
+		background: var(--gradient-glow);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent; /* Texto con gradiente */
+	}
+
+	/* ESTILOS DE LA BARRA DE NAVEGACIÓN */
+	nav {
+		height: var(--nav-height);
+		border-bottom: 1px solid rgba(255,255,255,0.05);
+		backdrop-filter: blur(10px); /* Efecto vidrio */
+		display: flex;
+		align-items: center;
+		padding: 0 1rem;
+	}
+	
+	.nav-content {
+		max-width: 900px;
+		width: 100%;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.logo {
+		font-family: var(--font-heading);
+		font-weight: 700;
+		font-size: 1.5rem;
+		text-decoration: none;
+		color: var(--text-main);
+	}
+	.dot { color: var(--accent-mint); }
+
+	.links a {
+		color: var(--text-muted);
+		text-decoration: none;
+		margin-left: 20px;
+		font-size: 0.95rem;
+		transition: color 0.3s;
+	}
+	.links a:hover {
+		color: var(--accent-mint);
+	}
+
+	main {
+		max-width: 900px;
+		margin: 2rem auto;
+		padding: 0 1rem;
+	}
+
+	footer {
+		text-align: center;
+		padding: 3rem 0;
+		color: var(--text-muted);
+		font-size: 0.8rem;
+		border-top: 1px solid rgba(255,255,255,0.05);
+		margin-top: 4rem;
+	}
+</style>
