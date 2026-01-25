@@ -1,69 +1,61 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Card from '../../components/Card.astro';
+// (Dejamos de importar Card por ahora porque no hay proyectos listos)
 
-// Datos para la sección de aprendizaje (Podemos moverlos a un archivo JSON después)
+// DATOS REALES: EL INICIO DEL CAMINO
+// Aquí iremos actualizando los porcentajes manualmente a medida que avancemos
 const learningStack = [
-  { tech: "Python Avanzado", status: "70%", desc: "Data Science y Pandas", icon: "🐍" },
-  { tech: "R & Estadística", status: "40%", desc: "Análisis inferencial", icon: "📊" },
-  { tech: "Astro & Web", status: "80%", desc: "Componentes y SSR", icon: "🚀" },
-  { tech: "Arquitectura de Software", status: "30%", desc: "Patrones de diseño", icon: "🏗️" },
+  { tech: "Python", status: "5%", desc: "Sintaxis básica y lógica", icon: "🐍", link: "/informatica/python" }, // <--- AQUÍ EL CAMBIO
+  { tech: "R & Estadística", status: "0%", desc: "Próximamente", icon: "📊", link: "#" },
+  { tech: "Astro & Web", status: "15%", desc: "Entendiendo componentes y rutas", icon: "🚀", link: "#" },
+  { tech: "Ingeniería de Software", status: "5%", desc: "Conceptos fundamentales", icon: "🏗️", link: "#" },
 ];
 ---
 
 <Layout titulo="Informática | Eduardo">
   
   <section class="intro">
-    <h1>Bitácora de <span class="text-gradient">Desarrollo</span></h1>
+    <h1>Bitácora de <span class="text-gradient">Aprendizaje</span></h1>
     <p>
-      Aquí conviven mis proyectos terminados con mi proceso de aprendizaje continuo.
-      Creo firmemente en aprender construyendo y documentando el camino.
+      Actualmente no tengo proyectos finalizados, porque <strong>estoy construyendo mis cimientos</strong>. 
+      Esta página documentará mi evolución desde cero en el mundo de la programación y la ciencia de datos.
     </p>
   </section>
 
-  <h2 class="section-title">🚀 Proyectos Destacados</h2>
-  <div class="grid-proyectos">
-    <Card
-      titulo="EduAdapt App"
-      descripcion="Aplicación móvil para la preparación PAES personalizada. Algoritmos adaptativos en desarrollo."
-      enlace="#"
-    />
-    <Card
-      titulo="Análisis de Datos PAES"
-      descripcion="Script en Python para analizar brechas de puntajes por comuna y establecimiento."
-      enlace="#"
-    />
-    <Card
-      titulo="Portafolio Web V1"
-      descripcion="Este sitio. Desarrollado con Astro, GitHub Actions y diseño CSS moderno."
-      enlace="https://github.com/Edu2610/Edu2610.github.io"
-    />
-  </div>
-
   <div class="learning-section">
-    <h2 class="section-title">🧪 En el Laboratorio (Learning Path)</h2>
-    <p class="subtitle">Tecnologías y conceptos que estoy estudiando activamente.</p>
+    <h2 class="section-title">🧪 En el Laboratorio (Estado Actual)</h2>
+    <p class="subtitle">Tecnologías que estoy estudiando activamente en este momento.</p>
     
     <div class="grid-learning">
       {learningStack.map((item) => (
-        <div class="learning-card">
-          <div class="icon">{item.icon}</div>
-          <div class="info">
-            <h3>{item.tech}</h3>
-            <p>{item.desc}</p>
-            <div class="progress-bar">
-              <div class="progress-fill" style={`width: ${item.status}`}></div>
+        /* CAMBIAMOS EL DIV POR UN ANCHOR TAG (LINK) */
+        <a href={item.link} class="learning-card-link">
+          <div class="learning-card">
+            <div class="icon">{item.icon}</div>
+            <div class="info">
+              <h3>{item.tech}</h3>
+              <p>{item.desc}</p>
+              <div class="progress-container">
+                <div class="progress-bar">
+                  <div class="progress-fill" style={`width: ${item.status}`}></div>
+                </div>
+                <span class="percentage">{item.status}</span>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       ))}
     </div>
   </div>
 
-  <div class="theory-section">
-    <h2 class="section-title">📚 Apuntes Teóricos</h2>
-    <div class="theory-placeholder">
-      <p>Próximamente: Artículos sobre algoritmos, lógica proposicional y teoría de grafos.</p>
+  <div class="future-projects">
+    <h2 class="section-title">🚀 Próximos Desarrollos</h2>
+    <div class="empty-state">
+      <p>
+        Aquí publicaré mis aplicaciones y scripts una vez que cumplan con mis estándares de calidad.
+        <br>
+        <em>"Lo perfecto es enemigo de lo bueno, pero lo funcional es innegociable."</em>
+      </p>
     </div>
   </div>
 
@@ -71,9 +63,46 @@ const learningStack = [
 
 <style>
   /* ESTILOS GENERALES */
-  .intro { margin-bottom: 3rem; }
-  .intro p { color: var(--text-muted); font-size: 1.1rem; max-width: 800px; }
+  .intro {
+    margin-bottom: 4rem;
+    
+    /* La magia del centrado: */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el h1 y el p horizontalmente */
+    text-align: center;  /* Centra el texto dentro de los párrafos */
+  }
+
+  .intro p { 
+    color: var(--text-muted); 
+    font-size: 1.1rem; 
+    max-width: 800px; 
+    line-height: 1.6;
+  }
   
+  /* 2. OPCIONAL: CENTRAR TÍTULOS DE SECCIONES */
+  /* Si quieres que "En el Laboratorio" también esté al centro, usa esto: */
+  .section-title {
+    font-size: 1.5rem;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    
+    /* Para centrar el título y el icono */
+    display: flex;
+    justify-content: center; /* <--- CAMBIO AQUÍ */
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .subtitle {
+    text-align: center; /* Centrar subtítulos */
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    margin-top: -1rem;
+  }
+  
+  .intro strong { color: var(--accent-mint); }
+
   .text-gradient {
     background: var(--gradient-glow);
     -webkit-background-clip: text;
@@ -82,74 +111,100 @@ const learningStack = [
   }
 
   .section-title {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: var(--text-main);
-    margin-top: 4rem;
     margin-bottom: 1.5rem;
-    border-left: 4px solid var(--accent-mint); /* Detalle visual */
-    padding-left: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
-  /* GRID PROYECTOS */
-  .grid-proyectos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-  }
-
-  /* ESTILOS NUEVOS: SECCIÓN DE APRENDIZAJE */
-  .learning-section { margin-top: 2rem; }
-  .subtitle { color: var(--text-muted); margin-bottom: 2rem; }
+  /* ESTILOS DEL LABORATORIO (LEARNING) */
+  .learning-section { margin-bottom: 5rem; }
+  .subtitle { color: var(--text-muted); margin-bottom: 2rem; margin-top: -1rem; }
 
   .grid-learning {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Tarjetas más pequeñas */
+    /* Tarjetas adaptables */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
     gap: 1.5rem;
   }
 
   .learning-card {
-    background: rgba(30, 41, 59, 0.4); /* Fondo más sutil que las Cards principales */
+    background: rgba(30, 41, 59, 0.4); 
     border: 1px solid rgba(255,255,255,0.05);
     border-radius: var(--radius-md);
-    padding: 1.2rem;
+    padding: 1.5rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Alineamos arriba por si el texto es largo */
     gap: 1rem;
-    transition: transform 0.2s;
+    transition: transform 0.2s, border-color 0.2s;
   }
   
   .learning-card:hover {
     transform: translateY(-2px);
-    border-color: var(--accent-purple); /* Hover en violeta para diferenciar */
+    border-color: var(--accent-mint);
   }
 
-  .icon { font-size: 2rem; }
-  
-  .info h3 { margin: 0; font-size: 1rem; color: var(--text-main); }
-  .info p { margin: 0.2rem 0 0.5rem 0; font-size: 0.85rem; color: var(--text-muted); }
+  .learning-card-link {
+    text-decoration: none; /* Quitar subrayado */
+    color: inherit; /* Mantener colores originales */
+    display: block; /* Para que ocupe el espacio */
+  }
 
-  /* Barra de progreso */
+  /* Movemos el hover que tenías antes en .learning-card al link */
+  .learning-card-link:hover .learning-card {
+    transform: translateY(-2px);
+    border-color: var(--accent-mint);
+    cursor: pointer;
+  }
+
+  .icon { font-size: 2rem; line-height: 1; }
+  
+  .info { width: 100%; }
+  .info h3 { margin: 0; font-size: 1.1rem; color: var(--text-main); }
+  .info p { margin: 0.2rem 0 0.8rem 0; font-size: 0.9rem; color: var(--text-muted); }
+
+  /* BARRA DE PROGRESO MEJORADA */
+  .progress-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
   .progress-bar {
     width: 100%;
-    height: 4px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 2px;
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
     overflow: hidden;
   }
 
   .progress-fill {
     height: 100%;
-    background: var(--accent-mint);
-    border-radius: 2px;
+    background: var(--accent-mint); /* Color Menta para el progreso */
+    border-radius: 3px;
+    transition: width 1s ease-out; /* Animación suave al cargar */
   }
 
-  /* Placeholder de Teoría */
-  .theory-placeholder {
-    border: 1px dashed var(--text-muted);
-    border-radius: var(--radius-md);
-    padding: 2rem;
-    text-align: center;
-    color: var(--text-muted);
-    background: rgba(0,0,0,0.2);
+  .percentage {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--accent-mint);
+    min-width: 35px; /* Para que no salten los números */
+    text-align: right;
   }
+
+  /* ESTADO VACÍO PARA PROYECTOS */
+  .empty-state {
+    border: 1px dashed rgba(148, 163, 184, 0.2);
+    border-radius: var(--radius-md);
+    padding: 3rem;
+    text-align: center;
+    background: rgba(15, 23, 42, 0.3);
+  }
+
+  .empty-state p { color: var(--text-muted); }
+  .empty-state em { color: var(--accent-purple); display: block; margin-top: 1rem; }
+
 </style>

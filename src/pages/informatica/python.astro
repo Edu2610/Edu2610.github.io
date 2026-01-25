@@ -1,0 +1,235 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// AQUÍ IREMOS AGREGANDO TUS EJERCICIOS A MEDIDA QUE AVANCES
+const nivelBasico = [
+  {
+    tema: "Variables y Tipos de Datos",
+    estado: "Pendiente", // Cambiar a "Completado" cuando lo hagamos
+    descripcion: "Manipulación de enteros, flotantes y strings. Entendiendo la memoria.",
+    link: "#" // Aquí pondremos el enlace a tu código o gist
+  },
+  {
+    tema: "Lógica Booleana y Control de Flujo",
+    estado: "Pendiente",
+    descripcion: "Condicionales if/else y la lógica detrás de la toma de decisiones.",
+    link: "#"
+  }
+];
+---
+
+<Layout titulo="Python Path | Eduardo">
+  
+  <div class="intro">
+    <a href="/informatica" class="back-link">&larr; Volver a Informática</a>
+    <h1>Ruta de Aprendizaje: <span class="text-gradient">Python</span></h1>
+    <p>
+      Documentación detallada de mi progreso en el lenguaje, desde la sintaxis básica hasta la ingeniería de software avanzada.
+    </p>
+  </div>
+
+  <section class="methodology-section">
+    <h2>⚡ Mi Algoritmo de Estudio</h2>
+    <p class="method-desc">
+      No copio código. Construyo entendimiento a través de un ciclo riguroso de 4 pasos:
+    </p>
+    
+    <div class="cycle-grid">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h3>Concepto</h3>
+        <p>Teoría pura y sintaxis.</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h3>Práctica</h3>
+        <p>Ejercicios aislados.</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h3>Integración</h3>
+        <p>Problema real.</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step highlight">
+        <span class="step-num">04</span>
+        <h3>Optimización</h3>
+        <p>Análisis matemático y Big O.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="level-section">
+    <div class="level-header">
+      <h2>Nivel 1: Fundamentos</h2>
+      <span class="badge">En Progreso 🚧</span>
+    </div>
+    
+    <div class="exercises-grid">
+      {nivelBasico.map((item) => (
+        <div class="exercise-card">
+          <div class="card-header">
+            <h3>{item.tema}</h3>
+            <span class={`status ${item.estado.toLowerCase()}`}>{item.estado}</span>
+          </div>
+          <p>{item.descripcion}</p>
+          {item.link !== "#" && (
+            <a href={item.link} class="code-link">Ver Código 💻</a>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="level-section locked">
+    <div class="level-header">
+      <h2>Nivel 2: Estructuras & Algoritmos</h2>
+      <span class="badge locked-badge">Bloqueado 🔒</span>
+    </div>
+    <p class="locked-text">Se desbloqueará al dominar los fundamentos.</p>
+  </section>
+
+  <section class="level-section locked">
+    <div class="level-header">
+      <h2>Nivel 3: Ingeniería de Software</h2>
+      <span class="badge locked-badge">Bloqueado 🔒</span>
+    </div>
+    <p class="locked-text">POO, Patrones de Diseño y Optimización de Memoria.</p>
+  </section>
+
+</Layout>
+
+<style>
+  /* GENERAL */
+  .intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .back-link {
+    align-self: flex-start;
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+  .back-link:hover { color: var(--accent-mint); }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #306998, #FFD43B); /* Colores oficiales de Python (Azul/Amarillo) */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* METODOLOGÍA CICLO */
+  .methodology-section {
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    margin-bottom: 4rem;
+    text-align: center;
+  }
+
+  .method-desc { color: var(--text-muted); margin-bottom: 2rem; }
+
+  .cycle-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .step {
+    background: rgba(255,255,255,0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    width: 140px;
+    position: relative;
+  }
+  
+  .step.highlight { border: 1px solid var(--accent-mint); }
+
+  .step-num {
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background: var(--bg-primary);
+    padding: 0 5px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: bold;
+  }
+
+  .step h3 { font-size: 1rem; margin: 0.5rem 0; color: var(--text-main); }
+  .step p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+  
+  .arrow { color: var(--text-muted); font-size: 1.5rem; }
+
+  /* NIVELES */
+  .level-section { margin-bottom: 3rem; }
+  
+  .level-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .badge {
+    background: rgba(45, 212, 191, 0.1);
+    color: var(--accent-mint);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  /* TARJETAS DE EJERCICIOS */
+  .exercises-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .exercise-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+  }
+
+  .card-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+  .card-header h3 { margin: 0; font-size: 1.1rem; }
+  
+  .status { font-size: 0.75rem; text-transform: uppercase; font-weight: bold; }
+  .status.pendiente { color: #fbbf24; } /* Amarillo */
+  .status.completado { color: var(--accent-mint); }
+
+  .code-link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--accent-mint);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  /* ESTILOS BLOQUEADOS */
+  .locked { opacity: 0.5; }
+  .locked-badge { background: rgba(255,255,255,0.1); color: var(--text-muted); }
+  .locked-text { font-style: italic; color: var(--text-muted); }
+
+  @media (max-width: 768px) {
+    .cycle-grid { flex-direction: column; }
+    .arrow { transform: rotate(90deg); }
+  }
+</style>
