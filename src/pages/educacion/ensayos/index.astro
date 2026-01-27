@@ -1,0 +1,191 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Card from '../../../components/Card.astro';
+
+// AQUÍ AGREGARÁS TUS ENSAYOS FUTUROS
+const posts = [
+  {
+    titulo: "Dejemos de odiar las matemáticas",
+    fecha: "28 Ene 2026",
+    desc: "Mi opinión sobre como debemos cambiar nuestra postura sobre las matemáticas",
+    tags: ["Filosofía", "Educación"],
+    link: "/educacion/ensayos/no-odiemos-las-matematicas" // (A futuro crearemos esta página)
+  },
+  {
+    titulo: "El Mito de Sísifo en la Ingeniería",
+    fecha: "15 Ene 2026",
+    desc: "Cómo la filosofía de Camus sobre el absurdo puede ayudarnos a enfrentar el 'debugging' eterno y la frustración técnica.",
+    tags: ["Camus", "Reflexión"],
+    link: "#"
+  },
+  {
+    titulo: "La Ética de los Algoritmos",
+    fecha: "10 Dic 2025",
+    desc: "Cuando el código deja de ser neutral: responsabilidad moral en la era de la IA.",
+    tags: ["Ética", "Tecnología"],
+    link: "#"
+  }
+];
+---
+
+<Layout titulo="Ensayos | Eduardo">
+  
+  <div class="background-grid"></div>
+
+  <main class="container">
+    
+    <header class="page-header">
+      <a href="/educacion" class="btn-back">← Volver a Educación</a>
+      <h1>Ensayos & <span class="text-gradient">Reflexiones</span></h1>
+      <p class="subtitle">
+        Donde la filosofía se encuentra con la ingeniería. 
+        Pensamientos sobre pedagogía, ética y la estructura lógica del mundo.
+      </p>
+    </header>
+
+    <section class="posts-grid">
+      {posts.map((post) => (
+        <article class="post-card">
+          <a href={post.link} class="card-link">
+            <div class="card-content">
+              <div class="meta">
+                <span class="date">{post.fecha}</span>
+                <div class="tags">
+                  {post.tags.map(tag => <span class="tag">#{tag}</span>)}
+                </div>
+              </div>
+              <h2>{post.titulo}</h2>
+              <p>{post.desc}</p>
+              <span class="read-more">Leer artículo →</span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </section>
+
+  </main>
+</Layout>
+
+<style>
+  /* --- 1. CONFIGURACIÓN BASE --- */
+  .background-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10;
+    background-color: #0f172a;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+
+  /* --- 2. HEADER --- */
+  .page-header {
+    margin-bottom: 5rem;
+    text-align: left; /* Alineado a la izquierda para estilo editorial */
+  }
+
+  .btn-back {
+    display: inline-block;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+  }
+  .btn-back:hover { color: var(--accent-mint); }
+
+  h1 { font-size: 3rem; margin-bottom: 1rem; line-height: 1.1; }
+  
+  .subtitle { 
+    font-size: 1.2rem; 
+    color: var(--text-muted); 
+    max-width: 600px; 
+    line-height: 1.6; 
+  }
+
+  .text-gradient {
+    background: linear-gradient(45deg, var(--accent-purple), var(--accent-mint));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  /* --- 3. GRID DE ARTÍCULOS (Estilo Cyberpunk Clean) --- */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .post-card {
+    position: relative;
+  }
+
+  /* TARJETA INTERACTIVA */
+  .card-link {
+    display: block;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Efecto Hover (Borde y Fondo) */
+  .card-link:hover {
+    border-color: var(--accent-purple);
+    background: rgba(15, 23, 42, 0.9);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -10px rgba(192, 132, 252, 0.15);
+  }
+
+  /* Título */
+  .card-content h2 {
+    color: #f1f5f9;
+    font-size: 1.8rem;
+    margin: 1rem 0;
+    transition: color 0.3s;
+  }
+  .card-link:hover h2 { color: var(--accent-purple); }
+
+  /* Texto */
+  .card-content p {
+    color: #94a3b8;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  /* Meta data (Fecha y Tags) */
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+  
+  .tags { display: flex; gap: 0.5rem; }
+  
+  .tag {
+    background: rgba(192, 132, 252, 0.1);
+    color: var(--accent-purple);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  /* Link "Leer más" simulado */
+  .read-more {
+    color: var(--accent-mint);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+</style>

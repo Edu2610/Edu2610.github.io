@@ -1,0 +1,106 @@
+---
+import Layout from './Layout.astro';
+
+// 1. Definimos la forma de los datos (Interface)
+interface Frontmatter {
+  titulo: string;
+  fecha: string;
+  tags: string[]; 
+}
+
+interface Props {
+  frontmatter: Frontmatter;
+}
+
+// 2. Extraemos las props
+const { frontmatter } = Astro.props;
+---
+
+<Layout titulo={frontmatter.titulo}>
+  
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+    crossorigin="anonymous"
+  >
+
+  <div class="background-grid"></div>
+
+  <main class="article-container">
+    
+    <a href="/educacion/ensayos" class="btn-back">← Volver a la lista</a>
+
+    <header class="article-header">
+      <div class="meta">
+        <span class="date">{frontmatter.fecha}</span>
+        <span class="divider">/</span>
+        <span class="author">Por Eduardo</span>
+      </div>
+      <h1>{frontmatter.titulo}</h1>
+      
+      <div class="tags">
+        {frontmatter.tags.map((tag) => <span class="tag">#{tag}</span>)}
+      </div>
+    </header>
+
+    <article class="content">
+      <slot /> 
+    </article>
+
+  </main>
+</Layout>
+
+<style>
+  /* --- ESTILOS DE LECTURA (Typography) --- */
+  
+  /* Fondo Grid */
+  .background-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10;
+    background-color: #0f172a;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  }
+
+  .article-container {
+    max-width: 720px; 
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+
+  .btn-back {
+    display: inline-block; color: #94a3b8; text-decoration: none; margin-bottom: 3rem; font-size: 0.9rem;
+  }
+  .btn-back:hover { color: var(--accent-mint); }
+
+  /* Header Styles */
+  .article-header { margin-bottom: 3rem; text-align: center; }
+  .article-header h1 { font-size: 2.5rem; line-height: 1.2; margin: 1rem 0; color: #f1f5f9; }
+  .meta { font-family: monospace; color: var(--accent-mint); font-size: 0.9rem; }
+  .tags { margin-top: 1rem; display: flex; justify-content: center; gap: 0.5rem; }
+  .tag { background: rgba(255,255,255,0.05); color: #cbd5e1; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; }
+
+  /* --- ESTILOS DEL CONTENIDO (MARKDOWN) --- */
+  .content {
+    color: #cbd5e1;
+    font-size: 1.15rem;
+    line-height: 1.8;
+  }
+
+  .content :global(h2) { font-size: 1.8rem; color: #fff; margin-top: 3rem; margin-bottom: 1rem; }
+  .content :global(h3) { font-size: 1.4rem; color: #e2e8f0; margin-top: 2rem; margin-bottom: 0.8rem; }
+  .content :global(p) { margin-bottom: 1.5rem; }
+  .content :global(strong) { color: var(--accent-mint); font-weight: 600; }
+  .content :global(ul) { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+  .content :global(li) { margin-bottom: 0.5rem; }
+  .content :global(blockquote) { 
+    border-left: 4px solid var(--accent-purple); 
+    background: rgba(192, 132, 252, 0.1); 
+    padding: 1rem; font-style: italic; margin: 2rem 0; border-radius: 0 8px 8px 0;
+  }
+  
+  /* Ajuste para fórmulas matemáticas de KaTeX */
+  .content :global(.katex) { font-size: 1.1em; }
+</style>

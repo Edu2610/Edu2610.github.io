@@ -2,31 +2,44 @@
 import Layout from '../../layouts/Layout.astro';
 import Card from '../../components/Card.astro';
 
-// AQUÍ DEFINIMOS TUS FUTUROS ARTÍCULOS
-// Por ahora son ideas de lo que podrías escribir
+// DATOS
+const learningLog = [
+  {
+    titulo: "Estadística Avanzada",
+    desc: "Inferencia y Familia Exponencial (Casella & Berger).",
+    link: "/learning/estadistica", 
+    tag: "Nuevo"
+  },
+  {
+    titulo: "Python para Data Science",
+    desc: "Scripts de limpieza de datos con Pandas.",
+    link: "/learning/python",
+    tag: "En curso"
+  }
+];
+
 const articulos = [
   {
     titulo: "¿Por qué odiamos las matemáticas?",
-    desc: "Un análisis filosófico sobre la ansiedad numérica y cómo el sistema educativo falla en enseñar lógica.",
-    link: "#" // Todavía no existe
+    desc: "La ansiedad numérica y el fallo del sistema.",
+    link: "#" 
   },
   {
-    titulo: "La Ética en la Docencia",
-    desc: "Reflexiones sobre la responsabilidad moral de formar a las nuevas generaciones.",
+    titulo: "El Mito de Sísifo",
+    desc: "Ingeniería y absurdismo.",
     link: "#"
   }
 ];
 
-// AQUÍ TUS RECURSOS DESCARGABLES
 const recursos = [
   {
     titulo: "Guía: Lógica Proposicional",
-    desc: "PDF con ejercicios resueltos y explicaciones paso a paso. Nivel: Introductorio.",
+    desc: "PDF con ejercicios resueltos.",
     link: "#"
   },
   {
     titulo: "Cheat Sheet: Derivadas",
-    desc: "Formulario rápido para estudiantes de cálculo diferencial.",
+    desc: "Formulario rápido.",
     link: "#"
   }
 ];
@@ -34,54 +47,66 @@ const recursos = [
 
 <Layout titulo="Educación | Eduardo">
   
+  <div class="background-grid"></div>
+
   <section class="intro">
     <h1>Educación & <span class="text-gradient">Pensamiento</span></h1>
-    <p>
-      La enseñanza no es solo transmitir datos, es <strong>encender una llama</strong>. 
-      Aquí comparto mi visión pedagógica, recursos didácticos y ensayos sobre la intersección entre filosofía y matemáticas.
+    <p class="hero-text">
+      Fusionando la pedagogía matemática con la ingeniería de software.
     </p>
   </section>
 
-  <section class="methodology">
-    <div class="method-card">
-      <h2>🧠 Mi Metodología</h2>
+  <section class="split-section full-width">
+    <div class="text-content highlight-box mint-glow">
+      <div class="badge">🚀 Bitácora</div>
+      <h2>Acompáñame en mi aprendizaje</h2>
       <p>
-        "No busco que memorices fórmulas, busco que entiendas el lenguaje del universo."
+        Documento mi proceso de aprendizaje en tiempo real. 
+        Aquí no encontrarás al profe dando su opinión, sino al que 
+        le interesa mostrar que nunca deja de aprender.
       </p>
-      <ul class="principles">
-        <li>✨ <strong>Lógica sobre Memoria:</strong> Entender el "por qué" antes que el "cómo".</li>
-        <li>🤝 <strong>Empatía Cognitiva:</strong> Adaptar la explicación a la mente del estudiante.</li>
-        <li>🏛️ <strong>Base Filosófica:</strong> Las matemáticas como herramienta de pensamiento crítico.</li>
-      </ul>
+      <a href="/bitacora" class="btn-explore">Explorar Bitácora Completa →</a>
     </div>
-  </section>
-
-  <section class="content-section">
-    <h2 class="section-title">🖋️ Ensayos y Opinión</h2>
-    <p class="subtitle">Reflexiones sobre el sistema educativo y la filosofía.</p>
     
-    <div class="grid-content">
-      {articulos.map((item) => (
-        <Card 
-          titulo={item.titulo}
-          descripcion={item.desc}
-          enlace={item.link}
-        />
+    <div class="preview-stack">
+      {learningLog.slice(0, 2).map((item) => (
+        <Card titulo={item.titulo} descripcion={item.desc} enlace={item.link} />
       ))}
     </div>
   </section>
 
-  <section class="content-section">
-    <h2 class="section-title">📚 Caja de Herramientas</h2>
-    <p class="subtitle">Recursos gratuitos creados para mis estudiantes.</p>
+  <section class="split-section reverse full-width">
+    <div class="text-content highlight-box purple-glow">
+      <div class="badge">🖋️ Ensayos</div>
+      <h2>Reflexiones de un tipo más</h2>
+      <p>
+        En este espacio busco poder compartir mis pensamientos respecto
+        a la educación, la sociedad y el aprendizaje. Es mi opinión abierta al mundo.
+      </p>
+      <a href="/educacion/ensayos" class="btn-explore">Leer Ensayos →</a>
+    </div>
+
+    <div class="preview-stack">
+      {articulos.slice(0, 2).map((item) => (
+        <Card titulo={item.titulo} descripcion={item.desc} enlace={item.link} />
+      ))}
+    </div>
+  </section>
+
+  <section class="split-section full-width">
+    <div class="text-content highlight-box mint-glow">
+      <div class="badge">📚 Toolbox</div>
+      <h2>Recursos Didácticos</h2>
+      <p>
+        Espero que esto te sea de ayuda sin importar el rol que 
+        desempeñes. Guías, ensayos, recursos, y más, es lo que espero poder compartir aquí.
+      </p>
+      <a href="/recursos" class="btn-explore">Abrir Caja de Herramientas →</a>
+    </div>
     
-    <div class="grid-content">
-      {recursos.map((item) => (
-        <Card 
-          titulo={item.titulo}
-          descripcion={item.desc}
-          enlace={item.link}
-        />
+    <div class="preview-stack">
+      {recursos.slice(0, 2).map((item) => (
+        <Card titulo={item.titulo} descripcion={item.desc} enlace={item.link} />
       ))}
     </div>
   </section>
@@ -89,85 +114,85 @@ const recursos = [
 </Layout>
 
 <style>
-  /* ESTILOS ESPECÍFICOS DE EDUCACIÓN */
+  /* --- 0. FONDO GENERAL (GRID MATEMÁTICO) --- */
+  .background-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10;
+    background-color: #0f172a;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  }
+
+  /* --- 1. HERO --- */
+  .intro { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 6rem 1rem 4rem 1rem; max-width: 900px; margin: 0 auto; }
+  .intro h1 { font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.1; }
+  .hero-text { font-size: 1.25rem; color: var(--text-muted); max-width: 600px; }
+  .text-gradient { background: linear-gradient(45deg, var(--accent-purple), var(--accent-mint)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  /* --- 2. LAYOUT --- */
+  .split-section { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: center; padding: 0 1.5rem; margin-bottom: 8rem; width: 100%; max-width: 1400px; margin-left: auto; margin-right: auto; }
+
+  /* --- 3. CAJAS GRANDES --- */
+  .highlight-box { position: relative; padding: 3rem; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(15, 23, 42, 0.8); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3); overflow: hidden; transition: all 0.3s ease; backdrop-filter: blur(10px); }
+  .highlight-box::before { content: ''; position: absolute; inset: 0; z-index: -1; background-size: 60px 60px; opacity: 0.1; transition: opacity 0.4s ease; }
+  .highlight-box:hover::before { opacity: 0.6; animation: arrowFlow 3s linear infinite; }
   
-  /* Usamos el Violeta como color principal en esta página */
-  .text-gradient {
-    background: linear-gradient(45deg, var(--accent-purple), var(--accent-mint));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .intro {
-    margin-bottom: 4rem;
-    
-    /* Agregamos esto: */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .intro p { 
-    color: var(--text-muted); 
-    font-size: 1.1rem; 
-    max-width: 800px; 
-    line-height: 1.6; 
-  }
-
-  /* También centramos los títulos de las secciones para consistencia */
-  .section-title { 
-    font-size: 1.5rem; 
-    color: var(--text-main); 
-    margin-bottom: 0.5rem;
-    text-align: center; /* <--- Nuevo */
-  }
+  /* Variantes Grandes */
+  .purple-glow { background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(88, 28, 135, 0.3) 100%); }
+  .purple-glow:hover { border-color: var(--accent-purple); box-shadow: 0 20px 50px -10px rgba(192, 132, 252, 0.2); }
+  .purple-glow::before { background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='rgba(192, 132, 252, 0.5)' stroke-width='2' opacity='0.5' transform='rotate(-45 30 30)' /%3E%3C/svg%3E"); }
   
-  .subtitle { 
-    color: var(--text-muted); 
-    margin-bottom: 2rem; 
-    margin-top: 0; 
-    font-size: 0.95rem; 
-    text-align: center; /* <--- Nuevo */
-  }
-  .intro strong { color: var(--accent-purple); }
+  .mint-glow { background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(20, 184, 166, 0.3) 100%); }
+  .mint-glow:hover { border-color: var(--accent-mint); box-shadow: 0 20px 50px -10px rgba(45, 212, 191, 0.2); }
+  .mint-glow::before { background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='rgba(45, 212, 191, 0.5)' stroke-width='2' opacity='0.5' transform='rotate(-45 30 30)' /%3E%3C/svg%3E"); }
 
-  /* TARJETA DE METODOLOGÍA (Destacada) */
-  .methodology { margin-bottom: 4rem; }
-  
-  .method-card {
-    background: linear-gradient(180deg, rgba(192, 132, 252, 0.1) 0%, rgba(15, 23, 42, 0) 100%);
-    border: 1px solid rgba(192, 132, 252, 0.2);
-    border-radius: var(--radius-md);
-    padding: 2.5rem;
-  }
+  @keyframes arrowFlow { from { background-position: 0 0; } to { background-position: 120px -120px; } }
 
-  .method-card h2 { color: var(--accent-purple); font-size: 1.8rem; margin-top: 0; }
-  .method-card p { font-size: 1.2rem; font-style: italic; color: var(--text-main); margin-bottom: 2rem; }
+  .badge { color: #fff; background: rgba(255,255,255,0.1); padding: 0.3rem 0.8rem; border-radius: 4px; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 1.5rem; display: inline-block; }
+  .highlight-box h2 { font-size: 2.5rem; margin-bottom: 1rem; color: #fff; line-height: 1.1; }
+  .highlight-box p { font-size: 1.1rem; color: #cbd5e1; line-height: 1.7; margin-bottom: 2rem; max-width: 90%; }
+  .btn-explore { display: inline-flex; padding: 0.8rem 1.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 100px; color: #fff; text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
+  .btn-explore:hover { background: #fff; color: #000; transform: translateY(-3px); }
 
-  .principles {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+  /* --- 4. FUERZA BRUTA PARA TARJETAS PEQUEÑAS --- */
+  .preview-stack { display: flex; flex-direction: column; gap: 1.5rem; width: 100%; max-width: 450px; margin: 0 auto; }
+
+  /* Seleccionamos CUALQUIER etiqueta <a> dentro de preview-stack */
+  .preview-stack :global(a) {
+    background-color: rgba(15, 23, 42, 0.95) !important; /* Forzamos fondo oscuro */
+    border: 1px solid rgba(34, 211, 238, 0.3) !important; /* Forzamos borde Cyan */
+    border-radius: 12px !important; /* Redondeamos si no lo estaba */
+    padding: 1.5rem !important; /* Aseguramos espacio interno */
+    text-decoration: none !important;
+    position: relative; overflow: hidden; transition: all 0.3s ease; z-index: 1; display: block;
+    box-shadow: none !important; /* Reseteamos sombras previas */
   }
 
-  .principles li {
-    background: rgba(15, 23, 42, 0.5);
-    padding: 1rem;
-    border-radius: 8px;
-    border-left: 3px solid var(--accent-purple);
-    color: var(--text-muted);
+  /* El patrón de flechas para las pequeñas */
+  .preview-stack :global(a)::before {
+    content: ''; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity 0.4s ease;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='rgba(34, 211, 238, 0.5)' stroke-width='2' opacity='0.5' transform='rotate(-45 30 30)' /%3E%3C/svg%3E");
+    background-size: 40px 40px;
   }
 
-  .principles strong { color: var(--text-main); display: block; margin-bottom: 0.3rem; }
+  /* Hover Effects */
+  .preview-stack :global(a):hover {
+    border-color: #22d3ee !important;
+    transform: translateX(10px);
+    box-shadow: -5px 5px 20px rgba(34, 211, 238, 0.2) !important;
+  }
+  .preview-stack :global(a):hover::before { opacity: 0.5; animation: arrowFlow 2s linear infinite; }
 
-  /* SECCIONES DE CONTENIDO */
-  .content-section { margin-bottom: 4rem; }
-  .section-title { font-size: 1.5rem; color: var(--text-main); margin-bottom: 0.5rem; }
-  .subtitle { color: var(--text-muted); margin-bottom: 2rem; margin-top: 0; font-size: 0.95rem; }
+  /* Forzar colores de texto internos */
+  .preview-stack :global(h2) { color: #e2e8f0 !important; font-size: 1.25rem !important; margin-bottom: 0.5rem !important; transition: color 0.3s ease; }
+  .preview-stack :global(p) { color: #94a3b8 !important; font-size: 0.95rem !important; margin: 0 !important; }
+  .preview-stack :global(a):hover :global(h2) { color: #22d3ee !important; }
 
-  .grid-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  @media (min-width: 900px) {
+    .split-section { grid-template-columns: 1fr 1fr; gap: 5rem; }
+    .split-section.reverse .text-content { order: 2; }
+    .split-section.reverse .preview-stack { order: 1; }
+  }
+</style>
