@@ -94,8 +94,17 @@ const nivelBasico = [
     estado: "Completado",
     descripcion: "Escribir código legible, comentarios y docstrings profesionales.",
     link: "https://gist.github.com/Edu2610/d83bb72bfc5a2e2ee4bd52c05308f2ce"
-  }
+  },
+  {
+    tema: "Proyecto I: Gestor de Finanzas",
+    estado: "Completado",
+    descripcion: "Sistema de persistencia de datos y lógica de negocio aplicada sin uso de clases.",
+    link: "https://gist.github.com/Edu2610/16815acb467545e0d5b11364d9620988",
+    esProyecto: true // <-- ESTA ES LA CLAVE
+  },
 ];
+
+
 ---
 
 <Layout titulo="Python Path | Eduardo">
@@ -149,19 +158,21 @@ const nivelBasico = [
     </div>
     
     <div class="exercises-grid">
-      {nivelBasico.map((item) => (
-        <div class="exercise-card">
-          <div class="card-header">
-            <h3>{item.tema}</h3>
-            <span class={`status ${item.estado.toLowerCase()}`}>{item.estado}</span>
-          </div>
-          <p>{item.descripcion}</p>
-          {item.link !== "#" && (
-            <a href={item.link} class="code-link">Ver Código 💻</a>
-          )}
-        </div>
-      ))}
+  {nivelBasico.map((item) => (
+    <div class={`exercise-card ${item.esProyecto ? 'proyecto-neon' : ''}`}>
+      <div class="card-header">
+        <h3 class={item.esProyecto ? 'titulo-proyecto' : ''}>{item.tema}</h3>
+        <span class={`status ${item.estado.toLowerCase()}`}>{item.estado}</span>
+      </div>
+      <p>{item.descripcion}</p>
+      {item.link !== "#" && (
+        <a href={item.link} class={item.esProyecto ? 'link-proyecto' : 'code-link'}>
+           {item.esProyecto ? 'Ver Proyecto Final 🚀' : 'Ver Código 💻'}
+        </a>
+      )}
     </div>
+  ))}
+</div>
   </section>
 
   <section class="level-section locked">
@@ -313,4 +324,35 @@ const nivelBasico = [
     .cycle-grid { flex-direction: column; }
     .arrow { transform: rotate(90deg); }
   }
+  /* Clase para la tarjeta del proyecto */
+.proyecto-neon {
+  border: 1px solid #bc13fe !important; /* Fuerza el color morado */
+  background: rgba(188, 19, 254, 0.05) !important;
+  box-shadow: 0 0 15px rgba(188, 19, 254, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efecto de resplandor al pasar el mouse */
+.proyecto-neon:hover {
+  box-shadow: 0 0 25px rgba(188, 19, 254, 0.6);
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+
+/* Título destacado */
+.titulo-proyecto {
+  color: #fff;
+  text-shadow: 0 0 5px #bb13fec8;
+}
+
+/* Link destacado */
+.link-proyecto {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #f5edff;
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 2px solid #bc13fe;
+}
 </style>
