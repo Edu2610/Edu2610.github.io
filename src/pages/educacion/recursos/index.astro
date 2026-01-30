@@ -12,21 +12,15 @@ const digitales = [
   }
 ];
 
-// SECCIÓN 2: MATERIAL DESCARGABLE (PDFs, Imágenes)
-const descargables = [
+
+// NUEVA SECCIÓN: NIVELES (Rutas de navegación)
+const niveles = [
   {
-    titulo: "Guía: Lógica Proposicional",
-    tipo: "PDF",
-    desc: "Ejercicios resueltos paso a paso para dominar tablas de verdad.",
-    link: "#", 
-    icon: "📄"
-  },
-  {
-    titulo: "Cheat Sheet: Derivadas",
-    tipo: "Imagen",
-    desc: "Formulario rápido de reglas de derivación.",
-    link: "#",
-    icon: "⚡"
+    titulo: "Primero Medio",
+    tipo: "Nivel",
+    desc: "Material estructurado por unidades: Números, Álgebra, Geometría y Estadística.",
+    link: "/educacion/recursos/primero-medio",
+    icon: "🎒"
   }
 ];
 ---
@@ -67,25 +61,25 @@ const descargables = [
     </section>
 
     <section class="resource-group">
-      <h2 class="group-title">📂 Material Descargable</h2>
-      <div class="tools-grid">
-        {descargables.map((item) => (
-          <article class="tool-card download-card">
-            <a href={item.link} class="card-link">
-              <div class="card-header">
-                <span class="icon">{item.icon}</span>
-                <span class="badge gray">{item.tipo}</span>
-              </div>
-              <div class="card-content">
-                <h3>{item.titulo}</h3>
-                <p>{item.desc}</p>
-                <span class="access-btn">Descargar →</span>
-              </div>
-            </a>
-          </article>
-        ))}
-      </div>
-    </section>
+  <h2 class="group-title">🎓 Niveles Escolares</h2>
+  <div class="tools-grid">
+    {niveles.map((nivel) => (
+      <article class="tool-card download-card">
+        <a href={nivel.link} class="card-link">
+          <div class="card-header">
+            <span class="icon">{nivel.icon}</span>
+            <span class="badge gray">{nivel.tipo}</span>
+          </div>
+          <div class="card-content">
+            <h3>{nivel.titulo}</h3>
+            <p>{nivel.desc}</p>
+            <span class="access-btn">Ver Unidades →</span>
+          </div>
+        </a>
+      </article>
+    ))}
+  </div>
+</section>
 
   </main>
 </Layout>

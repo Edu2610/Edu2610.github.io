@@ -1,0 +1,108 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+const secuencias = [
+  {
+    titulo: "Unidad 1: Números",
+    leccion: "Representación y Densidad en ℚ",
+    desc: "Análisis de la equivalencia entre fracciones y decimales mediante visualización dinámica.",
+    link: "/educacion/recursos/primero-medio/racionales-equivalencia",
+    status: "Disponible"
+  }
+];
+---
+
+<Layout titulo="Primero Medio | Recursos">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos" class="btn-back">← Volver a Herramientas</a>
+      <h1>Primero <span class="dot">Medio</span></h1>
+      <p class="subtitle">
+        Secuencias didácticas y material de apoyo organizados por unidad temática.
+      </p>
+    </header>
+
+    <section class="resource-group">
+      <div class="tools-grid">
+        {secuencias.map((s) => (
+          <article class="tool-card level-card">
+            <a href={s.link} class="card-link">
+              <div class="card-header">
+                <span class="badge purple">{s.status}</span>
+                <span class="unit-label">{s.titulo}</span>
+              </div>
+              <div class="card-content">
+                <h3>{s.leccion}</h3>
+                <p>{s.desc}</p>
+                <span class="access-btn purple-text">Explorar Material →</span>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* Reutilizamos la lógica de tu Caja de Herramientas adaptada al Design System */
+  .container { max-width: 1000px; margin: 0 auto; padding: 4rem 1.5rem; }
+
+  .page-header { margin-bottom: 3rem; text-align: left; }
+  .btn-back { display: inline-block; color: var(--text-muted); text-decoration: none; margin-bottom: 2rem; font-size: 0.9rem; transition: color 0.3s; }
+  .btn-back:hover { color: var(--accent-mint); }
+  
+  h1 { font-family: var(--font-heading); font-size: 3rem; }
+  .dot { color: var(--accent-mint); }
+  .subtitle { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; line-height: 1.6; }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  /* CARD DESIGN: Lógica unificada */
+  .card-link {
+    display: flex; flex-direction: column; height: 100%;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Efecto Aurora/Purple para Niveles */
+  .level-card .card-link:hover {
+    border-color: var(--accent-purple);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -10px rgba(192, 132, 252, 0.15);
+  }
+
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+  
+  .badge { padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+  .badge.purple { background: rgba(192, 132, 252, 0.1); color: var(--accent-purple); }
+  
+  .unit-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+
+  h3 { font-family: var(--font-heading); color: var(--text-main); font-size: 1.5rem; margin: 0 0 1rem 0; line-height: 1.2; }
+  p { font-family: var(--font-body); color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 2rem; flex-grow: 1; }
+  
+  .access-btn { font-weight: 600; font-size: 0.95rem; transition: gap 0.3s; }
+  .purple-text { color: var(--accent-purple); }
+
+  /* Background Grid de tu educación.astro */
+  .background-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10;
+    background-color: var(--bg-primary);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  }
+</style>
