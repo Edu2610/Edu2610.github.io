@@ -1,0 +1,154 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+const recursos = [
+  {
+    nombre: "Planificación Clase 2: Fluidez",
+    formato: "PDF",
+    desc: "Guía docente detallada con la dinámica de 'Misiones' y gestión del aula + anexo.",
+    link: "/docs/planificacion_1ro_medio/1ro_medio_ejercitacion_fracciones.pdf", 
+    icon: "📋"
+  },
+];
+---
+
+<Layout titulo="Fluidez Mecánica | Primero Medio">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos/primero-medio" class="btn-back">← Volver a la Unidad</a>
+      <h1>Entrenamiento de <span class="text-gradient">Fluidez</span></h1>
+      <p class="subtitle">Clase 2: Automatización de procesos y estándar de cero errores.</p>
+    </header>
+
+    <section class="content-section">
+      <div class="glass-card">
+        <h2>La Metodología de Alta Demanda</h2>
+        <p>
+          En esta sesión transformamos el aula en un centro de entrenamiento. No buscamos solo resolver, buscamos <strong>velocidad y precisión</strong>. 
+          Bajo la lógica de "Cinturones de Maestría", el estudiante avanza solo si demuestra dominio total del nivel anterior.
+          Una respuesta correcta pero no simplificada se considera <strong>errónea</strong>.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Niveles de Ingeniería</h2>
+      <div class="concepts-grid">
+        <div class="concept-card" style="border-top: 3px solid #cd7f32;">
+          <h3>Nivel Bronce</h3>
+          <p><strong>Cimientos.</strong> Operaciones directas donde el MCM es evidente. Foco en no olvidar amplificar el numerador.</p>
+        </div>
+        <div class="concept-card" style="border-top: 3px solid #cbd5e1;">
+          <h3>Nivel Plata</h3>
+          <p><strong>Estructura.</strong> Ejercicios con "trampas de ruido". Requieren simplificación obligatoria antes de operar.</p>
+        </div>
+        <div class="concept-card" style="border-top: 3px solid #fbbf24;">
+          <h3>Nivel Oro</h3>
+          <p><strong>Resistencia.</strong> Operaciones combinadas de 3 fracciones. Solo para quienes dominen la simplificación.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="glass-card warning-card" style="margin-top: 3rem;">
+        <h3>⚠️ El Estándar de Calidad</h3>
+        <p>
+          Se introduce la cultura del <strong>"Cero Defecto"</strong>. 
+          Los estudiantes validan sus respuestas en un solucionario de pared (autonomía) y el docente solo certifica el avance. 
+          No se premia el intento, se premia el resultado profesional (Irreducible).
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Descargas Docentes</h2>
+      <div class="download-grid">
+        {recursos.map(item => (
+          <div class="download-card">
+            <div class="card-info">
+              <span class="file-icon">{item.icon}</span>
+              <div>
+                <h3>{item.nombre}</h3>
+                <span class="file-type">{item.formato}</span>
+                <p style="padding-right: 1rem;">{item.desc}</p>
+              </div>
+            </div>
+            <a href={item.link} download class="download-btn">Descargar</a>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* --- ESTILOS ESPECÍFICOS --- */
+  .container { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  
+  /* Gradiente Rojo/Intenso para esta clase */
+  .text-gradient { background: linear-gradient(to right, #f87171, #e11d48); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  
+  .glass-card, .concept-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem; border-radius: 16px; color: #94a3b8; line-height: 1.7;
+    backdrop-filter: blur(10px);
+  }
+
+  .warning-card { border-left: 4px solid #f87171; background: rgba(248, 113, 113, 0.05); }
+  .warning-card h3 { color: #f87171; margin-bottom: 0.5rem; }
+
+  /* Grid de Conceptos */
+  .concepts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+  .concept-card h3 { color: #e2e8f0; margin-bottom: 0.5rem; font-family: var(--font-heading); font-size: 1.5rem; }
+  
+  /* Botones y Headers */
+  .page-header { margin-bottom: 3rem; }
+  .btn-back { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 1rem; }
+  h1 { font-family: var(--font-heading); font-size: 3rem; color: #f8fafc; }
+  h2 { color: #f1f5f9; font-size: 1.8rem; margin-bottom: 1.5rem; margin-top: 3rem; }
+  
+  /* --- BOTÓN DE DESCARGA --- */
+  .download-grid { display: grid; gap: 1.5rem; }
+  .download-card { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    background: rgba(30, 41, 59, 0.5); 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem; 
+    border-radius: 16px; 
+    backdrop-filter: blur(10px);
+    gap: 2rem;
+  }
+
+  .card-info { 
+    display: flex; 
+    gap: 1.5rem; 
+    align-items: center; 
+    flex: 1; 
+  }
+
+  .file-icon { font-size: 2.5rem; flex-shrink: 0; }
+  
+  .download-btn { 
+    flex-shrink: 0; 
+    background: #f87171; /* Color Rojo */
+    color: #0f172a; 
+    padding: 0.8rem 1.5rem; 
+    border-radius: 8px; 
+    text-decoration: none; 
+    font-weight: bold; 
+    white-space: nowrap; 
+    transition: transform 0.2s;
+  }
+  .download-btn:hover { transform: scale(1.05); }
+  
+  @media (max-width: 768px) { 
+    .download-card { flex-direction: column; align-items: stretch; gap: 1.5rem; text-align: center; } 
+    .card-info { flex-direction: column; }
+    .download-btn { text-align: center; }
+  }
+</style>

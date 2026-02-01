@@ -1,0 +1,153 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+const recursos = [
+  {
+    nombre: "Planificación Clase 1: Ingeniería de la Suma",
+    formato: "PDF",
+    desc: "Guía docente con análisis anticipatorio, gestión de errores y actividad de 'El Espejismo'.",
+    link: "/docs/planificacion_1ro_medio/1ro_medio_operatoria_fracciones.pdf", 
+    icon: "📋"
+  }
+];
+---
+
+<Layout titulo="Suma y Resta Racional | Primero Medio">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos/primero-medio" class="btn-back">← Volver a la Unidad</a>
+      <h1>Ingeniería de la <span class="text-gradient">Suma</span></h1>
+      <p class="subtitle">Clase 1: Optimización de cálculos mediante simplificación previa.</p>
+    </header>
+
+    <section class="content-section">
+      <div class="glass-card">
+        <h2>El Principio de Eficiencia</h2>
+        <p>
+          En matemáticas escolares, se enseña a operar mecánicamente. En ingeniería, se enseña a operar eficientemente. 
+          Antes de sumar, debemos limpiar la señal. Enfrentaremos "El Espejismo": operaciones que parecen monstruosas ($\frac{500}{1000} + \frac{7}{14}$) pero que, vistas con lentes de ingeniero, son triviales ($1$).
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Caja de Herramientas</h2>
+      <div class="concepts-grid">
+        <div class="concept-card" style="border-top: 3px solid #fbbf24;">
+          <h3>MCM (El Traductor)</h3>
+          <p>
+            La herramienta estándar para conectar sistemas incompatibles. Usamos la técnica del <strong>"Hermano Mayor"</strong> para evitar tablas innecesarias en números pequeños.
+          </p>
+        </div>
+        <div class="concept-card" style="border-top: 3px solid #f59e0b;">
+          <h3>Mariposa (Emergencia)</h3>
+          <p>
+            Útil para sumas rápidas de dos fracciones simples. <br>
+            <strong>Peligro:</strong> Genera números gigantes si no se tiene cuidado. No usar en operaciones de 3 o más elementos.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="glass-card warning-card" style="margin-top: 3rem;">
+        <h3>⚠️ Mandamiento N°1</h3>
+        <p>
+          "Nunca operarás con 'basura' numérica". <br>
+          Si una fracción se puede simplificar, <strong>se debe</strong> simplificar antes de buscar el MCM.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Descargas Docentes</h2>
+      <div class="download-grid">
+        {recursos.map(item => (
+          <div class="download-card">
+            <div class="card-info">
+              <span class="file-icon">{item.icon}</span>
+              <div>
+                <h3>{item.nombre}</h3>
+                <span class="file-type">{item.formato}</span>
+                <p style="padding-right: 1rem;">{item.desc}</p>
+              </div>
+            </div>
+            <a href={item.link} download class="download-btn">Descargar</a>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* --- ESTILOS ESPECÍFICOS --- */
+  .container { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  
+  /* Gradiente Ámbar para esta clase */
+  .text-gradient { background: linear-gradient(to right, #fbbf24, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  
+  .glass-card, .concept-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem; border-radius: 16px; color: #94a3b8; line-height: 1.7;
+    backdrop-filter: blur(10px);
+  }
+
+  .warning-card { border-left: 4px solid #ef4444; background: rgba(239, 68, 68, 0.05); }
+  .warning-card h3 { color: #ef4444; margin-bottom: 0.5rem; }
+
+  /* Grid de Conceptos */
+  .concepts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+  .concept-card h3 { color: #fcd34d; margin-bottom: 0.5rem; font-family: var(--font-heading); font-size: 1.5rem; }
+  
+  /* Botones y Headers */
+  .page-header { margin-bottom: 3rem; }
+  .btn-back { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 1rem; }
+  h1 { font-family: var(--font-heading); font-size: 3rem; color: #f8fafc; }
+  h2 { color: #f1f5f9; font-size: 1.8rem; margin-bottom: 1.5rem; margin-top: 3rem; }
+  
+  /* --- BOTÓN DE DESCARGA (CORREGIDO) --- */
+  .download-grid { display: grid; gap: 1.5rem; }
+  .download-card { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    background: rgba(30, 41, 59, 0.5); 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem; 
+    border-radius: 16px; 
+    backdrop-filter: blur(10px);
+    gap: 2rem;
+  }
+
+  .card-info { 
+    display: flex; 
+    gap: 1.5rem; 
+    align-items: center; 
+    flex: 1; 
+  }
+
+  .file-icon { font-size: 2.5rem; flex-shrink: 0; }
+  
+  .download-btn { 
+    flex-shrink: 0; 
+    background: #fbbf24; /* Color Ámbar */
+    color: #0f172a; 
+    padding: 0.8rem 1.5rem; 
+    border-radius: 8px; 
+    text-decoration: none; 
+    font-weight: bold; 
+    white-space: nowrap; 
+    transition: transform 0.2s;
+  }
+  .download-btn:hover { transform: scale(1.05); }
+  
+  @media (max-width: 768px) { 
+    .download-card { flex-direction: column; align-items: stretch; gap: 1.5rem; text-align: center; } 
+    .card-info { flex-direction: column; }
+    .download-btn { text-align: center; }
+  }
+</style>
