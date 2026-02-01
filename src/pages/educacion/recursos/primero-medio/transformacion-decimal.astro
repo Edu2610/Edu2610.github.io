@@ -1,0 +1,125 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+const recursos = [
+  {
+    nombre: "Planificación Docente (Clase 2)",
+    formato: "PDF",
+    desc: "Documento técnico con la ruta de aprendizaje, gestión de errores y análisis didáctico del método algebraico.",
+    // Verifica que este nombre coincida con el que termina en _pl...
+    link: "/docs/planificacion_1ro_medio/Planificación_1ro_medio_clase_2_planificacion.pdf",
+    icon: "📋"
+  },
+  {
+    nombre: "Guía y Set de Estaciones",
+    formato: "PDF (Material)",
+    desc: "Incluye la guía de entrenamiento para el alumno y las tarjetas recortables para las 5 mesas de dificultad.",
+    // Verifica que este nombre coincida con el que termina en _act...
+    link: "/docs/planificacion_1ro_medio/Planificación_1ro_medio_clase_2_actividad.pdf",
+    icon: "✂️"
+  }
+];
+---
+
+<Layout titulo="Transformación Decimal | Primero Medio">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos/primero-medio" class="btn-back">← Volver al Nivel</a>
+      <h1>Algoritmos de <span class="text-gradient">Conversión</span></h1>
+      <p class="subtitle">Clase 2: Del método mecánico al razonamiento algebraico.</p>
+    </header>
+
+    <section class="content-section">
+      <div class="glass-card">
+        <h2>Propuesta Didáctica</h2>
+        <p>
+          En esta sesión nos alejamos de la memorización de reglas (los "nueves" y "ceros") para entender la <strong>ingeniería detrás de la transformación</strong>. 
+          Utilizamos la resta algebraica de ecuaciones para "eliminar" la parte infinita de los decimales periódicos.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Dinámica de Aula: "Circuito de Poder"</h2>
+      <div class="glass-card" style="border-left: 4px solid var(--accent-mint);">
+        <h3>Estrategia de Gamificación</h3>
+        <p>
+          Para evitar la mecanización pasiva, la clase utiliza una estructura de <strong>Estaciones Rotativas</strong>. 
+          Los estudiantes se separan de sus equipos base y rotan por 5 mesas de dificultad progresiva (desde Finitos hasta la "Zona de Riesgo").
+        </p>
+        <ul style="margin-top: 1rem; color: #94a3b8; list-style-type: disc; padding-left: 1.5rem;">
+          <li><strong>Responsabilidad Individual:</strong> Cada alumno suma puntos para su equipo estando solo en la mesa.</li>
+          <li><strong>Fichas de Ingeniería:</strong> Se premia con doble puntaje el mostrar el desarrollo algebraico.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Descargas de la Clase</h2>
+      <div class="download-grid">
+        {recursos.map(item => (
+          <div class="download-card">
+            <div class="card-info">
+              <span class="file-icon">{item.icon}</span>
+              <div>
+                <h3>{item.nombre}</h3>
+                <span class="file-type">{item.formato}</span>
+                <p>{item.desc}</p>
+              </div>
+            </div>
+            <a href={item.link} download class="download-btn">Descargar</a>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* ESTILOS (Design System) */
+  .container { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  .content-section { margin-bottom: 4rem; }
+  
+  h2 { color: #f1f5f9; font-size: 1.8rem; margin-bottom: 1.5rem; }
+  h3 { color: #f1f5f9; font-size: 1.3rem; margin-bottom: 0.5rem; }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 16px;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+
+  .download-grid { display: grid; gap: 1.5rem; }
+  .download-card {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(30, 41, 59, 0.5);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .card-info { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .file-icon { font-size: 2.5rem; }
+  .file-type { font-size: 0.7rem; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff; text-transform: uppercase; }
+  .card-info h3 { margin: 0.5rem 0; color: #fff; }
+  .card-info p { font-size: 0.9rem; color: #94a3b8; margin: 0; }
+
+  .download-btn {
+    background: var(--accent-mint);
+    color: #0f172a;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s;
+  }
+  .download-btn:hover { transform: scale(1.05); }
+
+  @media (max-width: 600px) {
+    .download-card { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+  }
+</style>

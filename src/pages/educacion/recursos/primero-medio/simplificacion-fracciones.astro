@@ -1,0 +1,127 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+const recursos = [
+  {
+    nombre: "Planificación Docente (Clase 3)",
+    formato: "PDF",
+    desc: "Guía metodológica sobre el concepto de eficiencia matemática y la gestión de la actividad 'The Loop'.",
+    // Basado en la imagen: Planificación_1ro_medio_clase_3_pl...
+    link: "/docs/planificacion_1ro_medio/Planificación_1ro_medio_clase_3_planificacion.pdf",
+    icon: "📋"
+  },
+  {
+    nombre: "Material: Sets 'The Loop'",
+    formato: "PDF (Recortable)",
+    desc: "Contiene la guía de entrenamiento y los dos mazos de cartas (Azul y Rojo) de 45 tarjetas para el cierre circular.",
+    // Basado en la imagen: Planificación_1ro_medio_clase_3_do... (Asumo "domino" o "docente")
+    // ¡REVISA SI ES 'domino.pdf' O 'docente.pdf'!
+    link: "/docs/planificacion_1ro_medio/Planificación_1ro_medio_clase_3_domino.pdf",
+    icon: "♾️"
+  }
+];
+---
+
+<Layout titulo="Simplificación | Primero Medio">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos/primero-medio" class="btn-back">← Volver al Nivel</a>
+      <h1>Simplificación y <span class="text-gradient">Eficiencia</span></h1>
+      <p class="subtitle">Clase 3: La fracción irreducible como estándar de calidad.</p>
+    </header>
+
+    <section class="content-section">
+      <div class="glass-card">
+        <h2>Propuesta Didáctica</h2>
+        <p>
+          En ingeniería y ciencias, no basta con obtener un resultado numérico; este debe ser eficiente. 
+          Esta clase conceptualiza la <strong>simplificación</strong> no como una tarea extra, sino como un proceso de "limpieza de señal". 
+          Se trabaja bajo la premisa: <em>"Una fracción grande es ruido; una irreducible es señal pura"</em>.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Dinámica de Aula: "The Loop Infinito"</h2>
+      <div class="glass-card" style="border-left: 4px solid var(--accent-purple);">
+        <h3>Gamificación Cooperativa</h3>
+        <p>
+          Para consolidar la agilidad mental en la simplificación, utilizamos la dinámica <strong>"Yo tengo... ¿Quién tiene?"</strong> en formato circular masivo.
+        </p>
+        <ul style="margin-top: 1rem; color: #94a3b8; list-style-type: disc; padding-left: 1.5rem;">
+          <li><strong>Interdependencia Positiva:</strong> La cadena depende de que <em>todos</em> presten atención.</li>
+          <li><strong>Doble Vía:</strong> Se juega con dos mazos paralelos (Equipo Azul vs Rojo) para generar competencia.</li>
+          <li><strong>Circularidad:</strong> La última tarjeta conecta con la primera, creando un ciclo infinito.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Descargas de la Clase</h2>
+      <div class="download-grid">
+        {recursos.map(item => (
+          <div class="download-card">
+            <div class="card-info">
+              <span class="file-icon">{item.icon}</span>
+              <div>
+                <h3>{item.nombre}</h3>
+                <span class="file-type">{item.formato}</span>
+                <p>{item.desc}</p>
+              </div>
+            </div>
+            <a href={item.link} download class="download-btn">Descargar</a>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* ESTILOS (Mismos de tu sistema) */
+  .container { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  .content-section { margin-bottom: 4rem; }
+  
+  h2 { color: #f1f5f9; font-size: 1.8rem; margin-bottom: 1.5rem; }
+  h3 { color: #f1f5f9; font-size: 1.3rem; margin-bottom: 0.5rem; }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 16px;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+
+  .download-grid { display: grid; gap: 1.5rem; }
+  .download-card {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(30, 41, 59, 0.5);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .card-info { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .file-icon { font-size: 2.5rem; }
+  .file-type { font-size: 0.7rem; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff; text-transform: uppercase; }
+  .card-info h3 { margin: 0.5rem 0; color: #fff; }
+  .card-info p { font-size: 0.9rem; color: #94a3b8; margin: 0; }
+
+  .download-btn {
+    background: var(--accent-mint);
+    color: #0f172a;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s;
+  }
+  .download-btn:hover { transform: scale(1.05); }
+
+  @media (max-width: 600px) {
+    .download-card { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+  }
+</style>
