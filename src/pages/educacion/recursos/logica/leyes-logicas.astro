@@ -1,0 +1,99 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+const recursos = [
+  {
+    nombre: "Guía Técnica N°2: Leyes Lógicas",
+    formato: "PDF",
+    desc: "El 'Kit de Herramientas' del ingeniero: Simplificación, De Morgan y Absorción.",
+    link: "/docs/logica/logica_guia_2.pdf", // Asegúrate de subir el PDF aquí
+    icon: "🛠️"
+  }
+];
+---
+
+<Layout titulo="Leyes Lógicas | Primero Medio">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos/logica" class="btn-back">← Volver a la Unidad</a>
+      <h1>Leyes <span class="text-gradient">Lógicas</span></h1>
+      <p class="subtitle">Clase 2: Optimización y simplificación de circuitos de verdad.</p>
+    </header>
+
+    <section class="content-section">
+      <div class="glass-card">
+        <h2>Ingeniería de Proposiciones</h2>
+        <p>
+          En ingeniería, no nos interesa solo que algo funcione, sino que sea eficiente. 
+          Las tablas de verdad son útiles para validar, pero las <strong>Leyes Lógicas</strong> nos permiten transformar una expresión compleja en una simple sin perder información.
+          Es el equivalente lógico a "factorizar" en álgebra.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Conceptos Clave</h2>
+      <div class="concepts-grid">
+        <div class="concept-card">
+          <h3>Equivalencia ($\equiv$)</h3>
+          <p>Dos fórmulas son equivalentes si sus tablas de verdad son idénticas. <br>Ej: $p \implies q \equiv \neg p \lor q$.</p>
+        </div>
+        <div class="concept-card">
+          <h3>De Morgan</h3>
+          <p>La negación de una conjunción es la disyunción de las negaciones (y viceversa). <br>Ej: $\neg(A \land B) \equiv \neg A \lor \neg B$.</p>
+        </div>
+        <div class="concept-card">
+          <h3>Absorción</h3>
+          <p>La ley de la eficiencia máxima. Elimina redundancias. <br>Ej: $p \land (p \lor q) \equiv p$.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Descargas</h2>
+      <div class="download-card">
+        <div class="card-info">
+          <span class="file-icon">{recursos[0].icon}</span>
+          <div>
+            <h3>{recursos[0].nombre}</h3>
+            <span class="file-type">{recursos[0].formato}</span>
+            <p>{recursos[0].desc}</p>
+          </div>
+        </div>
+        <a href={recursos[0].link} download class="download-btn">Descargar Guía</a>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* --- ESTILOS ESPECÍFICOS --- */
+  .container { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  .text-gradient { background: linear-gradient(to right, #60a5fa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  
+  .glass-card, .download-card, .concept-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem; border-radius: 16px; color: #94a3b8; line-height: 1.7;
+    backdrop-filter: blur(10px);
+  }
+
+  /* Grid de Conceptos */
+  .concepts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+  .concept-card h3 { color: #60a5fa; margin-bottom: 0.5rem; font-family: var(--font-heading); }
+  
+  /* Botones y Headers (Heredados del Design System) */
+  .page-header { margin-bottom: 3rem; }
+  .btn-back { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 1rem; }
+  h1 { font-family: var(--font-heading); font-size: 3rem; color: #f8fafc; }
+  h2 { color: #f1f5f9; font-size: 1.8rem; margin-bottom: 1.5rem; margin-top: 3rem; }
+  
+  .download-card { display: flex; justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.5); }
+  .card-info { display: flex; gap: 1.5rem; align-items: center; }
+  .file-icon { font-size: 2.5rem; }
+  .download-btn { background: #60a5fa; color: #0f172a; padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: bold; }
+  
+  @media (max-width: 600px) { .download-card { flex-direction: column; align-items: flex-start; gap: 1rem; } }
+</style>

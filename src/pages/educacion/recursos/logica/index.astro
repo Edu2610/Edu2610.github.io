@@ -1,196 +1,234 @@
-    ---
+---
 import Layout from '../../../../layouts/Layout.astro';
 
 const secuencias = [
   {
     step: "01",
-    titulo: "Unidad 1: Lógica",
-    leccion: "Definición de porposición y conectivos lógicos",
-    desc: "Estudiaremos lo que es una proposición lógica y los principales conectivos utilizados para construir proposiciones compuestas.",
+    titulo: "Proposiciones",
+    desc: "Definición de verdad, conectivos y sintaxis formal.",
     link: "/educacion/recursos/logica/proposiciones-conectivos",
-    status: "Disponible",
-    color: "--accent-mint" // Menta
+    status: "Completado",
+    color: "#34d399", // Menta
+    icon: "🌱"
   },
-  ];
+  {
+    step: "02",
+    titulo: "Leyes Lógicas",
+    desc: "Álgebra de proposiciones y simplificación de circuitos.",
+    link: "/educacion/recursos/logica/leyes-logicas",
+    status: "Disponible",
+    color: "#60a5fa", // Azul
+    icon: "⚙️"
+  },
+  {
+    step: "03",
+    titulo: "Cuantificadores",
+    desc: "Lógica de predicados: Universal y Existencial.",
+    link: "/educacion/recursos/logica/cuantificadores",
+    status: "Disponible",
+    color: "#a78bfa", // Púrpura
+    icon: "🌍"
+  }
+];
 ---
 
-<Layout titulo="Primero Medio | Ruta de Aprendizaje">
+<Layout titulo="Lógica | Ruta de Aprendizaje">
   <div class="background-grid"></div>
+  <div class="ambient-glow"></div>
 
   <main class="container">
     <header class="page-header">
       <a href="/educacion/recursos" class="btn-back">← Volver a Herramientas</a>
-      <h1>Ruta de <span class="text-gradient">Aprendizaje</span></h1>
+      <h1>Unidad 1: <span class="text-gradient">Lógica Formal</span></h1>
       <p class="subtitle">
-        Sigue la secuencia lógica para dominar la unidad de Números Racionales.
+        Lo básico de lógica proposicional, base fundamental para el razonamiento matemático estructurado.
       </p>
     </header>
 
-    <div class="timeline-wrapper">
-      <div class="timeline-track"></div>
-
-      {secuencias.map((s, index) => (
-        <article class="timeline-item" style={`--item-color: ${s.color};`}>
-          
-          <div class="timeline-marker">
-            <span class="step-number">{s.step}</span>
-          </div>
-
-          <a href={s.link} class="timeline-card">
-            <div class="card-glow"></div>
+    <div class="pipeline-container">
+      {secuencias.map((s, index) => {
+        // Look-Ahead para el gradiente
+        const nextStep = secuencias[index + 1];
+        const nextColor = nextStep ? nextStep.color : s.color;
+        
+        return (
+          <div class="pipeline-step" style={`--step-color: ${s.color}; --next-color: ${nextColor};`}>
             
-            <div class="card-content">
-              <div class="header-row">
-                <span class="badge" style={`color: var(${s.color}); background: color-mix(in srgb, var(${s.color}), transparent 90%);`}>
-                  {s.status}
-                </span>
-                <span class="unit-label">{s.titulo}</span>
-              </div>
-
-              <h3>{s.leccion}</h3>
-              <p>{s.desc}</p>
-              
-              <div class="card-footer">
-                <span class="access-text">Ir a la clase</span>
-                <span class="arrow-icon">→</span>
-              </div>
+            <div class="step-node">
+              <span class="step-number">{s.step}</span>
+              <div class="node-glow"></div>
             </div>
-          </a>
-        </article>
-      ))}
-    </div>
 
+            {/* La línea solo se renderiza si no es el último */}
+            {index !== secuencias.length - 1 && <div class="connector-line"></div>}
+
+            <a href={s.link} class="step-card">
+              <div class="card-bg-effect"></div>
+              <div class="card-header">
+                <span class="step-icon">{s.icon}</span>
+                <span class="status-badge">{s.status}</span>
+              </div>
+              <h3>{s.titulo}</h3>
+              <p>{s.desc}</p>
+              <div class="hover-indicator">Ir a la clase →</div>
+            </a>
+          </div>
+        )
+      })}
+    </div>
   </main>
 </Layout>
 
 <style>
-  /* --- CONFIGURACIÓN BASE --- */
-  .container { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  /* CONFIGURACIÓN BASE */
+  .container { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; position: relative; z-index: 1; }
 
-  .page-header { margin-bottom: 4rem; padding-left: 3rem; /* Alineado con las tarjetas */ }
-  .btn-back { display: inline-block; color: var(--text-muted); text-decoration: none; margin-bottom: 1.5rem; font-size: 0.9rem; transition: color 0.3s; }
+  .page-header { margin-bottom: 5rem; text-align: center; }
+  .btn-back { display: inline-block; color: var(--text-muted); text-decoration: none; margin-bottom: 1.5rem; font-size: 1rem; transition: color 0.3s; }
   .btn-back:hover { color: var(--accent-mint); }
   
-  h1 { font-family: var(--font-heading); font-size: 3rem; margin-bottom: 0.5rem; }
+  h1 { font-family: var(--font-heading); font-size: 3.5rem; margin-bottom: 0.8rem; letter-spacing: -1px; }
   .text-gradient { 
-    background: linear-gradient(to right, var(--accent-mint), var(--accent-purple)); 
+    background: linear-gradient(to right, #34d399, #a78bfa); 
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
   }
-  .subtitle { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; }
+  .subtitle { color: var(--text-muted); font-size: 1.25rem; max-width: 650px; margin: 0 auto; line-height: 1.6; }
 
-  /* --- TIMELINE WRAPPER --- */
-  .timeline-wrapper {
+  /* FONDO */
+  .background-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10;
+    background-color: #0f172a;
+    background-image: radial-gradient(#334155 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.3;
+  }
+  .ambient-glow {
+    position: fixed; top: 20%; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(52, 211, 153, 0.15) 0%, transparent 70%);
+    z-index: -5;
+    pointer-events: none;
+  }
+
+  /* --- PIPELINE CONTAINER --- */
+  .pipeline-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem; /* Reduje un poco el gap para evitar overflow en pantallas medianas */
     position: relative;
+    width: 100%;
+  }
+
+  .pipeline-step {
     display: flex;
     flex-direction: column;
-    gap: 3rem; /* Espacio entre clases */
-    padding-left: 1rem;
-  }
-
-  /* La línea vertical continua */
-  .timeline-track {
-    position: absolute;
-    top: 20px;
-    bottom: 50px;
-    left: 28px; /* Ajustado al centro del marcador */
-    width: 2px;
-    background: linear-gradient(to bottom, var(--accent-mint), #3b82f6, var(--accent-purple));
-    z-index: -1;
-    opacity: 0.5;
-  }
-
-  /* --- ITEM INDIVIDUAL --- */
-  .timeline-item {
-    display: flex;
-    gap: 2rem;
-    align-items: stretch;
-    position: relative;
-  }
-
-  /* MARCADOR (Círculo Izquierdo) */
-  .timeline-marker {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--bg-primary);
-    border: 2px solid var(--item-color); /* Color dinámico */
-    display: flex;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1rem; /* Alineado con el título */
-    box-shadow: 0 0 15px color-mix(in srgb, var(--item-color), transparent 50%);
-    z-index: 1;
+    position: relative;
+    z-index: 1; /* Contexto de apilamiento local */
   }
 
-  .step-number {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--item-color);
+  /* NODO */
+  .step-node {
+    width: 56px; height: 56px;
+    background: #0f172a;
+    border: 3px solid var(--step-color);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: var(--step-color);
+    font-size: 1.1rem;
+    position: relative; 
+    z-index: 10; /* El nodo siempre encima de la línea */
+    margin-bottom: 2.5rem;
+    box-shadow: 0 0 20px color-mix(in srgb, var(--step-color), transparent 60%);
+    transition: transform 0.3s;
+  }
+  .pipeline-step:hover .step-node { transform: scale(1.1); background: var(--step-color); color: #0f172a; }
+
+  /* --- LÍNEA CONECTORA CORREGIDA --- */
+  .connector-line {
+    position: absolute;
+    top: 28px; /* Centrado verticalmente con el nodo (56px / 2) */
+    left: 50%; /* Comienza exactamente en el centro del nodo actual */
+    height: 3px;
+    
+    /* Gradiente */
+    background: linear-gradient(90deg, var(--step-color) 0%, var(--next-color) 100%);
+    
+    z-index: 0; /* Detrás del nodo */
+    
+    /* CÁLCULO DE ANCHO:
+       100% = Ancho de la columna actual
+       + 2rem = Ancho del gap
+       Esto conecta centro con centro.
+    */
+    width: calc(100% + 2rem); 
+    
+    /* ELIMINADO: transform: translateX(50%); <--- ESTO CAUSABA EL ERROR EN EL 01 */
+    opacity: 0.6;
+    pointer-events: none; /* Evita que la línea interfiera con clicks */
   }
 
-  /* --- TARJETA DE CONTENIDO --- */
-  .timeline-card {
-    flex-grow: 1;
-    background: rgba(30, 41, 59, 0.4);
+  /* TARJETA */
+  .step-card {
+    background: rgba(30, 41, 59, 0.6); /* Un poco más opaco para evitar mezcla visual */
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 16px;
-    padding: 1.5rem 2rem;
+    padding: 1.8rem;
+    width: 80%;
+    text-align: left;
     text-decoration: none;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-  }
-
-  /* Interacciones Hover */
-  .timeline-card:hover {
-    transform: translateX(10px); /* Movimiento tipo flecha hacia adelante */
-    background: rgba(30, 41, 59, 0.8);
-    border-color: var(--item-color);
-    box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--item-color), transparent 80%);
-  }
-
-  /* Glow sutil al fondo */
-  .card-glow {
-    position: absolute;
-    top: 0; left: 0; width: 4px; height: 100%;
-    background: var(--item-color);
-    opacity: 0.5;
-    transition: opacity 0.3s;
-  }
-  .timeline-card:hover .card-glow { opacity: 1; }
-
-  /* Contenido Interno */
-  .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
-  
-  .badge { padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-  .unit-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-
-  h3 { color: var(--text-main); font-size: 1.5rem; margin: 0 0 0.5rem 0; font-family: var(--font-heading); }
-  p { color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.5; font-size: 0.95rem; }
-
-  /* Footer con flecha animada */
-  .card-footer {
+    transition: all 0.3s ease;
+    backdrop-filter: blur(12px); /* Blur aumentado */
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-direction: column;
+    height: 100%;
+    z-index: 5; /* Asegura que la tarjeta esté sobre elementos decorativos */
   }
 
-  .access-text { color: var(--item-color); font-size: 0.9rem; font-weight: 600; }
-  .arrow-icon { color: var(--item-color); transition: transform 0.3s; }
-  
-  .timeline-card:hover .arrow-icon { transform: translateX(5px); }
+  .step-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--step-color);
+    box-shadow: 0 15px 40px -10px color-mix(in srgb, var(--step-color), transparent 80%);
+    z-index: 20; /* Al hacer hover, se pone encima de todo */
+  }
 
-  /* Background (Igual al anterior) */
-  .background-grid {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10;
-    background-color: var(--bg-primary);
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
+  .step-icon { font-size: 1.8rem; }
+  .status-badge { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 6px; color: #cbd5e1; letter-spacing: 0.5px; }
+
+  h3 { color: #f8fafc; font-size: 1.4rem; margin-bottom: 0.8rem; font-family: var(--font-heading); font-weight: 600; }
+  p { color: #94a3b8; font-size: 1.05rem; line-height: 1.6; margin-bottom: auto; }
+
+  .hover-indicator { 
+    margin-top: 2rem;
+    font-size: 0.95rem; font-weight: 700; color: var(--step-color); 
+    opacity: 0; transform: translateX(-10px); transition: all 0.3s; 
+  }
+  .step-card:hover .hover-indicator { opacity: 1; transform: translateX(0); }
+
+  /* RESPONSIVE */
+  /* Aumenté el breakpoint a 1024px para evitar que se aprieten en tablets/laptops pequeñas */
+  @media (max-width: 1024px) {
+    .pipeline-container { 
+      grid-template-columns: 1fr; /* Una sola columna vertical */
+      gap: 0;
+    }
+    .pipeline-step { 
+      flex-direction: row; 
+      align-items: flex-start; 
+      gap: 1.5rem; 
+      padding-bottom: 3.5rem; 
+    }
+    
+    .step-node { margin-bottom: 0; flex-shrink: 0; }
+    
+    .connector-line {
+      top: 56px; left: 28px; /* Sale desde abajo del nodo */
+      width: 3px; 
+      height: 100%; /* Altura completa para conectar verticalmente */
+      background: linear-gradient(180deg, var(--step-color) 0%, var(--next-color) 100%);
+    }
   }
 </style>

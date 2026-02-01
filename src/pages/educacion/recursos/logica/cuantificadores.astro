@@ -1,0 +1,147 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+const recursos = [
+  {
+    nombre: "Guía Técnica N°3: Cuantificadores",
+    formato: "PDF",
+    desc: "Introducción a la lógica de predicados. Análisis del 'Todos' (Universal) y 'Existe' (Existencial).",
+    link: "/docs/logica/logica_guia_3.pdf", 
+    icon: "🌌"
+  }
+];
+---
+
+<Layout titulo="Cuantificadores | Primero Medio">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos/logica" class="btn-back">← Volver a la Unidad</a>
+      <h1>Lógica de <span class="text-gradient">Predicados</span></h1>
+      <p class="subtitle">Clase 3: Cuando la lógica se aplica a conjuntos del mundo real.</p>
+    </header>
+
+    <section class="content-section">
+      <div class="glass-card">
+        <h2>De lo Particular a lo General</h2>
+        <p>
+          Hasta ahora hemos visto proposiciones estáticas ($p$). Pero la ciencia necesita hablar de grupos: "Todos los metales conducen electricidad" o "Existe un número primo par". 
+          Aquí entran los cuantificadores, que nos permiten evaluar variables dentro de un universo.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Los Dos Gigantes</h2>
+      <div class="concepts-grid">
+        <div class="concept-card" style="border-top: 3px solid #a78bfa;">
+          <h3>Universal ($\forall$)</h3>
+          <p>"Para todo". Exige que el 100% de los casos cumplan la condición. <br>Ej: $\forall x \in N, x > 0$.</p>
+        </div>
+        <div class="concept-card" style="border-top: 3px solid #f472b6;">
+          <h3>Existencial ($\exists$)</h3>
+          <p>"Existe al menos un". Exige que encuentre un solo caso favorable. <br>Ej: $\exists x, x^2 = 4$.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="glass-card warning-card" style="margin-top: 3rem;">
+        <h3>⚠️ El Arte de la Negación</h3>
+        <p>
+          Negar "Todos" no es "Ninguno", es "Existe uno que no". <br>
+          En lenguaje matemático: $\neg(\forall x, P(x)) \iff \exists x, \neg P(x)$.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Descargas</h2>
+      <div class="download-card">
+        <div class="card-info">
+          <span class="file-icon">{recursos[0].icon}</span>
+          <div>
+            <h3>{recursos[0].nombre}</h3>
+            <span class="file-type">{recursos[0].formato}</span>
+            <p style="padding-right: 1rem;">{recursos[0].desc}</p>
+          </div>
+        </div>
+        <a href={recursos[0].link} download class="download-btn">Descargar Guía</a>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* --- ESTILOS ESPECÍFICOS --- */
+  .container { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  .text-gradient { background: linear-gradient(to right, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  
+  .glass-card, .concept-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem; border-radius: 16px; color: #94a3b8; line-height: 1.7;
+    backdrop-filter: blur(10px);
+  }
+
+  .warning-card { border-left: 4px solid #f59e0b; background: rgba(245, 158, 11, 0.05); }
+  .warning-card h3 { color: #f59e0b; margin-bottom: 0.5rem; }
+
+  /* Grid de Conceptos */
+  .concepts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+  .concept-card h3 { color: #e2e8f0; margin-bottom: 0.5rem; font-family: var(--font-heading); font-size: 1.5rem; }
+  
+  /* Botones y Headers */
+  .page-header { margin-bottom: 3rem; }
+  .btn-back { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 1rem; }
+  h1 { font-family: var(--font-heading); font-size: 3rem; color: #f8fafc; }
+  h2 { color: #f1f5f9; font-size: 1.8rem; margin-bottom: 1.5rem; margin-top: 3rem; }
+  
+  /* --- CORRECCIÓN DEL BOTÓN DE DESCARGA --- */
+  .download-card { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; /* Centrado vertical perfecto */
+    background: rgba(30, 41, 59, 0.5); 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem; 
+    border-radius: 16px; 
+    backdrop-filter: blur(10px);
+    gap: 2rem; /* Espacio mínimo entre texto y botón */
+  }
+
+  .card-info { 
+    display: flex; 
+    gap: 1.5rem; 
+    align-items: center; 
+    flex: 1; /* Toma todo el espacio disponible */
+  }
+
+  .file-icon { font-size: 2.5rem; flex-shrink: 0; }
+  
+  /* El botón no se encoje y mantiene su tamaño natural */
+  .download-btn { 
+    flex-shrink: 0; 
+    background: #a78bfa; 
+    color: #0f172a; 
+    padding: 0.8rem 1.5rem; 
+    border-radius: 8px; 
+    text-decoration: none; 
+    font-weight: bold; 
+    white-space: nowrap; /* Evita que el texto del botón se parta en dos líneas */
+    transition: transform 0.2s;
+  }
+  .download-btn:hover { transform: scale(1.05); }
+  
+  @media (max-width: 768px) { 
+    .download-card { 
+      flex-direction: column; 
+      align-items: stretch; /* En móvil, que ocupen todo el ancho */
+      gap: 1.5rem; 
+      text-align: center;
+    } 
+    .card-info { flex-direction: column; }
+    .download-btn { text-align: center; }
+  }
+</style>
