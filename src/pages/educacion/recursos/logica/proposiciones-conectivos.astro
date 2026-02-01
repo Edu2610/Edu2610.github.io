@@ -1,0 +1,117 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+const recursos = [
+  {
+    nombre: "Guía Técnica: Lógica Proposicional",
+    formato: "PDF",
+    desc: "Material completo que incluye definiciones, la analogía del 'Político' para la implicancia y ejercicios de tablas de verdad nivel 1 al 3.",
+    // ⚠️ ASEGÚRATE DE QUE ESTA RUTA SEA CORRECTA EN TU PROYECTO
+    link: "/docs/universidad/logica_guia_1.pdf",
+    icon: "🧠"
+  }
+];
+---
+
+<Layout titulo="Lógica Proposicional | Primero Medio">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos/logica" class="btn-back">← Volver al Nivel</a>
+      <h1>Lógica: <span class="text-gradient">Proposiciones</span></h1>
+      <p class="subtitle">Clase 1: Fundamentos del pensamiento formal y tablas de verdad.</p>
+    </header>
+
+    <section class="content-section">
+      <div class="glass-card">
+        <h2>Propuesta Didáctica</h2>
+        <p>
+          Esta unidad introduce el lenguaje formal de la matemática. En lugar de memorizar combinaciones de V y F, nos enfocamos en la <strong>semántica de los conectivos</strong>. 
+          Destaca el uso de analogías cotidianas, como "La Promesa del Político", para comprender intuitivamente la tabla de verdad de la implicancia $p \implies q$.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Metodología: "Rigor Progresivo"</h2>
+      <div class="glass-card" style="border-left: 4px solid var(--accent-mint);">
+        <h3>Estructura de la Clase</h3>
+        <p>
+          El material está diseñado para desmantelar errores conceptuales comunes (como confundir enunciados abiertos con proposiciones) antes de pasar al cálculo lógico.
+        </p>
+        <ul style="margin-top: 1rem; color: #94a3b8; list-style-type: disc; padding-left: 1.5rem;">
+          <li><strong>Definición por Contraejemplo:</strong> Aprendemos qué ES una proposición analizando qué NO lo es (preguntas, órdenes).</li>
+          <li><strong>Mnemotecnia Lógica:</strong> Uso de situaciones reales para deducir las tablas de verdad sin memoria mecánica.</li>
+          <li><strong>Escalada de Dificultad:</strong> Ejercicios que van desde 2 variables básicas hasta tautologías de 3 variables (p, q, r).</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Descargas de la Clase</h2>
+      <div class="download-grid">
+        {recursos.map(item => (
+          <div class="download-card">
+            <div class="card-info">
+              <span class="file-icon">{item.icon}</span>
+              <div>
+                <h3>{item.nombre}</h3>
+                <span class="file-type">{item.formato}</span>
+                <p>{item.desc}</p>
+              </div>
+            </div>
+            <a href={item.link} download class="download-btn">Descargar</a>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* ESTILOS (Design System) */
+  .container { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  .content-section { margin-bottom: 4rem; }
+  
+  h2 { color: #f1f5f9; font-size: 1.8rem; margin-bottom: 1.5rem; }
+  h3 { color: #f1f5f9; font-size: 1.3rem; margin-bottom: 0.5rem; }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 16px;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+
+  .download-grid { display: grid; gap: 1.5rem; }
+  .download-card {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(30, 41, 59, 0.5);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .card-info { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .file-icon { font-size: 2.5rem; }
+  .file-type { font-size: 0.7rem; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff; text-transform: uppercase; }
+  .card-info h3 { margin: 0.5rem 0; color: #fff; }
+  .card-info p { font-size: 0.9rem; color: #94a3b8; margin: 0; }
+
+  .download-btn {
+    background: var(--accent-mint);
+    color: #0f172a;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s;
+  }
+  .download-btn:hover { transform: scale(1.05); }
+
+  @media (max-width: 600px) {
+    .download-card { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+  }
+</style>

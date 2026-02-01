@@ -1,7 +1,7 @@
 ---
 // src/layouts/Layout.astro
 interface Props {
-	titulo: string;
+    titulo: string;
 }
 
 const { titulo } = Astro.props;
@@ -10,37 +10,56 @@ import '../styles/global.css';
 
 <!doctype html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Portafolio de Eduardo - Ingeniero y Profesor" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
-		
-		<title>{titulo}</title>
-	</head>
-	<body>
-		<nav>
-			<div class="nav-content">
-				<a href="/" class="logo">Eduardo<span class="dot">.</span></a>
-				<div class="links">
-					<a href="/">Inicio</a>
-					<a href="/educacion/">Educación</a>
-					<a href="/informatica/">Informática</a>
-				</div>
-			</div>
-		</nav>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="Portafolio de Eduardo - Ingeniero y Profesor" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
 
-		<main>
-			<slot />
-		</main>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
 
-		<footer>
-			<p>© 2026 Eduardo. Construido con lógica y café.</p>
-		</footer>
-	</body>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+        
+        <title>{titulo}</title>
+    </head>
+    <body>
+        <nav>
+            <div class="nav-content">
+                <a href="/" class="logo">Eduardo<span class="dot">.</span></a>
+                <div class="links">
+                    <a href="/">Inicio</a>
+                    <a href="/educacion/">Educación</a>
+                    <a href="/informatica/">Informática</a>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <slot />
+        </main>
+
+        <footer>
+            <p>© 2026 Eduardo. Construido con lógica y café.</p>
+        </footer>
+
+        <script is:inline>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Verificamos si la función existe antes de usarla
+                if (window.renderMathInElement) {
+                    renderMathInElement(document.body, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false}
+                        ],
+                        throwOnError : false
+                    });
+                }
+            });
+        </script>
+    </body>
 </html>
-
