@@ -1,0 +1,156 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+const recursos = [
+  {
+    nombre: "Planificación Clase 4: Producto, división y simplificación cruzada",
+    formato: "PDF",
+    desc: "Guía docente con análisis anticipatorio, gestión de errores y actividad de 'Torneo de Optimizadores'.",
+    link: "/docs/planificacion_1ro_medio/Planificación_1ro_medio_clase_4_planificacion.pdf", 
+    icon: "📋"
+  }
+];
+---
+
+<Layout titulo="Multiplicación y División Racional | Primero Medio">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos/primero-medio" class="btn-back">← Volver a la Unidad</a>
+      <h1>Optimización de <span class="text-gradient">Productos</span></h1>
+      <p class="subtitle">Clase 4: Algoritmos de flujo y el "Hack de Eficiencia" mediante simplificación cruzada.</p>
+    </header>
+
+    <section class="content-section">
+      <div class="glass-card">
+        <h2>Ingeniería de Procesos</h2>
+        <p>
+          Multiplicar fracciones no es solo una operación lineal; es un sistema que puede ser optimizado antes de su ejecución. 
+          En esta sesión, introducimos la <strong>Simplificación Cruzada</strong> como una herramienta de ahorro cognitivo. 
+          Si operamos "a la bruta", el error trabaja contra nosotros; si simplificamos primero, el sistema se vuelve ligero y preciso.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Mecánicas de Flujo</h2>
+      <div class="concepts-grid">
+        <div class="concept-card" style="border-top: 3px solid #3b82f6;">
+          <h3>Flujo Horizontal ($\times$)</h3>
+          <p>
+            La multiplicación opera de frente. Sin embargo, aplicamos el <strong>Escáner de Eficiencia</strong>: cualquier número de arriba puede anularse con uno de abajo antes de multiplicar.
+          </p>
+        </div>
+        <div class="concept-card" style="border-top: 3px solid #60a5fa;">
+          <h3>Inversión de Engranaje ($\div$)</h3>
+          <p>
+            Dividir es multiplicar por el inverso. Aplicamos el protocolo: 
+            <strong>1° Invertir</strong> la segunda fracción, <strong>2° Escanear</strong> y <strong>3° Operar</strong> de forma lineal.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="glass-card warning-card" style="margin-top: 3rem;">
+        <h3>⚠️ El Muro de la Suma</h3>
+        <p>
+          La simplificación cruzada es un superpoder <strong>exclusivo</strong> de la multiplicación. 
+          En la suma y resta, los signos $+$ y $-$ actúan como muros de concreto que impiden el cruce de factores. 
+          ¡No intentes hackear una suma como si fuera un producto!
+        </p>
+        
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Descargas Docentes</h2>
+      <div class="download-grid">
+        {recursos.map(item => (
+          <div class="download-card">
+            <div class="card-info">
+              <span class="file-icon">{item.icon}</span>
+              <div>
+                <h3>{item.nombre}</h3>
+                <span class="file-type">{item.formato}</span>
+                <p style="padding-right: 1rem;">{item.desc}</p>
+              </div>
+            </div>
+            <a href={item.link} download class="download-btn">Descargar</a>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* --- ESTILOS ESPECÍFICOS --- */
+  .container { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  
+  /* Gradiente Azul Eléctrico para esta clase */
+  .text-gradient { background: linear-gradient(to right, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  
+  .glass-card, .concept-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem; border-radius: 16px; color: #94a3b8; line-height: 1.7;
+    backdrop-filter: blur(10px);
+  }
+
+  .warning-card { border-left: 4px solid #3b82f6; background: rgba(59, 130, 246, 0.05); }
+  .warning-card h3 { color: #3b82f6; margin-bottom: 0.5rem; }
+
+  /* Grid de Conceptos */
+  .concepts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+  .concept-card h3 { color: #e2e8f0; margin-bottom: 0.5rem; font-family: var(--font-heading); font-size: 1.5rem; }
+  
+  /* Botones y Headers */
+  .page-header { margin-bottom: 3rem; }
+  .btn-back { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 1rem; }
+  h1 { font-family: var(--font-heading); font-size: 3rem; color: #f8fafc; }
+  h2 { color: #f1f5f9; font-size: 1.8rem; margin-bottom: 1.5rem; margin-top: 3rem; }
+  
+  /* --- BOTÓN DE DESCARGA --- */
+  .download-grid { display: grid; gap: 1.5rem; }
+  .download-card { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    background: rgba(30, 41, 59, 0.5); 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem; 
+    border-radius: 16px; 
+    backdrop-filter: blur(10px);
+    gap: 2rem;
+  }
+
+  .card-info { 
+    display: flex; 
+    gap: 1.5rem; 
+    align-items: center; 
+    flex: 1; 
+  }
+
+  .file-icon { font-size: 2.5rem; flex-shrink: 0; }
+  
+  .download-btn { 
+    flex-shrink: 0; 
+    background: #3b82f6; 
+    color: #0f172a; 
+    padding: 0.8rem 1.5rem; 
+    border-radius: 8px; 
+    text-decoration: none; 
+    font-weight: bold; 
+    white-space: nowrap; 
+    transition: transform 0.2s;
+  }
+  .download-btn:hover { transform: scale(1.05); }
+  
+  @media (max-width: 768px) { 
+    .download-card { flex-direction: column; align-items: stretch; gap: 1.5rem; text-align: center; } 
+    .card-info { flex-direction: column; }
+    .download-btn { text-align: center; }
+  }
+</style>

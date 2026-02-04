@@ -1,0 +1,102 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+const recursos = [
+  {
+    nombre: "Planificación Clase 6: La Fracción como Operador",
+    formato: "PDF",
+    desc: "Guía docente con el protocolo de traducción semántica y resolución de dudas comunes.",
+    link: "/docs/planificacion_1ro_medio/Planificación_1ro_medio_clase_6_planificacion.pdf", 
+    icon: "📋"
+  },
+];
+---
+
+<Layout titulo="Fracción como Operador | Primero Medio">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos/primero-medio" class="btn-back">← Volver a la Unidad</a>
+      <h1>Factor de <span class="text-gradient">Escalamiento</span></h1>
+      <p class="subtitle">Clase 6: La fracción como operador multiplicativo y su aplicación en planos técnicos.</p>
+    </header>
+
+    <section class="content-section">
+      <div class="glass-card">
+        <h2>El "De" como Motor Matemático</h2>
+        <p>
+          En el lenguaje técnico, la preposición "de" no es decorativa; es un operador. Cuando decimos "2/5 de la presión" o "3/4 del presupuesto", estamos activando una multiplicación. 
+          Esta sesión cierra la unidad transformando la fracción de un objeto estático a una herramienta dinámica de redimensionamiento: el <strong>Factor de Escala</strong>.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Modelamiento Proporcional</h2>
+      <div class="concepts-grid">
+        <div class="concept-card" style="border-top: 3px solid #334155;">
+          <h3>Traducción Semántica</h3>
+          <p>
+            Identificar palabras clave ("de", "del", "veces") para modelar la operación. El entero se trata como una fracción con denominador 1 para mantener el flujo lineal.
+          </p>
+        </div>
+        <div class="concept-card" style="border-top: 3px solid #475569;">
+          <h3>Redimensionamiento</h3>
+          <p>
+            Aplicación de productos sucesivos para escalar piezas mecánicas. Se prioriza la exactitud de la fracción irreducible sobre el decimal aproximado.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="glass-card warning-card" style="margin-top: 3rem;">
+        <h3>⚠️ Mantenimiento de Sistemas</h3>
+        <p>
+          Antes de ejecutar el proyecto final, realizamos una auditoría de dudas. La <strong>simplificación cruzada</strong> sigue siendo nuestra principal herramienta de eficiencia: si no optimizas la medida antes de operar, el error se propaga en el plano final.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Descargas Docentes</h2>
+      <div class="download-grid">
+        {recursos.map(item => (
+          <div class="download-card">
+            <div class="card-info">
+              <span class="file-icon">{item.icon}</span>
+              <div>
+                <h3>{item.nombre}</h3>
+                <span class="file-type">{item.formato}</span>
+                <p style="padding-right: 1rem;">{item.desc}</p>
+              </div>
+            </div>
+            <a href={item.link} download class="download-btn">Descargar</a>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .container { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  .text-gradient { background: linear-gradient(to right, #334155, #64748b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .glass-card, .concept-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 2rem; border-radius: 16px; color: #94a3b8; line-height: 1.7; backdrop-filter: blur(10px); }
+  .warning-card { border-left: 4px solid #334155; background: rgba(51, 65, 85, 0.05); }
+  .warning-card h3 { color: #e2e8f0; margin-bottom: 0.5rem; }
+  .concepts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+  .concept-card h3 { color: #e2e8f0; margin-bottom: 0.5rem; font-family: var(--font-heading); font-size: 1.5rem; }
+  .page-header { margin-bottom: 3rem; }
+  .btn-back { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 1rem; }
+  h1 { font-family: var(--font-heading); font-size: 3rem; color: #f8fafc; }
+  h2 { color: #f1f5f9; font-size: 1.8rem; margin-bottom: 1.5rem; margin-top: 3rem; }
+  .download-grid { display: grid; gap: 1.5rem; }
+  .download-card { display: flex; justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); padding: 2rem; border-radius: 16px; backdrop-filter: blur(10px); gap: 2rem; }
+  .card-info { display: flex; gap: 1.5rem; align-items: center; flex: 1; }
+  .file-icon { font-size: 2.5rem; flex-shrink: 0; }
+  .download-btn { flex-shrink: 0; background: #334155; color: #f8fafc; padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: bold; white-space: nowrap; transition: transform 0.2s; }
+  .download-btn:hover { transform: scale(1.05); }
+  @media (max-width: 768px) { .download-card { flex-direction: column; align-items: stretch; gap: 1.5rem; text-align: center; } .card-info { flex-direction: column; } .download-btn { text-align: center; } }
+</style>

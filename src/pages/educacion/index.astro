@@ -3,6 +3,20 @@ import Layout from '../../layouts/Layout.astro';
 import Card from '../../components/Card.astro';
 
 // DATOS
+
+const recursos = [
+  {
+    titulo: "Guía: Lógica Proposicional",
+    desc: "PDF con ejercicios resueltos.",
+    link: "#"
+  },
+  {
+    titulo: "Cheat Sheet: Derivadas",
+    desc: "Formulario rápido.",
+    link: "#"
+  }
+];
+
 const learningLog = [
   {
     titulo: "Estadística Avanzada",
@@ -30,23 +44,10 @@ const articulos = [
     link: "#"
   }
 ];
-
-const recursos = [
-  {
-    titulo: "Guía: Lógica Proposicional",
-    desc: "PDF con ejercicios resueltos.",
-    link: "#"
-  },
-  {
-    titulo: "Cheat Sheet: Derivadas",
-    desc: "Formulario rápido.",
-    link: "#"
-  }
-];
 ---
 
 <Layout titulo="Educación | Eduardo">
-  
+
   <div class="background-grid"></div>
 
   <section class="intro">
@@ -58,18 +59,17 @@ const recursos = [
 
   <section class="split-section full-width">
     <div class="text-content highlight-box mint-glow">
-      <div class="badge">🚀 Bitácora</div>
-      <h2>Acompáñame en mi aprendizaje</h2>
+      <div class="badge">📚 Toolbox</div>
+      <h2>Recursos Didácticos</h2>
       <p>
-        Documento mi proceso de aprendizaje en tiempo real. 
-        Aquí no encontrarás al profe dando su opinión, sino al que 
-        le interesa mostrar que nunca deja de aprender.
+        Espero que esto te sea de ayuda sin importar el rol que 
+        desempeñes. Guías, ensayos, recursos, y más, es lo que espero poder compartir aquí.
       </p>
-      <a href="/bitacora" class="btn-explore">Explorar Bitácora Completa →</a>
+      <a href="/educacion/recursos" class="btn-explore">Abrir Caja de Herramientas →</a>
     </div>
     
     <div class="preview-stack">
-      {learningLog.slice(0, 2).map((item) => (
+      {recursos.slice(0, 2).map((item) => (
         <Card titulo={item.titulo} descripcion={item.desc} enlace={item.link} />
       ))}
     </div>
@@ -78,7 +78,7 @@ const recursos = [
   <section class="split-section reverse full-width">
     <div class="text-content highlight-box purple-glow">
       <div class="badge">🖋️ Ensayos</div>
-      <h2>Reflexiones de un tipo más</h2>
+      <h2>Reflexiones sobre educación y más</h2>
       <p>
         En este espacio busco poder compartir mis pensamientos respecto
         a la educación, la sociedad y el aprendizaje. Es mi opinión abierta al mundo.
@@ -95,17 +95,18 @@ const recursos = [
 
   <section class="split-section full-width">
     <div class="text-content highlight-box mint-glow">
-      <div class="badge">📚 Toolbox</div>
-      <h2>Recursos Didácticos</h2>
+      <div class="badge">🚀 Bitácora</div>
+      <h2>Acompáñame en mi aprendizaje</h2>
       <p>
-        Espero que esto te sea de ayuda sin importar el rol que 
-        desempeñes. Guías, ensayos, recursos, y más, es lo que espero poder compartir aquí.
+        Documento mi proceso de aprendizaje en tiempo real. 
+        Aquí no encontrarás al profe dando su opinión, sino al que 
+        le interesa mostrar que nunca deja de aprender.
       </p>
-      <a href="/educacion/recursos" class="btn-explore">Abrir Caja de Herramientas →</a>
+      <a href="/bitacora" class="btn-explore">Explorar Bitácora Completa →</a>
     </div>
     
     <div class="preview-stack">
-      {recursos.slice(0, 2).map((item) => (
+      {learningLog.slice(0, 2).map((item) => (
         <Card titulo={item.titulo} descripcion={item.desc} enlace={item.link} />
       ))}
     </div>
@@ -139,7 +140,6 @@ const recursos = [
   .highlight-box::before { content: ''; position: absolute; inset: 0; z-index: -1; background-size: 60px 60px; opacity: 0.1; transition: opacity 0.4s ease; }
   .highlight-box:hover::before { opacity: 0.6; animation: arrowFlow 3s linear infinite; }
   
-  /* Variantes Grandes */
   .purple-glow { background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(88, 28, 135, 0.3) 100%); }
   .purple-glow:hover { border-color: var(--accent-purple); box-shadow: 0 20px 50px -10px rgba(192, 132, 252, 0.2); }
   .purple-glow::before { background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='rgba(192, 132, 252, 0.5)' stroke-width='2' opacity='0.5' transform='rotate(-45 30 30)' /%3E%3C/svg%3E"); }
@@ -156,28 +156,25 @@ const recursos = [
   .btn-explore { display: inline-flex; padding: 0.8rem 1.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 100px; color: #fff; text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
   .btn-explore:hover { background: #fff; color: #000; transform: translateY(-3px); }
 
-  /* --- 4. FUERZA BRUTA PARA TARJETAS PEQUEÑAS --- */
+  /* --- 4. TARJETAS PEQUEÑAS --- */
   .preview-stack { display: flex; flex-direction: column; gap: 1.5rem; width: 100%; max-width: 450px; margin: 0 auto; }
 
-  /* Seleccionamos CUALQUIER etiqueta <a> dentro de preview-stack */
   .preview-stack :global(a) {
-    background-color: rgba(15, 23, 42, 0.95) !important; /* Forzamos fondo oscuro */
-    border: 1px solid rgba(34, 211, 238, 0.3) !important; /* Forzamos borde Cyan */
-    border-radius: 12px !important; /* Redondeamos si no lo estaba */
-    padding: 1.5rem !important; /* Aseguramos espacio interno */
+    background-color: rgba(15, 23, 42, 0.95) !important; 
+    border: 1px solid rgba(34, 211, 238, 0.3) !important; 
+    border-radius: 12px !important; 
+    padding: 1.5rem !important; 
     text-decoration: none !important;
     position: relative; overflow: hidden; transition: all 0.3s ease; z-index: 1; display: block;
-    box-shadow: none !important; /* Reseteamos sombras previas */
+    box-shadow: none !important; 
   }
 
-  /* El patrón de flechas para las pequeñas */
   .preview-stack :global(a)::before {
     content: ''; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity 0.4s ease;
     background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='rgba(34, 211, 238, 0.5)' stroke-width='2' opacity='0.5' transform='rotate(-45 30 30)' /%3E%3C/svg%3E");
     background-size: 40px 40px;
   }
 
-  /* Hover Effects */
   .preview-stack :global(a):hover {
     border-color: #22d3ee !important;
     transform: translateX(10px);
@@ -185,7 +182,6 @@ const recursos = [
   }
   .preview-stack :global(a):hover::before { opacity: 0.5; animation: arrowFlow 2s linear infinite; }
 
-  /* Forzar colores de texto internos */
   .preview-stack :global(h2) { color: #e2e8f0 !important; font-size: 1.25rem !important; margin-bottom: 0.5rem !important; transition: color 0.3s ease; }
   .preview-stack :global(p) { color: #94a3b8 !important; font-size: 0.95rem !important; margin: 0 !important; }
   .preview-stack :global(a):hover :global(h2) { color: #22d3ee !important; }

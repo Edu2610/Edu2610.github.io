@@ -1,0 +1,153 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+const recursos = [
+  {
+    nombre: "Planificación Clase 5: Fluidez mixta y alta demanda",
+    formato: "PDF",
+    desc: "Guía docente con la metodología de Sprints de Productividad y gestión de tiempos.",
+    link: "/docs/planificacion_1ro_medio/Planificación_1ro_medio_clase_5_planificacion.pdf", 
+    icon: "📋"
+  }
+];
+---
+
+<Layout titulo="Fluidez Mixta | Primero Medio">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos/primero-medio" class="btn-back">← Volver a la Unidad</a>
+      <h1>Fluidez de Datos <span class="text-gradient">Mixtos</span></h1>
+      <p class="subtitle">Clase 5: Estandarización de procesos y entrenamiento de alta demanda (30 ejercicios).</p>
+    </header>
+
+    <section class="content-section">
+      <div class="glass-card">
+        <h2>Prueba de Carga Industrial</h2>
+        <p>
+          En ingeniería, la eficiencia no solo se mide por la capacidad de resolver un problema, sino por la <strong>velocidad y precisión</strong> al procesar grandes volúmenes de datos. 
+          Esta sesión abandona la teoría para enfocarse en la fluidez mecánica. El objetivo es procesar 30 operaciones mixtas mediante la estandarización: todo decimal es "ruido" que debe ser limpiado y convertido en fracción antes de operar.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Sprints de Productividad</h2>
+      <div class="concepts-grid">
+        <div class="concept-card" style="border-top: 3px solid #10b981;">
+          <h3>Cimientos y Estructura</h3>
+          <p>
+            Bloques de 10 ejercicios diseñados para generar momentum. Desde fracciones simples hasta la integración de decimales finitos (0,5; 0,25), optimizando la conversión inmediata.
+          </p>
+        </div>
+        <div class="concept-card" style="border-top: 3px solid #059669;">
+          <h3>Resistencia Crítica</h3>
+          <p>
+            El nivel final de alta demanda. Involucra decimales periódicos y operaciones combinadas donde la <strong>simplificación previa</strong> es la única forma de terminar a tiempo.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="glass-card warning-card" style="margin-top: 3rem;">
+        <h3>⚠️ El Protocolo de Limpieza</h3>
+        <p>
+          Un motor que procesa datos sucios se traba. El estándar de esta clase es: 
+          <strong>1° Identificar</strong> el decimal, <strong>2° Convertir</strong> a fracción irreducible y <strong>3° Operar</strong>. 
+          Saltarse la "limpieza" (simplificación) en el Sprint 3 garantiza el fallo por saturación de cálculos.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Descargas Docentes</h2>
+      <div class="download-grid">
+        {recursos.map(item => (
+          <div class="download-card">
+            <div class="card-info">
+              <span class="file-icon">{item.icon}</span>
+              <div>
+                <h3>{item.nombre}</h3>
+                <span class="file-type">{item.formato}</span>
+                <p style="padding-right: 1rem;">{item.desc}</p>
+              </div>
+            </div>
+            <a href={item.link} download class="download-btn">Descargar</a>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* --- ESTILOS ESPECÍFICOS --- */
+  .container { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+  
+  /* Gradiente Verde Esmeralda para esta clase */
+  .text-gradient { background: linear-gradient(to right, #10b981, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  
+  .glass-card, .concept-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem; border-radius: 16px; color: #94a3b8; line-height: 1.7;
+    backdrop-filter: blur(10px);
+  }
+
+  .warning-card { border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.05); }
+  .warning-card h3 { color: #10b981; margin-bottom: 0.5rem; }
+
+  /* Grid de Conceptos */
+  .concepts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+  .concept-card h3 { color: #e2e8f0; margin-bottom: 0.5rem; font-family: var(--font-heading); font-size: 1.5rem; }
+  
+  /* Botones y Headers */
+  .page-header { margin-bottom: 3rem; }
+  .btn-back { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 1rem; }
+  h1 { font-family: var(--font-heading); font-size: 3rem; color: #f8fafc; }
+  h2 { color: #f1f5f9; font-size: 1.8rem; margin-bottom: 1.5rem; margin-top: 3rem; }
+  
+  /* --- BOTÓN DE DESCARGA --- */
+  .download-grid { display: grid; gap: 1.5rem; }
+  .download-card { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    background: rgba(30, 41, 59, 0.5); 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem; 
+    border-radius: 16px; 
+    backdrop-filter: blur(10px);
+    gap: 2rem;
+  }
+
+  .card-info { 
+    display: flex; 
+    gap: 1.5rem; 
+    align-items: center; 
+    flex: 1; 
+  }
+
+  .file-icon { font-size: 2.5rem; flex-shrink: 0; }
+  
+  .download-btn { 
+    flex-shrink: 0; 
+    background: #10b981; 
+    color: #0f172a; 
+    padding: 0.8rem 1.5rem; 
+    border-radius: 8px; 
+    text-decoration: none; 
+    font-weight: bold; 
+    white-space: nowrap; 
+    transition: transform 0.2s;
+  }
+  .download-btn:hover { transform: scale(1.05); }
+  
+  @media (max-width: 768px) { 
+    .download-card { flex-direction: column; align-items: stretch; gap: 1.5rem; text-align: center; } 
+    .card-info { flex-direction: column; }
+    .download-btn { text-align: center; }
+  }
+</style>
