@@ -43,6 +43,13 @@ const subtitle = "Demostración visual de la identidad algebraica mediante desco
             </iframe>
         </div>
       </div>
+
+      <div class="external-action">
+        <a href="https://www.geogebra.org/m/sy5zdukm" target="_blank" rel="noopener noreferrer" class="btn-geogebra">
+          <span class="icon-geo">⬈</span> Abrir en GeoGebra.org
+        </a>
+        <p class="hint-text">Recomendado para usar en la app móvil o guardar en tus favoritos.</p>
+      </div>
     </section>
 
     <section class="content-section">
@@ -186,5 +193,44 @@ const subtitle = "Demostración visual de la identidad algebraica mediante desco
       padding-bottom: 75%; 
     }
     h1 { font-size: 2rem; }
+  }
+  /* --- BOTÓN EXTERNO --- */
+  .external-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+
+  .btn-geogebra {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+  }
+
+  .btn-geogebra:hover {
+    background: rgba(34, 211, 238, 0.1);
+    border-color: #22d3ee;
+    color: #22d3ee;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(34, 211, 238, 0.1);
+  }
+
+  .icon-geo { font-size: 1.1rem; }
+
+  .hint-text {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0;
   }
 </style>
