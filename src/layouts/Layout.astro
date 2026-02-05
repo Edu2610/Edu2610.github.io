@@ -12,20 +12,26 @@ import '../styles/global.css';
 <html lang="es">
     <head>
         <meta charset="UTF-8" />
-        <meta name="description" content="Portafolio de Eduardo - Profesor e Ingeniero en proceso" />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+        <title>{titulo}</title>
+        <meta name="description" content="Portafolio de Eduardo - Profesor y Estudiante de Ingeniería Informática enfocado en pedagogía técnica." />
 
+        <meta property="og:title" content={titulo} />
+        <meta property="og:description" content="Explorando la intersección entre la Pedagogía Matemática y la Ingeniería en Informática." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://edu2610.github.io" />
+        <meta property="og:image" content="https://edu2610.github.io/favicon.svg" />
+        <meta name="twitter:card" content="summary_large_image" />
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
-        
-        <title>{titulo}</title>
     </head>
     <body>
         <nav>
@@ -49,7 +55,6 @@ import '../styles/global.css';
 
         <script is:inline>
             document.addEventListener("DOMContentLoaded", function() {
-                // Verificamos si la función existe antes de usarla
                 if (window.renderMathInElement) {
                     renderMathInElement(document.body, {
                         delimiters: [
