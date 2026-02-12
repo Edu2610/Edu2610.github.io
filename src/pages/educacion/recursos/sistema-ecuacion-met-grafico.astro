@@ -1,0 +1,239 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+// Metadatos de la página
+const title = "Simulador: Sistemas de Ecuaciones";
+const subtitle = "Método gráfico: Encuentra la intersección entre el presupuesto y las restricciones.";
+---
+
+<Layout titulo="Lab: Sistemas de Ecuaciones">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    
+    <header class="page-header">
+      <a href="/educacion/recursos" class="btn-back">← Volver a Herramientas</a>
+      <h1>Laboratorio de <span class="text-gradient">Ecuaciones</span> ✖️</h1>
+      <p class="subtitle">{subtitle}</p>
+    </header>
+
+    <section class="content-section">
+      <div class="glass-card info-card">
+        <h2>Objetivo de la Simulación</h2>
+        <p>
+          Esta herramienta utiliza la gamificación (compra de <strong>Skins vs Armas</strong>) para entender el concepto de Sistema de Ecuaciones. 
+          Pasaremos de "tantear" combinaciones numéricas a visualizar <strong>rectas en el plano</strong>. El objetivo es comprender que la solución de un sistema no es más que el punto donde dos restricciones (historias) se cruzan.
+        </p>
+        <div class="math-highlight">
+          Restricción 1: 200x + 100y = 1000 <br>
+          Restricción 2: 300x + 25y=1000
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="tool-wrapper">
+        <div class="geogebra-responsive">
+            <iframe 
+                scrolling="no" 
+                title="Sistemas de ecuaciones, exploración método gráfico" 
+                src="https://www.geogebra.org/material/iframe/id/vpprshnu/width/1506/height/628/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" 
+                style="border:0px;"
+                allowfullscreen>
+            </iframe>
+        </div>
+      </div>
+
+      <div class="external-action">
+        <a href="https://www.geogebra.org/m/hxwgfzr2" target="_blank" rel="noopener noreferrer" class="btn-geogebra">
+          <span class="icon-geo">⬈</span> Abrir en GeoGebra.org
+        </a>
+        <p class="hint-text">Recomendado para usar en modo pantalla completa.</p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Fases del Simulador</h2>
+      <div class="controls-grid">
+        
+        <article class="control-card">
+          <div class="badge-container">
+            <span class="badge green">Fase 1: Exploración (Puntos)</span>
+          </div>
+          <p>
+            Ingresa combinaciones de Skins y Armas. Si aciertas al presupuesto, aparecerá un punto.
+            Descubrirás que las soluciones no son aleatorias, sino que siguen un <strong>patrón lineal</strong>.
+          </p>
+        </article>
+
+        <article class="control-card">
+          <div class="badge-container">
+            <span class="badge blue">Fase 2: Modelado (Rectas)</span>
+          </div>
+          <p>
+            Visualiza la <strong>Recta Presupuestaria</strong>. Ya no necesitas calcular punto por punto; 
+            cualquier coordenada sobre la línea es una compra válida.
+          </p>
+        </article>
+
+        <article class="control-card highlight-border">
+          <div class="badge-container">
+            <span class="badge orange">Fase 3: La Solución (Cruce)</span>
+          </div>
+          <p>
+            <strong>Intersección:</strong> Agregamos una segunda restricción (cantidad de ítems). 
+            Debes encontrar el único punto del universo donde ambas líneas se cortan. ¡Esa es la solución del sistema!
+          </p>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+</Layout>
+
+<style>
+  /* --- LAYOUT GENERAL --- */
+  .background-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10;
+    background-color: #0f172a;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; }
+
+  /* --- HEADER --- */
+  .page-header { margin-bottom: 3rem; }
+  .btn-back { color: #94a3b8; text-decoration: none; display: inline-block; margin-bottom: 1rem; transition: color 0.2s; }
+  .btn-back:hover { color: #22d3ee; }
+  
+  h1 { font-size: 2.5rem; color: #fff; margin-bottom: 0.5rem; }
+  .text-gradient { background: linear-gradient(to right, #22d3ee, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .subtitle { color: #94a3b8; font-size: 1.1rem; max-width: 600px; }
+
+  /* --- TARJETAS --- */
+  .glass-card {
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2rem; border-radius: 16px;
+    backdrop-filter: blur(10px);
+    margin-bottom: 2rem;
+  }
+  
+  .info-card h2 { color: #e2e8f0; font-size: 1.5rem; margin-bottom: 1rem; }
+  .info-card p { color: #cbd5e1; line-height: 1.6; }
+
+  .math-highlight {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 3px solid #22d3ee;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1.8; /* Aumentado un poco para las dos ecuaciones */
+  }
+
+  /* --- GEOGEBRA WRAPPER --- */
+  .tool-wrapper {
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    box-shadow: 0 0 40px rgba(34, 211, 238, 0.05);
+    margin-bottom: 4rem;
+  }
+
+  .geogebra-responsive {
+    position: relative;
+    width: 100%;
+    /* Ratio calculado: 628 / 1506 = 41.699% -> Redondeado a 41.7% */
+    padding-bottom: 41.7%; 
+    height: 0;
+  }
+
+  .geogebra-responsive iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+
+  /* --- CONTROLES --- */
+  .section-title { color: #fff; margin-bottom: 1.5rem; font-size: 1.5rem; }
+  
+  .controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .control-card {
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .control-card.highlight-border {
+    border-color: rgba(249, 115, 22, 0.3); /* Naranja para resaltar la solución final */
+    background: rgba(249, 115, 22, 0.03);
+  }
+
+  .badge-container { margin-bottom: 1rem; }
+  .badge { padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  
+  /* Colores de Badges */
+  .badge.green { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+  .badge.blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+  .badge.orange { background: rgba(249, 115, 22, 0.15); color: #fb923c; }
+
+  .control-card p { color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin: 0; }
+
+  /* Ajustes Móviles */
+  @media (max-width: 768px) {
+    .geogebra-responsive {
+      padding-bottom: 75%; /* Más alto en móviles para que quepa la interfaz */
+    }
+    h1 { font-size: 2rem; }
+    .math-highlight { font-size: 0.9rem; }
+  }
+
+  /* --- BOTÓN EXTERNO --- */
+  .external-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+
+  .btn-geogebra {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+  }
+
+  .btn-geogebra:hover {
+    background: rgba(34, 211, 238, 0.1);
+    border-color: #22d3ee;
+    color: #22d3ee;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(34, 211, 238, 0.1);
+  }
+
+  .hint-text { font-size: 0.85rem; color: #64748b; margin: 0; }
+</style>
