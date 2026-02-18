@@ -1,0 +1,210 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+
+// --- DATA: TRIGONOMETRÍA ---
+const unidadTrigonometria = {
+  titulo: "Unidad: Trigonometría",
+  descripcion: "Estudio de las relaciones entre lados y ángulos. Desde Pitágoras hasta la resolución de problemas reales.",
+  // Columna 1: Guías y PDFs (Para el estudiante)
+  practica: [
+    {
+      titulo: "Guía 01: Cálculo de Lados",
+      tipo: "PDF",
+      desc: "Uso de Sen, Cos y Tan para hallar lados.",
+      link: "/docs/segundo_medio/segundo_medio_trigonometria_1.pdf", // Tu PDF generado
+      downloads: "Free"
+    }
+  ],
+  // Columna 2: Simuladores (Apps)
+  digital: [
+    {
+      titulo: "Descubriendo Razones",
+      tipo: "GeoGebra",
+      desc: "Simulador interactivo para deducir las fórmulas.",
+      link: "/educacion/recursos/razones-trigonometricas"
+    }
+  ],
+  // Columna 3: Docente (Planificaciones, Pautas)
+  docente: [
+    {
+      titulo: "Planificación Clase a Clase",
+      tipo: "Dossier",
+      desc: "Estructura didáctica de la unidad.",
+      link: "#", // Pendiente
+      tag: "Profe"
+    }
+  ]
+};
+
+// Aquí puedes agregar más unidades en el futuro (ej. const unidadAlgebra = ...)
+---
+
+<Layout titulo="Segundo Medio | Recursos">
+  <div class="background-grid"></div>
+
+  <main class="container">
+    <header class="page-header">
+      <a href="/educacion/recursos" class="btn-back">← Volver a Herramientas</a>
+      <div class="header-content">
+        <span class="icon-big">🧭</span>
+        <div>
+          <h1>Segundo <span class="text-gradient">Medio</span></h1>
+          <p class="subtitle">Repositorio modular de recursos, guías y herramientas digitales.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="topic-container">
+      <div class="topic-header">
+        <h2>{unidadTrigonometria.titulo}</h2>
+        <p>{unidadTrigonometria.descripcion}</p>
+      </div>
+
+      <div class="topic-grid">
+        
+        <div class="column-group">
+          <h3 class="col-title"><span class="col-icon">📄</span> Guías & Práctica</h3>
+          <div class="cards-stack">
+            {unidadTrigonometria.practica.map((item) => (
+              <a href={item.link} class="resource-card pdf-style" target="_blank">
+                <div class="card-top">
+                  <span class="badge-type">{item.tipo}</span>
+                  <span class="badge-status">{item.downloads}</span>
+                </div>
+                <h4>{item.titulo}</h4>
+                <p>{item.desc}</p>
+              </a>
+            ))}
+             {/* Placeholder si está vacío */}
+            {unidadTrigonometria.practica.length === 0 && <div class="empty-state">Próximamente</div>}
+          </div>
+        </div>
+
+        <div class="column-group">
+          <h3 class="col-title"><span class="col-icon">💻</span> Laboratorio Digital</h3>
+          <div class="cards-stack">
+            {unidadTrigonometria.digital.map((item) => (
+              <a href={item.link} class="resource-card app-style">
+                <div class="card-top">
+                  <span class="badge-type">{item.tipo}</span>
+                  <span class="arrow">↗</span>
+                </div>
+                <h4>{item.titulo}</h4>
+                <p>{item.desc}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div class="column-group">
+          <h3 class="col-title"><span class="col-icon">🍎</span> Área Docente</h3>
+          <div class="cards-stack">
+            {unidadTrigonometria.docente.map((item) => (
+              <a href={item.link} class="resource-card doc-style">
+                <div class="card-top">
+                  <span class="badge-type">{item.tipo}</span>
+                </div>
+                <h4>{item.titulo}</h4>
+                <p>{item.desc}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    </main>
+</Layout>
+
+<style>
+  /* CONFIGURACIÓN BASE */
+  .container { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; }
+  
+  .background-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10;
+    background-color: #0f172a;
+    background-image: 
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  /* HEADER */
+  .page-header { margin-bottom: 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2rem; }
+  .btn-back { color: #94a3b8; text-decoration: none; margin-bottom: 1rem; display: inline-block; }
+  .btn-back:hover { color: var(--accent-mint); }
+  
+  .header-content { display: flex; align-items: center; gap: 1.5rem; }
+  .icon-big { font-size: 3.5rem; }
+  h1 { font-size: 2.5rem; color: #fff; margin: 0; line-height: 1; }
+  .text-gradient { background: linear-gradient(45deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .subtitle { color: #94a3b8; font-size: 1.1rem; margin-top: 0.5rem; }
+
+  /* --- TOPIC CONTAINER (La "Caja" del Tema) --- */
+  .topic-container {
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 4rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .topic-header { margin-bottom: 2rem; border-left: 4px solid #60a5fa; padding-left: 1.5rem; }
+  .topic-header h2 { color: #f8fafc; font-size: 1.8rem; margin: 0 0 0.5rem 0; }
+  .topic-header p { color: #cbd5e1; max-width: 800px; margin: 0; }
+
+  /* GRID DE 3 COLUMNAS */
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  /* COLUMNA INDIVIDUAL */
+  .column-group { display: flex; flex-direction: column; gap: 1rem; }
+  
+  .col-title { 
+    font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; font-weight: 700; 
+    display: flex; align-items: center; gap: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .cards-stack { display: flex; flex-direction: column; gap: 1rem; }
+
+  /* ESTILOS DE TARJETAS (CARDS) */
+  .resource-card {
+    background: #1e293b;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: block;
+  }
+
+  .resource-card:hover { transform: translateY(-3px); }
+  
+  /* Variaciones de estilo por tipo */
+  .pdf-style:hover { border-color: #34d399; box-shadow: 0 4px 20px rgba(52, 211, 153, 0.1); }
+  .app-style:hover { border-color: #60a5fa; box-shadow: 0 4px 20px rgba(96, 165, 250, 0.1); }
+  .doc-style:hover { border-color: #fbbf24; box-shadow: 0 4px 20px rgba(251, 191, 36, 0.1); }
+
+  .card-top { display: flex; justify-content: space-between; margin-bottom: 0.8rem; }
+  .badge-type { font-size: 0.7rem; font-weight: 800; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #cbd5e1; }
+  .badge-status { font-size: 0.7rem; color: #34d399; }
+  .arrow { color: #60a5fa; }
+
+  h4 { color: #fff; margin: 0 0 0.5rem 0; font-size: 1.1rem; }
+  .resource-card p { color: #94a3b8; font-size: 0.9rem; margin: 0; line-height: 1.4; }
+
+  .empty-state {
+    padding: 2rem; text-align: center; color: rgba(255,255,255,0.1); 
+    border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; font-size: 0.9rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .topic-grid { grid-template-columns: 1fr; gap: 3rem; }
+  }
+</style>
