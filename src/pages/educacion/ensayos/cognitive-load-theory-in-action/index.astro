@@ -1,61 +1,57 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
-import Card from '../../../components/Card.astro';
+import Layout from '../../../../layouts/Layout.astro';
 
-// AQUÍ AGREGARÁS TUS ENSAYOS FUTUROS
-const posts = [
+// DEFINICIÓN DE CAPÍTULOS: CLT IN ACTION
+const chapters = [
   {
-    titulo: "El derecho a odiar las matemáticas (y por qué quizás no las odias)",
-    fecha: "28 Ene 2026",
-    desc: "Mi escueta visión de lo que producen las matemáticas",
-    tags: ["Filosofía", "Educación"],
-    link: "/educacion/ensayos/derecho-a-odiar-las-matematicas" // (A futuro crearemos esta página)
+    numero: "01",
+    titulo: "Arquitectura Cognitiva: La Memoria de Trabajo",
+    fecha: "Próximamente",
+    desc: "Entendiendo el cuello de botella del aprendizaje: por qué nuestra RAM mental es limitada y cómo protegerla.",
+    tags: ["Memoria de Trabajo", "Arquitectura Cognitiva"],
+    link: "/educacion/ensayos/cognitive-load-theory-in-action/capitulo-1",
+    active: true
   },
-  {
-    titulo: "Make it Stick",
-    fecha: "10 de Febrero 2026 - ",
-    desc: "Sobre como aprendemos y como deberíamos aprender.",
-    tags: ["Aprender a aprender", "Libro"],
-    link: "/educacion/ensayos/make-it-stick"
-  },
-   {
-    titulo: "Sweller's Cognitive Load Theory In Action - Oliver Lovell",
-    fecha: "17 de Febrero 2026 - ",
-    desc: "La arquitectura de nuestra memoria y cómo se puede optimizar.",
-    tags: ["Aprender a aprender", "Libro", "Cognitive Load Theory"],
-    link: "/educacion/ensayos/cognitive-load-theory-in-action"
-  },
+  
 ];
 ---
 
-<Layout titulo="Ensayos | Eduardo">
+<Layout titulo="Serie: CLT in Action | Eduardo">
   
   <div class="background-grid"></div>
 
   <main class="container">
     
     <header class="page-header">
-      <a href="/educacion" class="btn-back">← Volver a Educación</a>
-      <h1>Opiniones y <span class="text-gradient">Reflexiones</span></h1>
+      <a href="/educacion/ensayos" class="btn-back">← Volver a Ensayos</a>
+      
+      <h1>Serie: <span class="text-gradient">CLT in Action</span></h1>
       <p class="subtitle">
-        Aquí hago como que sé algo del mundo
+        Optimizando el ancho de banda mental. Un análisis sobre cómo la Teoría de la Carga Cognitiva de Oliver Lovell redefine el diseño de la enseñanza.
       </p>
     </header>
 
     <section class="posts-grid">
-      {posts.map((post) => (
-        <article class="post-card">
-          <a href={post.link} class="card-link">
+      {chapters.map((chapter) => (
+        <article class={`post-card ${!chapter.active ? 'inactive' : ''}`}>
+          <a href={chapter.link} class="card-link">
             <div class="card-content">
               <div class="meta">
-                <span class="date">{post.fecha}</span>
+                <span class="date">{chapter.fecha}</span>
                 <div class="tags">
-                  {post.tags.map(tag => <span class="tag">#{tag}</span>)}
+                  {chapter.tags.map(tag => <span class="tag">#{tag}</span>)}
                 </div>
               </div>
-              <h2>{post.titulo}</h2>
-              <p>{post.desc}</p>
-              <span class="read-more">Leer artículo →</span>
+              
+              <div class="chapter-number">CAPÍTULO {chapter.numero}</div>
+              <h2>{chapter.titulo}</h2>
+              <p>{chapter.desc}</p>
+              
+              {chapter.active ? (
+                <span class="read-more">Leer capítulo →</span>
+              ) : (
+                <span class="read-more locked">En fase de estudio...</span>
+              )}
             </div>
           </a>
         </article>
@@ -85,34 +81,34 @@ const posts = [
   /* --- 2. HEADER --- */
   .page-header {
     margin-bottom: 5rem;
-    text-align: left; /* Alineado a la izquierda para estilo editorial */
+    text-align: left; 
   }
 
   .btn-back {
     display: inline-block;
-    color: var(--text-muted);
+    color: #94a3b8;
     text-decoration: none;
     font-size: 0.9rem;
     margin-bottom: 2rem;
     transition: color 0.2s;
   }
-  .btn-back:hover { color: var(--accent-mint); }
+  .btn-back:hover { color: #4fd1c5; }
 
-  h1 { font-size: 3rem; margin-bottom: 1rem; line-height: 1.1; }
+  h1 { font-size: 3rem; margin-bottom: 1rem; line-height: 1.1; color: #f1f5f9; }
   
   .subtitle { 
     font-size: 1.2rem; 
-    color: var(--text-muted); 
+    color: #94a3b8; 
     max-width: 600px; 
     line-height: 1.6; 
   }
 
   .text-gradient {
-    background: linear-gradient(45deg, var(--accent-purple), var(--accent-mint));
+    background: linear-gradient(45deg, #c084fc, #4fd1c5);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
 
-  /* --- 3. GRID DE ARTÍCULOS (Estilo Cyberpunk Clean) --- */
+  /* --- 3. GRID DE CAPÍTULOS --- */
   .posts-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -123,7 +119,6 @@ const posts = [
     position: relative;
   }
 
-  /* TARJETA INTERACTIVA */
   .card-link {
     display: block;
     background: rgba(15, 23, 42, 0.6);
@@ -137,31 +132,42 @@ const posts = [
     overflow: hidden;
   }
 
-  /* Efecto Hover (Borde y Fondo) */
   .card-link:hover {
-    border-color: var(--accent-purple);
+    border-color: #c084fc;
     background: rgba(15, 23, 42, 0.9);
     transform: translateY(-5px);
     box-shadow: 0 10px 30px -10px rgba(192, 132, 252, 0.15);
   }
 
-  /* Título */
+  .post-card.inactive .card-link {
+    opacity: 0.5;
+    pointer-events: none;
+    border-color: rgba(255, 255, 255, 0.05);
+    filter: grayscale(0.5);
+  }
+  
+  .chapter-number {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #4fd1c5;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    text-transform: uppercase;
+  }
+
   .card-content h2 {
     color: #f1f5f9;
     font-size: 1.8rem;
-    margin: 1rem 0;
-    transition: color 0.3s;
+    margin: 0.5rem 0 1rem 0;
   }
-  .card-link:hover h2 { color: var(--accent-purple); }
 
-  /* Texto */
   .card-content p {
     color: #94a3b8;
     line-height: 1.7;
     margin-bottom: 2rem;
   }
 
-  /* Meta data (Fecha y Tags) */
   .meta {
     display: flex;
     justify-content: space-between;
@@ -174,17 +180,20 @@ const posts = [
   
   .tag {
     background: rgba(192, 132, 252, 0.1);
-    color: var(--accent-purple);
+    color: #c084fc;
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     font-weight: 500;
   }
 
-  /* Link "Leer más" simulado */
   .read-more {
-    color: var(--accent-mint);
+    color: #4fd1c5;
     font-weight: 600;
     font-size: 0.95rem;
   }
-
+  
+  .read-more.locked {
+    color: #64748b;
+    font-style: italic;
+  }
 </style>
