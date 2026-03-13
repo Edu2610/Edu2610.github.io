@@ -91,7 +91,10 @@ const { frontmatter } = Astro.props;
 
   .content :global(h2) { font-size: 1.8rem; color: #fff; margin-top: 3rem; margin-bottom: 1rem; }
   .content :global(h3) { font-size: 1.4rem; color: #e2e8f0; margin-top: 2rem; margin-bottom: 0.8rem; }
-  .content :global(p) { margin-bottom: 1.5rem; }
+  .content :global(p) { margin-bottom: 1.5rem; 
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto; }
   .content :global(strong) { color: var(--accent-mint); font-weight: 600; }
   .content :global(ul) { margin-bottom: 1.5rem; padding-left: 1.5rem; }
   .content :global(li) { margin-bottom: 0.5rem; }
@@ -103,4 +106,5 @@ const { frontmatter } = Astro.props;
   
   /* Ajuste para fórmulas matemáticas de KaTeX */
   .content :global(.katex) { font-size: 1.1em; }
+
 </style>
