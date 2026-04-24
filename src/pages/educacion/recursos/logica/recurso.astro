@@ -1,9 +1,9 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
-// Si tu Layout requiere un título como prop, pásalo aquí. Ej: title="Evaluación de Variables"
+// Nota: Si tu Layout requiere props específicos, añádelos en la etiqueta <Layout> abajo.
 ---
 
-<Layout title="Módulo de Tarjetas">
+<Layout>
     <div class="ds-wrapper">
         <div class="ds-grid">
             
@@ -146,9 +146,8 @@ import Layout from '../../../../layouts/Layout.astro';
 </Layout>
 
 <style>
-    /* Estilos nativos de Astro. Ya están scopeados al componente */
     .ds-wrapper {
-        --ds-bg-app: transparent; /* Permite que tu Layout maneje el fondo global si lo deseas */
+        --ds-bg-app: transparent; 
         --ds-bg-card: #FFFFFF;
         --ds-color-text: #1E293B;
         --ds-color-text-muted: #64748B;
@@ -288,17 +287,20 @@ import Layout from '../../../../layouts/Layout.astro';
 <script>
     const setupCards = () => {
         const cards = document.querySelectorAll('.ds-card');
-        const btnVerify = document.getElementById('btn-verify');
-        const logOutput = document.getElementById('log-output');
-
-        if (!btnVerify) return; // Evita errores si el componente se monta/desmonta en Astro
+        const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
+        
+        if (!btnVerify) return;
 
         cards.forEach(card => {
             const items = card.querySelectorAll('.ds-var-item');
             items.forEach(item => {
+                const htmlItem = item as HTMLElement;
+                
                 // Remover listeners previos para evitar duplicados en la navegación de Astro (View Transitions)
-                const newClone = item.cloneNode(true);
-                item.parentNode.replaceChild(newClone, item);
+                const newClone = htmlItem.cloneNode(true) as HTMLElement;
+                if (htmlItem.parentNode) {
+                    htmlItem.parentNode.replaceChild(newClone, htmlItem);
+                }
                 
                 newClone.addEventListener('click', () => {
                     if (newClone.classList.contains('locked')) return;
@@ -313,8 +315,10 @@ import Layout from '../../../../layouts/Layout.astro';
         });
 
         // Clonar botón para limpiar listeners
-        const newBtnVerify = btnVerify.cloneNode(true);
-        btnVerify.parentNode.replaceChild(newBtnVerify, btnVerify);
+        const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
+        if (btnVerify.parentNode) {
+            btnVerify.parentNode.replaceChild(newBtnVerify, btnVerify);
+        }
 
         newBtnVerify.addEventListener('click', () => {
             let textLog = "=== REGISTRO DE EVALUACIÓN INTERNA ===\n\n";
@@ -322,27 +326,29 @@ import Layout from '../../../../layouts/Layout.astro';
             let correctCards = 0;
 
             cards.forEach((card, index) => {
-                const title = card.querySelector('.ds-title').textContent;
+                const titleEl = card.querySelector('.ds-title');
+                const title = titleEl ? titleEl.textContent : "Tarjeta";
                 const items = card.querySelectorAll('.ds-var-item');
                 const selected = card.querySelectorAll('.selected');
-                const feedback = card.querySelector('.ds-feedback');
+                const feedback = card.querySelector('.ds-feedback') as HTMLElement | null;
                 
                 let cardIsCorrect = true;
-                let selectedLabels = [];
+                let selectedLabels: string[] = [];
 
-                items.forEach(item => item.classList.add('locked'));
+                items.forEach(i => i.classList.add('locked'));
 
                 if (selected.length !== 2) cardIsCorrect = false;
 
                 selected.forEach(item => {
-                    selectedLabels.push(item.getAttribute('data-label'));
-                    const isCorrectOption = item.getAttribute('data-correct') === 'true';
+                    const htmlItem = item as HTMLElement;
+                    selectedLabels.push(htmlItem.getAttribute('data-label') || '');
+                    const isCorrectOption = htmlItem.getAttribute('data-correct') === 'true';
                     
-                    item.classList.remove('selected');
+                    htmlItem.classList.remove('selected');
                     if (isCorrectOption) {
-                        item.classList.add('correct');
+                        htmlItem.classList.add('correct');
                     } else {
-                        item.classList.add('incorrect');
+                        htmlItem.classList.add('incorrect');
                         cardIsCorrect = false;
                     }
                 });
@@ -350,23 +356,26 @@ import Layout from '../../../../layouts/Layout.astro';
                 textLog += `[Tarjeta ${index + 1}: ${title}]\n`;
                 textLog += `- Selecciones: [${selectedLabels.join(' | ') || 'Ninguna'}]\n`;
 
-                if (cardIsCorrect) {
-                    correctCards++;
-                    feedback.textContent = "¡Correcto!";
-                    feedback.style.color = "var(--ds-color-correct)";
-                    textLog += `- Estado: CORRECTO\n\n`;
-                } else {
-                    feedback.textContent = "Incorrecto";
-                    feedback.style.color = "var(--ds-color-error)";
-                    textLog += `- Estado: INCORRECTO\n\n`;
+                if (feedback) {
+                    if (cardIsCorrect) {
+                        correctCards++;
+                        feedback.textContent = "¡Correcto!";
+                        feedback.style.color = "var(--ds-color-correct)";
+                        textLog += `- Estado: CORRECTO\n\n`;
+                    } else {
+                        feedback.textContent = "Incorrecto";
+                        feedback.style.color = "var(--ds-color-error)";
+                        textLog += `- Estado: INCORRECTO\n\n`;
 
-                    items.forEach(item => {
-                        if (item.getAttribute('data-correct') === 'true' && !item.classList.contains('correct')) {
-                            item.classList.add('missed');
-                        }
-                    });
+                        items.forEach(item => {
+                            const htmlItem = item as HTMLElement;
+                            if (htmlItem.getAttribute('data-correct') === 'true' && !htmlItem.classList.contains('correct')) {
+                                htmlItem.classList.add('missed');
+                            }
+                        });
+                    }
+                    feedback.style.display = "block";
                 }
-                feedback.style.display = "block";
             });
 
             textLog += `=== RESUMEN: ${correctCards}/${totalCards} tarjetas correctas ===`;
@@ -374,13 +383,14 @@ import Layout from '../../../../layouts/Layout.astro';
             newBtnVerify.disabled = true;
             newBtnVerify.textContent = "Evaluación Finalizada";
             
-            const outputElement = document.getElementById('log-output');
-            outputElement.textContent = textLog;
-            outputElement.style.display = "block";
+            const outputElement = document.getElementById('log-output') as HTMLElement | null;
+            if (outputElement) {
+                outputElement.textContent = textLog;
+                outputElement.style.display = "block";
+            }
         });
     };
 
-    // Soporte para la carga normal y View Transitions de Astro
     document.addEventListener('DOMContentLoaded', setupCards);
     document.addEventListener('astro:page-load', setupCards);
 </script>
