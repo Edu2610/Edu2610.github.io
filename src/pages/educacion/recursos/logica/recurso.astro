@@ -1,0 +1,386 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+// Si tu Layout requiere un título como prop, pásalo aquí. Ej: title="Evaluación de Variables"
+---
+
+<Layout title="Módulo de Tarjetas">
+    <div class="ds-wrapper">
+        <div class="ds-grid">
+            
+            <article class="ds-card">
+                <div class="ds-visual ds-bg-sky">
+                    <svg class="ds-svg" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M40,75 C40,40 80,20 120,30 C160,40 180,80 160,110 C140,140 80,140 50,120 C30,105 40,90 40,75 Z" fill="#FFFFFF" opacity="0.4"/>
+                        <rect x="0" y="110" width="200" height="40" fill="#94A3B8" opacity="0.2"/>
+                        <line x1="20" y1="110" x2="180" y2="110" stroke="#1E293B" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="50" y1="118" x2="40" y2="118" stroke="#1E293B" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+                        <line x1="120" y1="125" x2="100" y2="125" stroke="#1E293B" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+                        
+                        <g transform="translate(90, 60)">
+                            <path d="M0,30 L-15,48" stroke="#1E293B" stroke-width="6" stroke-linecap="round"/>
+                            <path d="M0,15 L15,25" stroke="#475569" stroke-width="5" stroke-linecap="round"/>
+                            <rect x="-8" y="0" width="16" height="32" rx="8" fill="#1E293B"/>
+                            <circle cx="0" cy="-12" r="10" fill="#1E293B"/>
+                            <path d="M0,30 L10,50" stroke="#1E293B" stroke-width="6" stroke-linecap="round"/>
+                            <path d="M0,10 L-12,25" stroke="#1E293B" stroke-width="5" stroke-linecap="round"/>
+                        </g>
+
+                        <g transform="translate(140, 40)">
+                            <circle cx="0" cy="0" r="14" fill="#FFFFFF" stroke="#D32F2F" stroke-width="3"/>
+                            <circle cx="0" cy="0" r="2" fill="#D32F2F"/>
+                            <polyline points="0,-7 0,0 5,3" fill="none" stroke="#D32F2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="ds-body">
+                    <h3 class="ds-title">El caminante</h3>
+                    <p class="ds-desc">Una persona caminando por una vereda a un paso constante sin detenerse.</p>
+                </div>
+                <div class="ds-vars-container">
+                    <div class="ds-vars-header">
+                        <span class="ds-vars-label">Selecciona 2 variables</span>
+                        <span class="ds-feedback"></span>
+                    </div>
+                    <div class="ds-vars-grid">
+                        <div class="ds-var-item" data-correct="true" data-label="Tiempo transcurrido">Tiempo transcurrido</div>
+                        <div class="ds-var-item" data-correct="true" data-label="Distancia recorrida">Distancia recorrida</div>
+                        <div class="ds-var-item" data-correct="false" data-label="Color de la ropa">Color de la ropa</div>
+                        <div class="ds-var-item" data-correct="false" data-label="Peso del caminante">Peso del caminante</div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="ds-card">
+                <div class="ds-visual ds-bg-sand">
+                    <svg class="ds-svg" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50,75 C30,30 100,10 150,40 C190,65 170,120 130,135 C90,150 60,110 50,75 Z" fill="#FFFFFF" opacity="0.5"/>
+                        
+                        <g transform="translate(100, 115)">
+                            <ellipse cx="0" cy="5" rx="45" ry="6" fill="#D97706" opacity="0.2"/>
+                            <rect x="-40" y="-12" width="80" height="12" rx="4" fill="#F8FAFC" stroke="#1E293B" stroke-width="2"/>
+                            <path d="M-10,-12 L0,-20 L10,-12 Z" fill="#1E293B"/>
+                            <rect x="-15" y="-9" width="30" height="6" rx="2" fill="#1E293B"/>
+                            <text x="0" y="-4" fill="#D32F2F" font-family="monospace" font-weight="bold" font-size="6" text-anchor="middle">85.0</text>
+                            
+                            <g transform="translate(0, -20)">
+                                <rect x="-25" y="-25" width="50" height="25" fill="#E2E8F0" stroke="#1E293B" stroke-width="2"/>
+                                <line x1="-25" y1="-25" x2="25" y2="0" stroke="#1E293B" stroke-width="1.5" opacity="0.3"/>
+                                <line x1="25" y1="-25" x2="-25" y2="0" stroke="#1E293B" stroke-width="1.5" opacity="0.3"/>
+                                
+                                <rect x="-25" y="-50" width="50" height="25" fill="#F1F5F9" stroke="#1E293B" stroke-width="2"/>
+                                <line x1="-25" y1="-50" x2="25" y2="-25" stroke="#1E293B" stroke-width="1.5" opacity="0.3"/>
+                                <line x1="25" y1="-50" x2="-25" y2="-25" stroke="#1E293B" stroke-width="1.5" opacity="0.3"/>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <div class="ds-body">
+                    <h3 class="ds-title">Las cajas</h3>
+                    <p class="ds-desc">Cajas de idéntico tamaño y contenido siendo apiladas sobre una balanza digital.</p>
+                </div>
+                <div class="ds-vars-container">
+                    <div class="ds-vars-header">
+                        <span class="ds-vars-label">Selecciona 2 variables</span>
+                        <span class="ds-feedback"></span>
+                    </div>
+                    <div class="ds-vars-grid">
+                        <div class="ds-var-item" data-correct="true" data-label="Número de cajas">Número de cajas</div>
+                        <div class="ds-var-item" data-correct="true" data-label="Peso total marcado">Peso total marcado</div>
+                        <div class="ds-var-item" data-correct="false" data-label="Orden de apilado">Orden de apilado</div>
+                        <div class="ds-var-item" data-correct="false" data-label="Tamaño balanza">Tamaño balanza</div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="ds-card">
+                <div class="ds-visual ds-bg-night">
+                    <svg class="ds-svg" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="50" r="40" fill="#FDE68A" opacity="0.15"/>
+                        <circle cx="100" cy="50" r="20" fill="#FCD34D" opacity="0.25"/>
+                        
+                        <g transform="translate(100, 120)">
+                            <ellipse cx="0" cy="2" rx="35" ry="6" fill="#000000" opacity="0.3"/>
+                            <ellipse cx="0" cy="0" rx="30" ry="8" fill="#475569" stroke="#FFFFFF" stroke-width="2" opacity="0.8"/>
+                            <ellipse cx="0" cy="-2" rx="26" ry="6" fill="#1E293B"/>
+                            
+                            <rect x="-16" y="-60" width="32" height="60" fill="#F8FAFC"/>
+                            <line x1="-16" y1="-60" x2="-16" y2="0" stroke="#94A3B8" stroke-width="2"/>
+                            <line x1="16" y1="-60" x2="16" y2="0" stroke="#94A3B8" stroke-width="2"/>
+                            <ellipse cx="0" cy="-60" rx="16" ry="5" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+                            
+                            <path d="M0,-60 Q-2,-65 2,-68" fill="none" stroke="#1E293B" stroke-width="2"/>
+                            <path d="M2,-68 C8,-68 12,-75 2,-85 C-8,-75 -4,-68 2,-68 Z" fill="#EF4444"/>
+                            <path d="M2,-72 C5,-72 7,-76 2,-82 C-3,-76 -1,-72 2,-72 Z" fill="#FCD34D"/>
+                            
+                            <line x1="30" y1="-55" x2="40" y2="-55" stroke="#FFFFFF" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
+                            <line x1="30" y1="-35" x2="40" y2="-35" stroke="#FFFFFF" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
+                            <line x1="30" y1="-15" x2="40" y2="-15" stroke="#FFFFFF" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="ds-body">
+                    <h3 class="ds-title">La vela</h3>
+                    <p class="ds-desc">Una vela encendida que se consume gradualmente con el paso del tiempo.</p>
+                </div>
+                <div class="ds-vars-container">
+                    <div class="ds-vars-header">
+                        <span class="ds-vars-label">Selecciona 2 variables</span>
+                        <span class="ds-feedback"></span>
+                    </div>
+                    <div class="ds-vars-grid">
+                        <div class="ds-var-item" data-correct="true" data-label="Tiempo encendida">Tiempo encendida</div>
+                        <div class="ds-var-item" data-correct="true" data-label="Altura de la vela">Altura de la vela</div>
+                        <div class="ds-var-item" data-correct="false" data-label="Color de la cera">Color de la cera</div>
+                        <div class="ds-var-item" data-correct="false" data-label="Grosor de la vela">Grosor de la vela</div>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <div class="ds-controls">
+            <button id="btn-verify" class="ds-btn-verify">Verificar Respuestas</button>
+            <pre id="log-output" class="ds-log-output"></pre>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    /* Estilos nativos de Astro. Ya están scopeados al componente */
+    .ds-wrapper {
+        --ds-bg-app: transparent; /* Permite que tu Layout maneje el fondo global si lo deseas */
+        --ds-bg-card: #FFFFFF;
+        --ds-color-text: #1E293B;
+        --ds-color-text-muted: #64748B;
+        
+        --ds-color-hover: #D32F2F;
+        --ds-bg-hover: #FEF2F2;
+        --ds-color-selected: #2563EB;
+        --ds-bg-selected: #EFF6FF;
+        --ds-color-correct: #10B981;
+        --ds-bg-correct: #ECFDF5;
+        --ds-color-error: #EF4444;
+        --ds-bg-error: #FEF2F2;
+        
+        --ds-border: #E2E8F0;
+        --ds-font: 'Inter', system-ui, sans-serif;
+        
+        font-family: var(--ds-font);
+        padding: 3rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .ds-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2.5rem;
+        width: 100%;
+        max-width: 1100px;
+        margin-bottom: 3rem;
+    }
+
+    .ds-card {
+        background: var(--ds-bg-card);
+        border-radius: 20px;
+        border: 1px solid var(--ds-border);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    }
+
+    .ds-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .ds-visual {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid var(--ds-border);
+    }
+
+    .ds-bg-sky { background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%); }
+    .ds-bg-sand { background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); }
+    .ds-bg-night { background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); }
+
+    .ds-svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+
+    .ds-body {
+        padding: 1.5rem 1.5rem 0 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .ds-title { margin: 0 0 0.5rem 0; font-size: 1.25rem; font-weight: 700; color: var(--ds-color-text); letter-spacing: -0.01em; }
+    .ds-desc { margin: 0 0 1.5rem 0; font-size: 0.9rem; color: var(--ds-color-text-muted); line-height: 1.6; }
+
+    .ds-vars-container {
+        background-color: #F8FAFC;
+        padding: 1.25rem 1.5rem;
+        border-top: 1px solid var(--ds-border);
+        margin-top: auto;
+    }
+
+    .ds-vars-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem; }
+    .ds-vars-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ds-color-text-muted); font-weight: 700; }
+    .ds-feedback { font-size: 0.75rem; font-weight: 700; display: none; }
+
+    .ds-vars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+
+    .ds-var-item {
+        font-size: 0.8rem; font-weight: 600; color: var(--ds-color-text); background: var(--ds-bg-card);
+        padding: 0.6rem 0.75rem; border-radius: 8px; border: 1px solid var(--ds-border);
+        display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; cursor: pointer; user-select: none;
+    }
+
+    .ds-var-item::before {
+        content: ''; display: block; width: 8px; height: 8px; border-radius: 50%;
+        background-color: #CBD5E1; transition: background-color 0.2s;
+    }
+
+    .ds-var-item:not(.locked):hover {
+        border-color: var(--ds-color-hover); background-color: var(--ds-bg-hover); color: var(--ds-color-hover); transform: translateY(-2px);
+    }
+    .ds-var-item:not(.locked):hover::before { background-color: var(--ds-color-hover); }
+
+    .ds-var-item.selected { border-color: var(--ds-color-selected); background-color: var(--ds-bg-selected); color: var(--ds-color-selected); }
+    .ds-var-item.selected::before { background-color: var(--ds-color-selected); }
+
+    .ds-var-item.correct { border-color: var(--ds-color-correct); background-color: var(--ds-bg-correct); color: var(--ds-color-correct); cursor: default; }
+    .ds-var-item.correct::before { background-color: var(--ds-color-correct); }
+
+    .ds-var-item.incorrect { border-color: var(--ds-color-error); background-color: var(--ds-bg-error); color: var(--ds-color-error); cursor: default; }
+    .ds-var-item.incorrect::before { background-color: var(--ds-color-error); }
+
+    .ds-var-item.missed { border-color: var(--ds-color-correct); background-color: var(--ds-bg-card); color: var(--ds-color-correct); border-style: dashed; cursor: default; }
+    .ds-var-item.missed::before { background-color: var(--ds-color-correct); }
+
+    .ds-var-item.locked { pointer-events: none; }
+
+    .ds-controls { width: 100%; max-width: 1100px; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+
+    .ds-btn-verify {
+        background-color: var(--ds-color-text); color: white; border: none; padding: 1rem 3rem;
+        border-radius: 12px; font-size: 1rem; font-weight: 700; font-family: var(--ds-font);
+        cursor: pointer; transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .ds-btn-verify:hover:not(:disabled) { background-color: #334155; transform: translateY(-2px); }
+    .ds-btn-verify:disabled { background-color: #94A3B8; cursor: not-allowed; transform: none; }
+
+    .ds-log-output {
+        width: 100%; background-color: #E2E8F0; padding: 1.5rem; border-radius: 12px;
+        font-family: 'Courier New', Courier, monospace; font-size: 0.85rem; color: #334155;
+        white-space: pre-wrap; display: none; border: 1px solid #CBD5E1;
+    }
+</style>
+
+<script>
+    const setupCards = () => {
+        const cards = document.querySelectorAll('.ds-card');
+        const btnVerify = document.getElementById('btn-verify');
+        const logOutput = document.getElementById('log-output');
+
+        if (!btnVerify) return; // Evita errores si el componente se monta/desmonta en Astro
+
+        cards.forEach(card => {
+            const items = card.querySelectorAll('.ds-var-item');
+            items.forEach(item => {
+                // Remover listeners previos para evitar duplicados en la navegación de Astro (View Transitions)
+                const newClone = item.cloneNode(true);
+                item.parentNode.replaceChild(newClone, item);
+                
+                newClone.addEventListener('click', () => {
+                    if (newClone.classList.contains('locked')) return;
+                    if (newClone.classList.contains('selected')) {
+                        newClone.classList.remove('selected');
+                    } else {
+                        const selectedCount = card.querySelectorAll('.selected').length;
+                        if (selectedCount < 2) newClone.classList.add('selected');
+                    }
+                });
+            });
+        });
+
+        // Clonar botón para limpiar listeners
+        const newBtnVerify = btnVerify.cloneNode(true);
+        btnVerify.parentNode.replaceChild(newBtnVerify, btnVerify);
+
+        newBtnVerify.addEventListener('click', () => {
+            let textLog = "=== REGISTRO DE EVALUACIÓN INTERNA ===\n\n";
+            let totalCards = cards.length;
+            let correctCards = 0;
+
+            cards.forEach((card, index) => {
+                const title = card.querySelector('.ds-title').textContent;
+                const items = card.querySelectorAll('.ds-var-item');
+                const selected = card.querySelectorAll('.selected');
+                const feedback = card.querySelector('.ds-feedback');
+                
+                let cardIsCorrect = true;
+                let selectedLabels = [];
+
+                items.forEach(item => item.classList.add('locked'));
+
+                if (selected.length !== 2) cardIsCorrect = false;
+
+                selected.forEach(item => {
+                    selectedLabels.push(item.getAttribute('data-label'));
+                    const isCorrectOption = item.getAttribute('data-correct') === 'true';
+                    
+                    item.classList.remove('selected');
+                    if (isCorrectOption) {
+                        item.classList.add('correct');
+                    } else {
+                        item.classList.add('incorrect');
+                        cardIsCorrect = false;
+                    }
+                });
+
+                textLog += `[Tarjeta ${index + 1}: ${title}]\n`;
+                textLog += `- Selecciones: [${selectedLabels.join(' | ') || 'Ninguna'}]\n`;
+
+                if (cardIsCorrect) {
+                    correctCards++;
+                    feedback.textContent = "¡Correcto!";
+                    feedback.style.color = "var(--ds-color-correct)";
+                    textLog += `- Estado: CORRECTO\n\n`;
+                } else {
+                    feedback.textContent = "Incorrecto";
+                    feedback.style.color = "var(--ds-color-error)";
+                    textLog += `- Estado: INCORRECTO\n\n`;
+
+                    items.forEach(item => {
+                        if (item.getAttribute('data-correct') === 'true' && !item.classList.contains('correct')) {
+                            item.classList.add('missed');
+                        }
+                    });
+                }
+                feedback.style.display = "block";
+            });
+
+            textLog += `=== RESUMEN: ${correctCards}/${totalCards} tarjetas correctas ===`;
+
+            newBtnVerify.disabled = true;
+            newBtnVerify.textContent = "Evaluación Finalizada";
+            
+            const outputElement = document.getElementById('log-output');
+            outputElement.textContent = textLog;
+            outputElement.style.display = "block";
+        });
+    };
+
+    // Soporte para la carga normal y View Transitions de Astro
+    document.addEventListener('DOMContentLoaded', setupCards);
+    document.addEventListener('astro:page-load', setupCards);
+</script>
