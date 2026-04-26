@@ -1,0 +1,414 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+// Ajusta la ruta al Layout según la ubicación de este archivo
+---
+
+<Layout titulo="Escalado Multiplicativo">
+    <div class="recurso-wrapper">
+        <div class="container">
+            <div class="panel-controles">
+                <div class="header">
+                    <h2>Escalado Multiplicativo</h2>
+                    <p>Descubre cómo se mantiene la proporción geométrica observando la covariación de las variables.</p>
+                </div>
+
+                <div class="caja-control">
+                    <label>Factor Multiplicativo (n): <span id="txt-n" class="txt-n-style">× 2</span></label>
+                    <input type="range" id="slider-n" min="2" max="4" step="1" value="2">
+                </div>
+
+                <div class="info-panel panel-base">
+                    <strong>Relación Base:</strong><br>
+                    3 unidades = Costo 2.
+                </div>
+
+                <div class="info-panel panel-escalado">
+                    Nivel Escalado:<br>
+                    <span id="txt-x-esc">6</span> unidades = Costo <span id="txt-y-esc">4</span>.<br>
+                    <strong>Covariación Multiplicativa (Escalado ×<span id="txt-n-bold">2</span>)</strong>
+                </div>
+
+                <button id="btn-construir" class="btn-construir">Construir Escalado ▶</button>
+                <button id="btn-limpiar" class="btn-limpiar" disabled>Limpiar Gráfico</button>
+            </div>
+
+            <div class="panel-visor">
+                <svg id="svg-covariacion" viewBox="0 0 450 600" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                        <marker id="head-mult" orient="auto" markerWidth="4" markerHeight="4" refX="3" refY="2">
+                            <path d="M0,0 L4,2 L0,4 Z" fill="#0f172a" />
+                        </marker>
+                    </defs>
+
+                    <g id="grid-group"></g>
+                    
+                    <line id="eje-x-line" class="eje" /> 
+                    <line id="eje-y-line" class="eje" />  
+
+                    <text id="label-origen-val" text-anchor="end" class="eje-text" font-weight="900">0</text>
+                    <text id="label-eje-x-text" text-anchor="end" class="etiqueta-eje-principal">Unidades (x) →</text>
+                    <text id="label-eje-y-text" text-anchor="start" class="etiqueta-eje-principal">Costo (y) ↑</text>
+
+                    <line id="linea-modelo" class="recta" />
+
+                    <path id="tri-base" class="triangulo-base" />
+                    <circle id="punto-base" class="punto" r="4" />
+                    <text id="lbl-base-x" class="label-geo" style="fill:#1e40af">x = 3</text>
+                    <text id="lbl-base-y" class="label-geo" style="fill:#1e40af">y = 2</text>
+
+                    <g id="historial-group"></g>
+
+                    <path id="preview-fill" class="triangulo-escalado" opacity="0" />
+                    <line id="preview-dx" class="arrow-mult" opacity="0" />
+                    <line id="preview-dy" class="arrow-mult" opacity="0" />
+                    <text id="lbl-dx" class="label-geo" opacity="0"></text>
+                    <text id="lbl-dy" class="label-geo" opacity="0"></text>
+
+                    <circle id="punto-guia" class="punto-guia-style" r="5" opacity="0" />
+                </svg>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        --primary: #2563eb;    
+        --scale: #10b981;      
+        --operator: #0f172a;   
+        --bg-color: #f8fafc;
+        --border-color: #cbd5e1;
+        
+        font-family: 'Inter', system-ui, sans-serif;
+        background-color: var(--bg-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        width: 100%;
+    }
+
+    .container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border: 1px solid var(--border-color);
+        width: 100%;
+        max-width: 900px;
+        height: 650px; 
+        display: flex;
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .container { flex-direction: column; height: auto; }
+        .panel-controles { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border-color); }
+    }
+
+    .panel-controles {
+        width: 340px;
+        background: #f8fafc;
+        border-right: 1px solid var(--border-color);
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        z-index: 10;
+    }
+
+    .header h2 { margin: 0 0 5px 0; color: #0f172a; font-size: 18px; line-height: 1.2; }
+    .header p { margin: 0; color: #64748b; font-size: 13px; line-height: 1.4; }
+
+    .caja-control {
+        background: white;
+        padding: 18px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        border-left: 4px solid var(--scale);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    label { font-weight: 800; font-size: 11px; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; }
+    .txt-n-style { color: var(--scale); font-size: 16px; font-weight: 800; }
+
+    input[type="range"] { 
+        width: 100%; cursor: pointer; height: 6px;
+        background: #e2e8f0; border-radius: 3px; outline: none; -webkit-appearance: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+        background: var(--scale); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .info-panel { padding: 12px; border-radius: 8px; font-size: 13px; line-height: 1.5; }
+    .panel-base { background: #dbeafe; border: 1px solid #bfdbfe; color: #1e3a8a; }
+    .panel-escalado { background: #d1fae5; border: 1px solid #a7f3d0; color: #065f46; }
+    .panel-escalado strong { font-size: 14px; display: block; margin-top: 6px; }
+
+    button {
+        padding: 12px; border: none; border-radius: 8px; font-weight: 800; font-size: 14px;
+        cursor: pointer; transition: all 0.2s; color: white; width: 100%;
+    }
+
+    .btn-construir { background: var(--primary); }
+    .btn-construir:hover:not(:disabled) { background: #1d4ed8; transform: translateY(-2px); }
+    .btn-limpiar { background: #64748b; margin-top: auto; }
+    .btn-limpiar:hover:not(:disabled) { background: #475569; }
+    button:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; transform: none; }
+
+    .panel-visor {
+        flex-grow: 1; position: relative; background: white; padding: 20px;
+        display: flex; justify-content: center;
+    }
+
+    svg { width: 100%; max-width: 500px; height: 100%; }
+
+    .eje { stroke: #0f172a; stroke-width: 2.5; stroke-linecap: square; }
+    .recta { stroke: var(--primary); stroke-width: 3.5; stroke-linecap: round; }
+    .triangulo-base { fill: #3b82f6; opacity: 0.15; stroke: #1e40af; stroke-width: 2; }
+    .triangulo-escalado { fill: #10b981; opacity: 0.1; stroke: #047857; stroke-width: 2; }
+    .punto { fill: #0f172a; }
+    .punto-guia-style { fill: #f59e0b; stroke: white; stroke-width: 2.5; transition: cx 0.2s, cy 0.2s; }
+    .arrow-mult { stroke: var(--operator); stroke-width: 3; stroke-linecap: round; }
+
+    :global(.historial-item) { cursor: pointer; }
+    :global(.historial-item .triangulo-escalado) { transition: opacity 0.2s; }
+    :global(.historial-item:hover .triangulo-escalado) { opacity: 0.3; }
+    :global(.historial-item .arrow-mult) { transition: stroke-width 0.2s; }
+    :global(.historial-item:hover .arrow-mult) { stroke-width: 4.5; }
+
+    .label-geo { 
+        font-size: 13px; font-weight: 800; fill: var(--operator);
+        paint-order: stroke fill; stroke: rgba(255,255,255,0.9); stroke-width: 3.5px;
+    }
+
+    :global(.historial-item:hover .label-geo) { font-size: 17px; stroke: rgba(255,255,255,1); stroke-width: 6px; }
+
+    .eje-text { font-size: 12px; font-weight: 700; fill: #475569; }
+    .etiqueta-eje-principal { font-size: 13px; font-weight: 800; fill: #0f172a; }
+</style>
+
+<script>
+    const setupCovariacion = () => {
+        const sliderN = document.getElementById('slider-n') as HTMLInputElement | null;
+        const btnConstruir = document.getElementById('btn-construir') as HTMLButtonElement | null;
+        const btnLimpiar = document.getElementById('btn-limpiar') as HTMLButtonElement | null;
+        
+        if (!sliderN || !btnConstruir || !btnLimpiar) return;
+
+        // Lógica Matemática
+        const base_x = 3;
+        const base_y = 2;
+        const xMax = 15; 
+        const yMax = 10; 
+
+        // Configuración SVG
+        const marginX = 45;
+        const marginY = 50; 
+        const chartW = 360; 
+        const chartH = 480; 
+        const baseLineY = marginY + chartH;
+
+        function mapX(x: number) { return marginX + (x / xMax) * chartW; }
+        function mapY(y: number) { return baseLineY - (y / yMax) * chartH; }
+
+        const grid = document.getElementById('grid-group');
+        const historial = document.getElementById('historial-group');
+        if (grid) grid.innerHTML = '';
+        if (historial) historial.innerHTML = '';
+
+        // Trazado de Ejes
+        document.getElementById('eje-x-line')?.setAttribute('x1', marginX.toString());
+        document.getElementById('eje-x-line')?.setAttribute('y1', baseLineY.toString());
+        document.getElementById('eje-x-line')?.setAttribute('x2', (marginX + chartW + 20).toString());
+        document.getElementById('eje-x-line')?.setAttribute('y2', baseLineY.toString());
+
+        document.getElementById('eje-y-line')?.setAttribute('x1', marginX.toString());
+        document.getElementById('eje-y-line')?.setAttribute('y1', baseLineY.toString());
+        document.getElementById('eje-y-line')?.setAttribute('x2', marginX.toString());
+        document.getElementById('eje-y-line')?.setAttribute('y2', (marginY - 10).toString());
+
+        document.getElementById('label-origen-val')?.setAttribute('x', (marginX - 10).toString());
+        document.getElementById('label-origen-val')?.setAttribute('y', (baseLineY + 15).toString());
+
+        document.getElementById('label-eje-x-text')?.setAttribute('x', (marginX + chartW + 20).toString());
+        document.getElementById('label-eje-x-text')?.setAttribute('y', (baseLineY + 35).toString());
+
+        document.getElementById('label-eje-y-text')?.setAttribute('x', marginX.toString());
+        document.getElementById('label-eje-y-text')?.setAttribute('y', (marginY - 25).toString());
+
+        // Grilla Dinámica
+        if (grid) {
+            for(let x=3; x<=xMax; x+=3) {
+                let px = mapX(x);
+                grid.innerHTML += `<line x1="${px}" y1="${baseLineY}" x2="${px}" y2="${marginY}" stroke="#cbd5e1" stroke-width="1.5" />`;
+                grid.innerHTML += `<text x="${px}" y="${baseLineY+18}" text-anchor="middle" font-size="12" fill="#475569" font-weight="700">${x}</text>`;
+            }
+            for(let y=2; y<=yMax; y+=2) {
+                let py = mapY(y);
+                grid.innerHTML += `<line x1="${marginX}" y1="${py}" x2="${marginX+chartW+10}" y2="${py}" stroke="#cbd5e1" stroke-width="1.5" />`;
+                grid.innerHTML += `<text x="${marginX-8}" y="${py+4}" text-anchor="end" font-size="12" fill="#475569" font-weight="700">${y}</text>`;
+            }
+        }
+
+        const linea = document.getElementById('linea-modelo');
+        if (linea) {
+            linea.setAttribute('x1', mapX(0).toString());
+            linea.setAttribute('y1', mapY(0).toString());
+            linea.setAttribute('x2', mapX(xMax).toString());
+            linea.setAttribute('y2', mapY(yMax).toString());
+        }
+
+        const triBase = document.getElementById('tri-base');
+        const bx = mapX(base_x);
+        const by = mapY(base_y);
+        const originY = mapY(0);
+        if (triBase) triBase.setAttribute('d', `M ${mapX(0)} ${originY} L ${bx} ${originY} L ${bx} ${by} Z`);
+        
+        document.getElementById('punto-base')?.setAttribute('cx', bx.toString());
+        document.getElementById('punto-base')?.setAttribute('cy', by.toString());
+        
+        const lblBx = document.getElementById('lbl-base-x');
+        if (lblBx) {
+            lblBx.setAttribute('x', ((mapX(0)+bx)/2).toString());
+            lblBx.setAttribute('y', (originY - 10).toString());
+            lblBx.setAttribute('text-anchor', 'middle');
+        }
+        
+        const lblBy = document.getElementById('lbl-base-y');
+        if (lblBy) {
+            lblBy.setAttribute('x', (bx - 35).toString());
+            lblBy.setAttribute('y', ((originY+by)/2 + 5).toString());
+        }
+
+        let isAnimated = false;
+
+        function limpiarAnimacionTemporal() {
+            document.getElementById('preview-dx')?.setAttribute('opacity', '0');
+            document.getElementById('preview-dy')?.setAttribute('opacity', '0');
+            document.getElementById('preview-fill')?.setAttribute('opacity', '0');
+            document.getElementById('lbl-dx')?.setAttribute('opacity', '0');
+            document.getElementById('lbl-dy')?.setAttribute('opacity', '0');
+            document.getElementById('punto-guia')?.setAttribute('opacity', '0');
+            isAnimated = false;
+        }
+
+        function actualizarControles() {
+            if(isAnimated) limpiarAnimacionTemporal();
+            const n = parseInt(sliderN!.value);
+            const txtN = document.getElementById('txt-n');
+            if(txtN) txtN.textContent = `× ${n}`;
+            const txtXEsc = document.getElementById('txt-x-esc');
+            if(txtXEsc) txtXEsc.textContent = (base_x * n).toString();
+            const txtYEsc = document.getElementById('txt-y-esc');
+            if(txtYEsc) txtYEsc.textContent = (base_y * n).toString();
+            const txtNBold = document.getElementById('txt-n-bold');
+            if(txtNBold) txtNBold.textContent = n.toString();
+        }
+
+        sliderN.addEventListener('input', actualizarControles);
+
+        function animarLinea(lineId: string, x1: number, y1: number, x2: number, y2: number, markerId: string, callback?: () => void) {
+            const line = document.getElementById(lineId);
+            if (!line) return;
+            line.setAttribute('x1', x1.toString()); line.setAttribute('y1', y1.toString());
+            line.setAttribute('x2', x1.toString()); line.setAttribute('y2', y1.toString());
+            line.setAttribute('opacity', '1');
+            line.setAttribute('marker-end', `url(#${markerId})`);
+
+            const duration = 500; 
+            let start: number | null = null;
+            function step(timestamp: number) {
+                if (!start) start = timestamp;
+                const progress = Math.min((timestamp - start) / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                line!.setAttribute('x2', (x1 + (x2 - x1) * ease).toString());
+                line!.setAttribute('y2', (y1 + (y2 - y1) * ease).toString());
+                if (progress < 1) window.requestAnimationFrame(step);
+                else if (callback) callback();
+            }
+            window.requestAnimationFrame(step);
+        }
+
+        btnConstruir.addEventListener('click', () => {
+            btnConstruir.disabled = true;
+            sliderN.disabled = true;
+            isAnimated = true;
+            limpiarAnimacionTemporal();
+
+            const n = parseInt(sliderN.value);
+            const pX = mapX(base_x * n);
+            const pY = mapY(base_y * n);
+
+            const punto = document.getElementById('punto-guia');
+            if(punto) { punto.setAttribute('cx', pX.toString()); punto.setAttribute('cy', pY.toString()); }
+
+            animarLinea('preview-dx', bx, originY, pX, originY, 'head-mult', () => {
+                const lblDx = document.getElementById('lbl-dx');
+                if (lblDx) {
+                    lblDx.setAttribute('x', (pX - 20).toString());
+                    lblDx.setAttribute('y', (originY - 12).toString());
+                    lblDx.setAttribute('text-anchor', 'end');
+                    lblDx.textContent = `× ${n}`;
+                    lblDx.setAttribute('opacity', '1');
+                }
+
+                animarLinea('preview-dy', pX, by, pX, pY, 'head-mult', () => {
+                    const lblDy = document.getElementById('lbl-dy');
+                    if (lblDy) {
+                        lblDy.setAttribute('x', (pX + 8).toString());
+                        lblDy.setAttribute('y', ((by+pY)/2 + 5).toString());
+                        lblDy.setAttribute('text-anchor', 'start');
+                        lblDy.textContent = `× ${n}`;
+                        lblDy.setAttribute('opacity', '1');
+                    }
+
+                    const fill = document.getElementById('preview-fill');
+                    if(fill) {
+                        fill.setAttribute('d', `M ${mapX(0)} ${originY} L ${pX} ${originY} L ${pX} ${pY} Z`);
+                        fill.setAttribute('opacity', '1');
+                    }
+                    punto?.setAttribute('opacity', '1');
+
+                    const hist = document.getElementById('historial-group');
+                    if (hist) {
+                        hist.innerHTML += `
+                            <g class="historial-item">
+                                <path d="M ${mapX(0)} ${originY} L ${pX} ${originY} L ${pX} ${pY} Z" fill="transparent" />
+                                <path class="triangulo-escalado" d="M ${mapX(0)} ${originY} L ${pX} ${originY} L ${pX} ${pY} Z" />
+                                <line class="arrow-mult" x1="${bx}" y1="${originY}" x2="${pX}" y2="${originY}" marker-end="url(#head-mult)" />
+                                <line class="arrow-mult" x1="${pX}" y1="${by}" x2="${pX}" y2="${pY}" marker-end="url(#head-mult)" />
+                                <text x="${pX - 20}" y="${originY - 12}" text-anchor="end" class="label-geo">× ${n}</text>
+                                <text x="${pX + 8}" y="${(by+pY)/2 + 5}" text-anchor="start" class="label-geo">× ${n}</text>
+                                <circle cx="${pX}" cy="${pY}" r="4" fill="#0f172a" />
+                            </g>
+                        `;
+                    }
+
+                    limpiarAnimacionTemporal();
+                    btnLimpiar.disabled = false;
+                    btnConstruir.disabled = false;
+                    sliderN.disabled = false;
+                });
+            });
+        });
+
+        btnLimpiar.addEventListener('click', () => {
+            if(historial) historial.innerHTML = '';
+            limpiarAnimacionTemporal();
+            btnLimpiar.disabled = true;
+        });
+
+        actualizarControles();
+        
+        // Firma JSInput para edX
+        (window as any).getGrade = () => JSON.stringify({ action: "explore" });
+        (window as any).getState = () => JSON.stringify({ action: "explore" });
+        (window as any).setState = () => {};
+    };
+
+    document.addEventListener('DOMContentLoaded', setupCovariacion);
+    document.addEventListener('astro:page-load', setupCovariacion);
+</script>

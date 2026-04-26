@@ -1,0 +1,316 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+// Ajusta la ruta al Layout según tu estructura de carpetas
+---
+
+<Layout titulo="Variación Proporcional">
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="header-text">
+                <h3>Identificación de la Tasa de Cambio</h3>
+                <p>Encuentra el patrón de variación y completa la tabla proporcional.</p>
+            </div>
+
+            <div class="interactive-container">
+                
+                <svg class="svg-layer svg-top" viewBox="0 0 700 80">
+                    <defs>
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                        </marker>
+                    </defs>
+                    <path d="M 205 75 A 45 35 0 0 1 315 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 315 75 A 45 35 0 0 1 425 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 425 75 A 45 35 0 0 1 535 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 535 75 A 45 35 0 0 1 645 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                </svg>
+
+                <input type="text" class="jump-input input-blue" style="left: 260px; top: -40px;" value="+3" disabled>
+                <input type="text" class="jump-input input-blue" style="left: 370px; top: -40px;" value="+3" disabled>
+                <input type="text" class="jump-input input-blue" style="left: 480px; top: -40px;" value="+3" disabled>
+                <input type="text" class="jump-input input-blue" style="left: 590px; top: -40px;" value="+3" disabled>
+
+                <table>
+                    <tr>
+                        <td class="col-header">Tazas de harina</td>
+                        <td>3</td>
+                        <td>6</td>
+                        <td>9</td>
+                        <td>12</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <td class="col-header">Tazas de Azúcar</td>
+                        <td>2</td>
+                        <td><input type="text" id="c2" class="cell-input" autocomplete="off" inputmode="decimal"></td>
+                        <td><input type="text" id="c3" class="cell-input" autocomplete="off" inputmode="decimal"></td>
+                        <td><input type="text" id="c4" class="cell-input" autocomplete="off" inputmode="decimal"></td>
+                        <td><input type="text" id="c5" class="cell-input" autocomplete="off" inputmode="decimal"></td>
+                    </tr>
+                </table>
+
+                <svg class="svg-layer svg-bottom" viewBox="0 0 700 100">
+                    <defs>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
+                        </marker>
+                    </defs>
+                    <path d="M 205 5 Q 260 60 315 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 315 5 Q 370 60 425 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 425 5 Q 480 60 535 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 535 5 Q 590 60 645 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                </svg>
+
+                <input type="text" id="bot1" class="jump-input input-red" style="left: 260px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="bot2" class="jump-input input-red" style="left: 370px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="bot3" class="jump-input input-red" style="left: 480px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="bot4" class="jump-input input-red" style="left: 590px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+
+            </div>
+
+            <button id="btn-verify" class="btn-verify">Verificar Respuestas</button>
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        width: 100%;
+    }
+
+    .card {
+        background: white;
+        padding: 40px 20px 60px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        max-width: 850px; 
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-text { text-align: center; margin-bottom: 20px; }
+    .header-text h3 { color: #0f172a; margin: 0 0 5px 0; font-size: 1.25rem; }
+    .header-text p { color: #64748b; font-size: 0.9rem; margin: 0; }
+
+    .interactive-container {
+        width: 700px; 
+        position: relative;
+        margin-top: 60px; 
+        margin-bottom: 120px; 
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        position: relative;
+        z-index: 1;
+    }
+
+    td {
+        border: 1px solid #475569;
+        height: 70px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .col-header {
+        width: 150px;
+        background-color: #f1f5f9;
+        font-weight: 700;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .cell-input {
+        width: 75%;
+        height: 65%;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        color: #1e293b;
+    }
+
+    .cell-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); border-color: #2563eb; }
+
+    .jump-input {
+        position: absolute;
+        width: 50px; 
+        height: 28px;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        z-index: 10;
+        transform: translate(-50%, -50%); 
+    }
+
+    .jump-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    .input-blue { color: #2563eb; }
+    .input-blue:focus { border-color: #2563eb; }
+    .input-red { color: #d32f2f; }
+    .input-red:focus { border-color: #d32f2f; }
+
+    .correct { background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #047857 !important; }
+    .incorrect { background-color: #fef2f2 !important; border-color: #ef4444 !important; color: #b91c1c !important; }
+
+    .btn-verify {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        background: #0f172a;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-verify:hover:not(:disabled) { background: #334155; transform: translateY(-2px); }
+    .btn-verify:disabled { background: #cbd5e1; cursor: not-allowed; color: #f8fafc; }
+
+    .feedback-text {
+        margin-top: 15px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        min-height: 20px;
+        text-align: center;
+    }
+
+    .svg-layer {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        pointer-events: none; 
+        overflow: visible;
+    }
+    .svg-top { top: -80px; height: 80px; }
+    .svg-bottom { bottom: -100px; height: 100px; }
+</style>
+
+<script>
+    const setupTablaProporcional = () => {
+        const correctAnswers: Record<string, string> = {
+            bot1: "+2", bot2: "+2", bot3: "+2", bot4: "+2",
+            c2: "4", c3: "6", c4: "8", c5: "10"
+        };
+
+        let estadoEjercicio: Record<string, string> = {};
+        const inputIds = Object.keys(correctAnswers);
+        
+        inputIds.forEach(id => {
+            estadoEjercicio[id] = "";
+        });
+
+        const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
+        const feedback = document.getElementById('feedback') as HTMLElement | null;
+
+        if (!btnVerify || !feedback) return;
+
+        function formatAnswer(id: string, val: string, expected: string) {
+            let cleanVal = val.trim().replace(',', '.');
+            let cleanExp = expected.trim().replace(',', '.');
+            
+            if(cleanVal === "") return val;
+
+            if (id.startsWith('bot') && cleanExp.startsWith('+') && Number(cleanVal) === Number(cleanExp)) {
+                return expected; 
+            }
+            
+            if (Number(cleanVal) === Number(cleanExp)) {
+                return expected;
+            }
+
+            return val;
+        }
+
+        inputIds.forEach(id => {
+            const input = document.getElementById(id) as HTMLInputElement | null;
+            if (!input) return;
+
+            const newClone = input.cloneNode(true) as HTMLInputElement;
+            input.parentNode?.replaceChild(newClone, input);
+
+            newClone.addEventListener('input', (e) => {
+                estadoEjercicio[id] = (e.target as HTMLInputElement).value;
+            });
+        });
+
+        const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
+        btnVerify.parentNode?.replaceChild(newBtnVerify, btnVerify);
+
+        newBtnVerify.addEventListener('click', () => {
+            let correctCount = 0;
+
+            inputIds.forEach(id => {
+                const input = document.getElementById(id) as HTMLInputElement | null;
+                if (!input) return;
+
+                const userVal = formatAnswer(id, estadoEjercicio[id], correctAnswers[id]);
+                const correctVal = correctAnswers[id];
+
+                input.disabled = true;
+
+                if (userVal === correctVal) {
+                    input.classList.add('correct');
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.value = correctVal.replace('.', ','); 
+                }
+            });
+
+            if (correctCount === inputIds.length) {
+                feedback.style.color = "#047857";
+                feedback.textContent = "¡Perfecto! Has identificado la variación de +2 y escalado la receta correctamente.";
+            } else {
+                feedback.style.color = "#b91c1c";
+                feedback.textContent = `Hay errores. Revisa las respuestas en rojo y verifica tu cálculo.`;
+            }
+
+            newBtnVerify.disabled = true;
+        });
+
+        // Exponer la API a 'window' para que edX reciba el puntaje
+        (window as any).getGrade = () => JSON.stringify(estadoEjercicio);
+        (window as any).getState = () => JSON.stringify(estadoEjercicio);
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                estadoEjercicio = JSON.parse(stateStr);
+                inputIds.forEach(id => {
+                    if (estadoEjercicio[id] !== "") {
+                        const input = document.getElementById(id) as HTMLInputElement | null;
+                        if (input) input.value = estadoEjercicio[id];
+                    }
+                });
+            } catch(e) {
+                console.error("Error restaurando estado en edX", e);
+            }
+        };
+    };
+
+    document.addEventListener('DOMContentLoaded', setupTablaProporcional);
+    document.addEventListener('astro:page-load', setupTablaProporcional);
+</script>

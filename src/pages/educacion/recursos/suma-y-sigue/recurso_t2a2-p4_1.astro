@@ -1,0 +1,422 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+// Asegúrate de que la ruta al Layout sea la correcta
+---
+
+<Layout titulo="Valor Unitario Constante">
+    <div class="recurso-wrapper">
+        <div class="container">
+            
+            <div class="panel-controles">
+                <div class="header">
+                    <h2>Valor Unitario Constante</h2>
+                    <p>Construye Movimientos de Δx = 1 para visualizar la constante de proporcionalidad (k = 60).</p>
+                </div>
+
+                <div class="caja-control">
+                    <label>Punto de inicio en X: <span id="txt-x" class="valor-dinamico">1</span> h</label>
+                    <input type="range" id="range-x" min="0" max="7" step="1" value="1">
+                </div>
+
+                <button id="btn-construir" class="btn-construir">Construir triángulo ▶</button>
+                <button id="btn-limpiar" class="btn-limpiar" disabled>Limpiar Gráfico</button>
+            </div>
+
+            <div class="panel-visor">
+                <svg id="svg-grafico" viewBox="0 0 400 620" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                        <marker id="head-dx" orient="auto" markerWidth="4" markerHeight="4" refX="3" refY="2">
+                            <path d="M0,0 L4,2 L0,4 Z" fill="var(--dx-color)" />
+                        </marker>
+                        <marker id="head-dy" orient="auto" markerWidth="4" markerHeight="4" refX="3" refY="2">
+                            <path d="M0,0 L4,2 L0,4 Z" fill="var(--dy-color)" />
+                        </marker>
+                    </defs>
+
+                    <g id="grid"></g>
+                    
+                    <line id="eje-x" class="eje" /> 
+                    <line id="eje-y" class="eje" />  
+
+                    <text id="label-origen" text-anchor="end" class="eje-text" font-weight="900">0</text>
+
+                    <text id="label-eje-x" text-anchor="end" class="etiqueta-eje-principal">Tiempo (h) →</text>
+                    <text id="label-eje-y" text-anchor="start" class="etiqueta-eje-principal">Distancia (km) ↑</text>
+
+                    <line id="linea" class="recta" />
+
+                    <g id="historial"></g>
+
+                    <path id="preview-fill" fill="var(--dx-color)" opacity="0" />
+                    <line id="preview-dx" class="arrow" stroke="var(--dx-color)" opacity="0" />
+                    <line id="preview-dy" class="arrow" stroke="var(--dy-color)" opacity="0" />
+                    
+                    <text id="lbl-dx" class="label-geo" fill="var(--dx-color)" opacity="0"></text>
+                    <text id="lbl-dy" class="label-geo" fill="var(--dy-color)" opacity="0"></text>
+
+                    <circle id="punto" class="punto-guia" r="6" />
+                </svg>
+            </div>
+
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        --primary: #2563eb;
+        --dx-color: #059669; 
+        --dy-color: #dc2626; 
+        --text: #0f172a;
+        --border: #cbd5e1;
+        
+        font-family: 'Inter', system-ui, sans-serif;
+        background-color: #f8fafc;
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        width: 100%;
+    }
+
+    .container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border: 1px solid var(--border);
+        width: 100%;
+        max-width: 850px;
+        height: 680px; 
+        display: flex;
+        overflow: hidden;
+    }
+
+    /* Ajuste Responsivo para móviles */
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+            height: auto;
+            min-height: 800px;
+        }
+        .panel-controles { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border); }
+        .panel-visor { height: 500px; }
+    }
+
+    /* PANEL IZQUIERDO: Controles */
+    .panel-controles {
+        width: 320px;
+        background: #f8fafc;
+        border-right: 1px solid var(--border);
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        z-index: 10;
+    }
+
+    .header h2 { margin: 0 0 5px 0; color: var(--primary); font-size: 18px; }
+    .header p { margin: 0; color: #64748b; font-size: 13px; line-height: 1.4; }
+
+    .caja-control {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    label { font-weight: 800; font-size: 12px; color: #475569; text-transform: uppercase; }
+    .valor-dinamico { font-size: 16px; font-weight: 800; color: var(--primary); }
+
+    input[type="range"] { 
+        width: 100%; cursor: pointer; height: 6px;
+        background: #e2e8f0; border-radius: 3px; outline: none; -webkit-appearance: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+        background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    button {
+        padding: 12px; border: none; border-radius: 8px; font-weight: 800; font-size: 14px;
+        cursor: pointer; transition: all 0.2s; color: white; width: 100%;
+    }
+
+    .btn-construir { background: var(--primary); }
+    .btn-construir:hover:not(:disabled) { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(37,99,235,0.3); }
+    
+    .btn-limpiar { background: #64748b; margin-top: auto; }
+    .btn-limpiar:hover:not(:disabled) { background: #475569; }
+
+    button:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* PANEL DERECHO: Gráfico */
+    .panel-visor {
+        flex-grow: 1;
+        position: relative;
+        background: white;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+    svg { width: 100%; max-width: 480px; height: 100%; }
+
+    .grilla { stroke: #e2e8f0; stroke-width: 1; }
+    .grilla-mayor { stroke: #cbd5e1; stroke-width: 1.5; }
+    .eje { stroke: #0f172a; stroke-width: 2.5; stroke-linecap: square; }
+    .recta { stroke: var(--primary); stroke-width: 3.5; stroke-linecap: round; }
+    .punto-guia { fill: #f59e0b; stroke: white; stroke-width: 2.5; transition: cx 0.2s, cy 0.2s; }
+    .arrow { stroke-width: 3.5; stroke-linecap: round; }
+    
+    .eje-text { font-size: 12px; font-weight: 700; fill: #475569; }
+    .etiqueta-eje-principal { font-size: 13px; font-weight: 800; fill: #0f172a; }
+
+    /* Interactividad Hover Global de Triángulos */
+    :global(.historial-item) { cursor: pointer; }
+    :global(.historial-item .area-triangulo) { opacity: 0.08; transition: opacity 0.2s; }
+    :global(.historial-item:hover .area-triangulo) { opacity: 0.25; }
+
+    :global(.historial-item .linea-dy) { stroke-width: 2; transition: stroke-width 0.2s; }
+    :global(.historial-item:hover .linea-dy) { stroke-width: 4; }
+
+    :global(.historial-item .label-dy) {
+        font-size: 12px;
+        font-weight: 800;
+        fill: var(--dy-color);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        paint-order: stroke fill;
+        stroke: rgba(255,255,255,0.9);
+        stroke-width: 3.5px;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    :global(.historial-item:hover .label-dy) {
+        font-size: 16px;
+        stroke: rgba(255,255,255,1);
+        stroke-width: 6px;
+    }
+
+    .label-geo { 
+        font-size: 12px; font-weight: 800; 
+        paint-order: stroke fill; stroke: rgba(255,255,255,0.9); stroke-width: 3.5px;
+    }
+</style>
+
+<script>
+    const setupValorUnitario = () => {
+        const rangeX = document.getElementById('range-x') as HTMLInputElement | null;
+        const btnConstruir = document.getElementById('btn-construir') as HTMLButtonElement | null;
+        const btnLimpiar = document.getElementById('btn-limpiar') as HTMLButtonElement | null;
+        const txtX = document.getElementById('txt-x') as HTMLElement | null;
+
+        if (!rangeX || !btnConstruir || !btnLimpiar || !txtX) return;
+
+        // Configuración Matemática
+        const k = 60;
+        const xMax = 8;
+        const yMax = 480;
+        const dx = 1; 
+        const dy = 60; 
+
+        // Configuración Gráfica del Canvas SVG
+        const marginX = 45;
+        const marginY = 50; 
+        const chartW = 320; 
+        const chartH = 520; 
+        const baseLineY = marginY + chartH;
+
+        function mapX(x: number) { return marginX + (x / xMax) * chartW; }
+        function mapY(y: number) { return baseLineY - (y / yMax) * chartH; }
+
+        // Inicialización y limpieza del SVG para Astro View Transitions
+        const grid = document.getElementById('grid');
+        const historial = document.getElementById('historial');
+        
+        if (grid) grid.innerHTML = '';
+        if (historial) historial.innerHTML = '';
+
+        // Trazado de Ejes Estáticos
+        document.getElementById('eje-x')?.setAttribute('x1', marginX.toString());
+        document.getElementById('eje-x')?.setAttribute('y1', baseLineY.toString());
+        document.getElementById('eje-x')?.setAttribute('x2', (marginX + chartW + 20).toString());
+        document.getElementById('eje-x')?.setAttribute('y2', baseLineY.toString());
+
+        document.getElementById('eje-y')?.setAttribute('x1', marginX.toString());
+        document.getElementById('eje-y')?.setAttribute('y1', baseLineY.toString());
+        document.getElementById('eje-y')?.setAttribute('x2', marginX.toString());
+        document.getElementById('eje-y')?.setAttribute('y2', (marginY - 10).toString());
+
+        document.getElementById('label-origen')?.setAttribute('x', (marginX - 10).toString());
+        document.getElementById('label-origen')?.setAttribute('y', (baseLineY + 15).toString());
+
+        document.getElementById('label-eje-x')?.setAttribute('x', (marginX + chartW + 20).toString());
+        document.getElementById('label-eje-x')?.setAttribute('y', (baseLineY + 35).toString());
+
+        document.getElementById('label-eje-y')?.setAttribute('x', marginX.toString());
+        document.getElementById('label-eje-y')?.setAttribute('y', (marginY - 25).toString());
+
+        // Construcción de la Grilla
+        if (grid) {
+            for(let x=1; x<=xMax; x++) {
+                let px = mapX(x);
+                grid.innerHTML += `<line x1="${px}" y1="${baseLineY}" x2="${px}" y2="${marginY}" class="grilla-mayor" />`;
+                grid.innerHTML += `<text x="${px}" y="${baseLineY+18}" text-anchor="middle" class="eje-text">${x}</text>`;
+            }
+            for(let y=60; y<=yMax; y+=60) {
+                let py = mapY(y);
+                grid.innerHTML += `<line x1="${marginX}" y1="${py}" x2="${marginX+chartW+10}" y2="${py}" class="grilla-mayor" />`;
+                grid.innerHTML += `<text x="${marginX-8}" y="${py+4}" text-anchor="end" class="eje-text">${y}</text>`;
+            }
+        }
+
+        // Recta del modelo
+        const linea = document.getElementById('linea');
+        if (linea) {
+            linea.setAttribute('x1', mapX(0).toString());
+            linea.setAttribute('y1', mapY(0).toString());
+            linea.setAttribute('x2', mapX(xMax).toString());
+            linea.setAttribute('y2', mapY(yMax).toString());
+        }
+
+        let isAnimated = false;
+
+        // Clonar elementos interactivos para evitar fugas de memoria en Astro
+        const nRangeX = rangeX.cloneNode(true) as HTMLInputElement;
+        rangeX.parentNode?.replaceChild(nRangeX, rangeX);
+        
+        const nBtnConstruir = btnConstruir.cloneNode(true) as HTMLButtonElement;
+        btnConstruir.parentNode?.replaceChild(nBtnConstruir, btnConstruir);
+        
+        const nBtnLimpiar = btnLimpiar.cloneNode(true) as HTMLButtonElement;
+        btnLimpiar.parentNode?.replaceChild(nBtnLimpiar, btnLimpiar);
+
+        function limpiarAnimacionTemporal() {
+            document.getElementById('preview-dx')?.setAttribute('opacity', '0');
+            document.getElementById('preview-dy')?.setAttribute('opacity', '0');
+            document.getElementById('preview-fill')?.setAttribute('opacity', '0');
+            document.getElementById('lbl-dx')?.setAttribute('opacity', '0');
+            document.getElementById('lbl-dy')?.setAttribute('opacity', '0');
+            isAnimated = false;
+        }
+
+        function actualizarControles() {
+            if (isAnimated) limpiarAnimacionTemporal();
+
+            const x = parseInt(nRangeX.value);
+            if(txtX) txtX.textContent = x.toString();
+
+            const punto = document.getElementById('punto');
+            if (punto) {
+                punto.setAttribute('cx', mapX(x).toString());
+                punto.setAttribute('cy', mapY(x * k).toString());
+            }
+        }
+
+        nBtnLimpiar.addEventListener('click', () => {
+            const h = document.getElementById('historial');
+            if (h) h.innerHTML = ''; 
+            limpiarAnimacionTemporal();
+            nBtnLimpiar.disabled = true;
+        });
+
+        function animarLinea(lineId: string, x1: number, y1: number, x2: number, y2: number, markerId: string, callback?: () => void) {
+            const line = document.getElementById(lineId);
+            if (!line) return;
+
+            line.setAttribute('x1', x1.toString()); 
+            line.setAttribute('y1', y1.toString());
+            line.setAttribute('x2', x1.toString()); 
+            line.setAttribute('y2', y1.toString());
+            line.setAttribute('opacity', '1');
+            line.setAttribute('marker-end', `url(#${markerId})`);
+
+            const duration = 500; 
+            let start: number | null = null;
+
+            function step(timestamp: number) {
+                if (!start) start = timestamp;
+                const progress = Math.min((timestamp - start) / duration, 1);
+                // Ease out cubic
+                const ease = 1 - Math.pow(1 - progress, 3);
+                
+                line!.setAttribute('x2', (x1 + (x2 - x1) * ease).toString());
+                line!.setAttribute('y2', (y1 + (y2 - y1) * ease).toString());
+                
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            window.requestAnimationFrame(step);
+        }
+
+        nBtnConstruir.addEventListener('click', () => {
+            nBtnConstruir.disabled = true;
+            nRangeX.disabled = true;
+            isAnimated = true;
+            limpiarAnimacionTemporal();
+
+            const x = parseInt(nRangeX.value);
+            const pX1 = mapX(x), pY1 = mapY(x*k);
+            const pX2 = mapX(x+dx), pY2 = mapY(x*k);
+            const pX3 = mapX(x+dx), pY3 = mapY((x+dx)*k);
+
+            animarLinea('preview-dx', pX1, pY1, pX2, pY2, 'head-dx', () => {
+                const lblDx = document.getElementById('lbl-dx');
+                if (lblDx) {
+                    lblDx.setAttribute('x', ((pX1+pX2)/2).toString()); 
+                    lblDx.setAttribute('y', (pY1 + 15).toString());
+                    lblDx.setAttribute('text-anchor', 'middle'); 
+                    lblDx.textContent = `Δx = 1`;
+                    lblDx.setAttribute('opacity', '1');
+                }
+
+                animarLinea('preview-dy', pX2, pY2, pX3, pY3, 'head-dy', () => {
+                    const lblDy = document.getElementById('lbl-dy');
+                    if (lblDy) {
+                        lblDy.setAttribute('x', (pX2 + 8).toString()); 
+                        lblDy.setAttribute('y', ((pY2+pY3)/2 + 4).toString());
+                        lblDy.setAttribute('text-anchor', 'start'); 
+                        lblDy.textContent = `Δy = 60`; 
+                        lblDy.setAttribute('opacity', '1');
+                    }
+
+                    const h = document.getElementById('historial');
+                    if (h) {
+                        h.innerHTML += `
+                            <g class="historial-item">
+                                <path d="M ${pX1} ${pY1} L ${pX2} ${pY2} L ${pX3} ${pY3} Z" fill="transparent" />
+                                <path class="area-triangulo" d="M ${pX1} ${pY1} L ${pX2} ${pY2} L ${pX3} ${pY3} Z" fill="var(--dx-color)" />
+                                <line x1="${pX1}" y1="${pY1}" x2="${pX2}" y2="${pY2}" stroke="var(--dx-color)" stroke-width="2" marker-end="url(#head-dx)" />
+                                <line class="linea-dy" x1="${pX2}" y1="${pY2}" x2="${pX3}" y2="${pY3}" stroke="var(--dy-color)" marker-end="url(#head-dy)" />
+                                
+                                <text x="${(pX1+pX2)/2}" y="${pY1 + 15}" text-anchor="middle" class="label-geo" fill="var(--dx-color)">Δx = 1</text>
+                                <text x="${pX2 + 8}" y="${(pY2+pY3)/2 + 4}" text-anchor="start" class="label-dy">Δy = 60</text>
+                                
+                                <circle cx="${pX1}" cy="${pY1}" r="3" fill="#0f172a" />
+                                <circle cx="${pX3}" cy="${pY3}" r="3" fill="#0f172a" />
+                            </g>
+                        `;
+                    }
+
+                    limpiarAnimacionTemporal();
+                    nBtnLimpiar.disabled = false;
+                    nBtnConstruir.disabled = false;
+                    nRangeX.disabled = false;
+                });
+            });
+        });
+
+        nRangeX.addEventListener('input', actualizarControles);
+        actualizarControles();
+    };
+
+    document.addEventListener('DOMContentLoaded', setupValorUnitario);
+    document.addEventListener('astro:page-load', setupValorUnitario);
+</script>
