@@ -1,0 +1,316 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+// Asegúrate de que la ruta al Layout sea la correcta en tu árbol de carpetas
+---
+
+<Layout titulo="Progresión y Tasa de Cambio">
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="header-text">
+                <h3>Progresión y Tasa de Cambio</h3>
+                <p>Escribe los valores de los saltos (+ y -) que mantienen la proporción en la tabla.</p>
+            </div>
+
+            <div class="interactive-container">
+                
+                <svg class="svg-layer svg-top" viewBox="0 0 740 80">
+                    <defs>
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                        </marker>
+                    </defs>
+                    <path d="M 145 75 A 35 35 0 0 1 215 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 225 75 A 35 35 0 0 1 295 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 305 75 A 35 35 0 0 1 375 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 385 75 A 35 35 0 0 1 455 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 615 75 A 35 35 0 0 0 545 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 625 75 A 35 35 0 0 1 695 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                </svg>
+
+                <input type="text" id="top1" class="jump-input input-blue" style="left: 180px; top: -45px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="top2" class="jump-input input-blue" style="left: 260px; top: -45px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="top3" class="jump-input input-blue" style="left: 340px; top: -45px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="top4" class="jump-input input-blue" style="left: 420px; top: -45px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="top5" class="jump-input input-blue" style="left: 580px; top: -45px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="top6" class="jump-input input-blue" style="left: 660px; top: -45px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+
+                <table>
+                    <tr>
+                        <td class="col-header">Bidón B</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>6</td>
+                        <td>7,5</td>
+                        <td>9</td>
+                        <td>11</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <td class="col-header">Bidón A</td>
+                        <td>12</td>
+                        <td>11</td>
+                        <td>8</td>
+                        <td>6</td>
+                        <td>4,5</td>
+                        <td>3</td>
+                        <td>1</td>
+                        <td>0</td>
+                    </tr>
+                </table>
+
+                <svg class="svg-layer svg-bottom" viewBox="0 0 740 100">
+                    <defs>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
+                        </marker>
+                    </defs>
+                    <path d="M 145 5 Q 180 90 215 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 225 5 Q 260 90 295 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 305 5 Q 340 90 375 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 385 5 Q 420 90 455 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 615 5 Q 580 90 545 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 625 5 Q 660 90 695 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                </svg>
+
+                <input type="text" id="bot1" class="jump-input input-red" style="left: 180px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="bot2" class="jump-input input-red" style="left: 260px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="bot3" class="jump-input input-red" style="left: 340px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="bot4" class="jump-input input-red" style="left: 420px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="bot5" class="jump-input input-red" style="left: 580px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+                <input type="text" id="bot6" class="jump-input input-red" style="left: 660px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-.,]*">
+
+            </div>
+
+            <button id="btn-verify" class="btn-verify">Verificar Respuestas</button>
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        width: 100%;
+    }
+
+    .card {
+        background: white;
+        padding: 60px 20px; 
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        max-width: 880px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    .interactive-container {
+        width: 740px;
+        position: relative;
+        margin-top: 60px; 
+        margin-bottom: 120px; 
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        position: relative;
+        z-index: 1;
+    }
+
+    td {
+        border: 1px solid #475569;
+        height: 60px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .col-header {
+        width: 100px;
+        background-color: #f1f5f9;
+        font-weight: 700;
+        text-align: right;
+        padding-right: 15px;
+    }
+
+    .jump-input {
+        position: absolute;
+        width: 50px; 
+        height: 28px;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        z-index: 10;
+        transform: translate(-50%, -50%); 
+    }
+
+    .jump-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    .input-blue { color: #2563eb; }
+    .input-blue:focus { border-color: #2563eb; }
+    .input-red { color: #d32f2f; }
+    .input-red:focus { border-color: #d32f2f; }
+
+    .correct { background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #047857 !important; }
+    .incorrect { background-color: #fef2f2 !important; border-color: #ef4444 !important; color: #b91c1c !important; }
+
+    .btn-verify {
+        padding: 12px 30px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #0f172a;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-verify:hover:not(:disabled) { background: #334155; transform: translateY(-2px); }
+    .btn-verify:disabled { background: #cbd5e1; cursor: not-allowed; color: #f8fafc; }
+
+    .feedback-text {
+        margin-top: 15px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        min-height: 20px;
+        text-align: center;
+    }
+
+    .header-text { text-align: center; margin-bottom: 20px; }
+    .header-text h3 { color: #0f172a; margin: 0 0 5px 0; font-size: 1.25rem; }
+    .header-text p { color: #64748b; font-size: 0.9rem; margin: 0; }
+
+    .svg-layer {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        pointer-events: none; 
+        overflow: visible;
+    }
+    .svg-top { top: -80px; height: 80px; }
+    .svg-bottom { bottom: -100px; height: 100px; }
+</style>
+
+<script>
+    const setupTabla = () => {
+        const correctAnswers: Record<string, string> = {
+            top1: "+1", top2: "+3", top3: "+2", top4: "+1.5", top5: "-2", top6: "+1",
+            bot1: "-1", bot2: "-3", bot3: "-2", bot4: "-1.5", bot5: "+2", bot6: "-1"
+        };
+
+        let estadoEjercicio: Record<string, string> = {};
+        const inputIds = Object.keys(correctAnswers);
+        
+        inputIds.forEach(id => {
+            estadoEjercicio[id] = "";
+        });
+
+        const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
+        const feedback = document.getElementById('feedback') as HTMLElement | null;
+
+        if (!btnVerify || !feedback) return;
+
+        function formatAnswer(id: string, val: string, expected: string) {
+            let cleanVal = val.trim().replace(',', '.');
+            let cleanExp = expected.trim().replace(',', '.');
+            
+            if(cleanVal === "") return val;
+
+            if (cleanExp.startsWith('+') && Number(cleanVal) === Number(cleanExp)) {
+                return expected; 
+            }
+            
+            if (Number(cleanVal) === Number(cleanExp)) {
+                return expected;
+            }
+
+            return val;
+        }
+
+        inputIds.forEach(id => {
+            const input = document.getElementById(id) as HTMLInputElement | null;
+            if (!input) return;
+
+            // Clonar nodo para evitar que los listeners se acumulen por el enrutamiento de Astro
+            const newClone = input.cloneNode(true) as HTMLInputElement;
+            input.parentNode?.replaceChild(newClone, input);
+
+            newClone.addEventListener('input', (e) => {
+                estadoEjercicio[id] = (e.target as HTMLInputElement).value;
+            });
+        });
+
+        const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
+        btnVerify.parentNode?.replaceChild(newBtnVerify, btnVerify);
+
+        newBtnVerify.addEventListener('click', () => {
+            let correctCount = 0;
+
+            inputIds.forEach(id => {
+                const input = document.getElementById(id) as HTMLInputElement | null;
+                if (!input) return;
+
+                const userVal = formatAnswer(id, estadoEjercicio[id], correctAnswers[id]);
+                const correctVal = correctAnswers[id];
+
+                input.disabled = true;
+
+                if (userVal === correctVal) {
+                    input.classList.add('correct');
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.value = correctVal.replace('.', ','); 
+                }
+            });
+
+            if (correctCount === inputIds.length) {
+                feedback.style.color = "#047857";
+                feedback.textContent = "¡Perfecto! Has identificado todas las variaciones correctamente.";
+            } else {
+                feedback.style.color = "#b91c1c";
+                feedback.textContent = `Hay errores. Las casillas en rojo muestran la respuesta correcta.`;
+            }
+
+            newBtnVerify.disabled = true;
+        });
+
+        // Exponer la API a 'window' para que edX reciba el puntaje
+        (window as any).getGrade = () => JSON.stringify(estadoEjercicio);
+        (window as any).getState = () => JSON.stringify(estadoEjercicio);
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                estadoEjercicio = JSON.parse(stateStr);
+                inputIds.forEach(id => {
+                    if (estadoEjercicio[id] !== "") {
+                        const input = document.getElementById(id) as HTMLInputElement | null;
+                        if (input) input.value = estadoEjercicio[id];
+                    }
+                });
+            } catch(e) {
+                console.error("Error restaurando estado en edX", e);
+            }
+        };
+    };
+
+    // Ejecutar lógica con soporte para Astro View Transitions
+    document.addEventListener('DOMContentLoaded', setupTabla);
+    document.addEventListener('astro:page-load', setupTabla);
+</script>
