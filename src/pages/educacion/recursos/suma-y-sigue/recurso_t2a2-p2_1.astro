@@ -1,0 +1,366 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+// Ajusta la ruta al Layout según tu estructura de carpetas
+---
+
+<Layout titulo="Relación Funcional">
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="header-text">
+                <h3>Tabla de Relación Funcional</h3>
+                <p>Identifica la operación y completa los valores resultantes.</p>
+            </div>
+
+            <div class="interactive-container">
+                <table>
+                    <tr class="data-row">
+                        <td class="col-header val-b">Bidón B</td>
+                        <td class="val-b">0,5</td>
+                        <td class="val-b">2,7</td>
+                        <td class="val-b">6</td>
+                        <td class="val-b">6,3</td>
+                        <td class="val-b">9,5</td>
+                        <td class="val-b">11,8</td>
+                    </tr>
+
+                    <tr class="middle-row">
+                        <td></td>
+                        
+                        <td>
+                            <div class="mid-flex">
+                                <span class="mid-static-text">12 - <span class="val-b">0,5</span></span>
+                                <svg width="12" height="40" viewBox="0 0 12 40">
+                                    <line x1="6" y1="0" x2="6" y2="34" stroke="#0f172a" stroke-width="1.5" />
+                                    <polygon points="2,30 6,40 10,30" fill="#0f172a" />
+                                </svg>
+                            </div>
+                        </td>
+                        
+                        <td>
+                            <div class="mid-flex">
+                                <span class="mid-static-text">12 - <span class="val-b">2,7</span></span>
+                                <svg width="12" height="40" viewBox="0 0 12 40">
+                                    <line x1="6" y1="0" x2="6" y2="34" stroke="#0f172a" stroke-width="1.5" />
+                                    <polygon points="2,30 6,40 10,30" fill="#0f172a" />
+                                </svg>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="mid-flex">
+                                <input type="text" id="mid3" class="mid-input" autocomplete="off" inputmode="text" pattern="[0-9\-,.\s]*">
+                                <svg width="12" height="40" viewBox="0 0 12 40">
+                                    <line x1="6" y1="0" x2="6" y2="34" stroke="#0f172a" stroke-width="1.5" />
+                                    <polygon points="2,30 6,40 10,30" fill="#0f172a" />
+                                </svg>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="mid-flex">
+                                <input type="text" id="mid4" class="mid-input" autocomplete="off" inputmode="text" pattern="[0-9\-,.\s]*">
+                                <svg width="12" height="40" viewBox="0 0 12 40">
+                                    <line x1="6" y1="0" x2="6" y2="34" stroke="#0f172a" stroke-width="1.5" />
+                                    <polygon points="2,30 6,40 10,30" fill="#0f172a" />
+                                </svg>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="mid-flex">
+                                <input type="text" id="mid5" class="mid-input" autocomplete="off" inputmode="text" pattern="[0-9\-,.\s]*">
+                                <svg width="12" height="40" viewBox="0 0 12 40">
+                                    <line x1="6" y1="0" x2="6" y2="34" stroke="#0f172a" stroke-width="1.5" />
+                                    <polygon points="2,30 6,40 10,30" fill="#0f172a" />
+                                </svg>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="mid-flex">
+                                <input type="text" id="mid6" class="mid-input" autocomplete="off" inputmode="text" pattern="[0-9\-,.\s]*">
+                                <svg width="12" height="40" viewBox="0 0 12 40">
+                                    <line x1="6" y1="0" x2="6" y2="34" stroke="#0f172a" stroke-width="1.5" />
+                                    <polygon points="2,30 6,40 10,30" fill="#0f172a" />
+                                </svg>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="data-row">
+                        <td class="col-header val-a">Bidón A</td>
+                        <td class="val-a">11,5</td>
+                        <td><input type="text" id="bot2" class="cell-input" autocomplete="off" inputmode="decimal"></td>
+                        <td><input type="text" id="bot3" class="cell-input" autocomplete="off" inputmode="decimal"></td>
+                        <td><input type="text" id="bot4" class="cell-input" autocomplete="off" inputmode="decimal"></td>
+                        <td><input type="text" id="bot5" class="cell-input" autocomplete="off" inputmode="decimal"></td>
+                        <td><input type="text" id="bot6" class="cell-input" autocomplete="off" inputmode="decimal"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <button id="btn-verify" class="btn-verify">Verificar Respuestas</button>
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        width: 100%;
+    }
+
+    .card {
+        background: white;
+        padding: 40px 20px; 
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        max-width: 880px; 
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-text { text-align: center; margin-bottom: 30px; }
+    .header-text h3 { color: #0f172a; margin: 0 0 5px 0; font-size: 1.25rem; }
+    .header-text p { color: #64748b; font-size: 0.9rem; margin: 0; }
+
+    .interactive-container {
+        width: 100%;
+        max-width: 800px;
+        position: relative;
+        margin-bottom: 40px; 
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    .data-row td {
+        border: 2px solid #334155;
+        height: 65px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1.2rem;
+        font-weight: 700;
+        background-color: #ffffff;
+    }
+
+    .col-header {
+        width: 110px;
+        background-color: #f8fafc !important;
+        font-weight: 800;
+        text-align: center !important;
+    }
+
+    .middle-row td {
+        border: none !important;
+        height: 75px;
+        vertical-align: middle;
+    }
+
+    .mid-flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .mid-static-text {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #0f172a;
+        white-space: nowrap;
+    }
+
+    .val-b { color: #0284c7; } 
+    .val-a { color: #dc2626; } 
+
+    .cell-input {
+        width: 80%;
+        height: 70%;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        color: #dc2626;
+    }
+
+    .mid-input {
+        width: 80px;
+        height: 34px;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        color: #0f172a;
+    }
+
+    .cell-input:focus, .mid-input:focus {
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        border-color: #2563eb;
+    }
+
+    .correct { background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #047857 !important; }
+    .incorrect { background-color: #fef2f2 !important; border-color: #ef4444 !important; color: #b91c1c !important; }
+
+    .btn-verify {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        background: #0f172a;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-verify:hover:not(:disabled) { background: #334155; transform: translateY(-2px); }
+    .btn-verify:disabled { background: #cbd5e1; cursor: not-allowed; color: #f8fafc; }
+
+    .feedback-text {
+        margin-top: 15px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        min-height: 20px;
+        text-align: center;
+    }
+</style>
+
+<script>
+    // Interface requerida para evitar errores de tipado de TS al mezclar datos en correctAnswers
+    type AnswerConfig = {
+        type: 'expr' | 'num';
+        valB?: number;
+        val?: number;
+        display: string;
+    };
+
+    const setupTablaFuncional = () => {
+        const correctAnswers: Record<string, AnswerConfig> = {
+            mid3: { type: 'expr', valB: 6, display: "12 - 6" },
+            mid4: { type: 'expr', valB: 6.3, display: "12 - 6,3" },
+            mid5: { type: 'expr', valB: 9.5, display: "12 - 9,5" },
+            mid6: { type: 'expr', valB: 11.8, display: "12 - 11,8" },
+            
+            bot2: { type: 'num', val: 9.3, display: "9,3" },
+            bot3: { type: 'num', val: 6, display: "6" },
+            bot4: { type: 'num', val: 5.7, display: "5,7" },
+            bot5: { type: 'num', val: 2.5, display: "2,5" },
+            bot6: { type: 'num', val: 0.2, display: "0,2" }
+        };
+
+        let estadoEjercicio: Record<string, string> = {};
+        const inputIds = Object.keys(correctAnswers);
+        
+        inputIds.forEach(id => {
+            estadoEjercicio[id] = "";
+            const input = document.getElementById(id) as HTMLInputElement | null;
+            if (!input) return;
+
+            // Clonar nodo para resetear event listeners en Astro View Transitions
+            const newClone = input.cloneNode(true) as HTMLInputElement;
+            input.parentNode?.replaceChild(newClone, input);
+
+            newClone.addEventListener('input', (e) => {
+                estadoEjercicio[id] = (e.target as HTMLInputElement).value;
+            });
+        });
+
+        const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
+        const feedback = document.getElementById('feedback') as HTMLElement | null;
+
+        if (!btnVerify || !feedback) return;
+
+        const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
+        btnVerify.parentNode?.replaceChild(newBtnVerify, btnVerify);
+
+        function isAnswerCorrect(id: string, userString: string) {
+            if (!userString) return false;
+            
+            let cleanVal = userString.trim().replace(/\s+/g, '').replace(',', '.');
+            const expected = correctAnswers[id];
+
+            if (expected.type === 'expr') {
+                let parts = cleanVal.split('-');
+                if (parts.length === 2 && parts[0] === '12' && Number(parts[1]) === expected.valB) {
+                    return true;
+                }
+                return false;
+            } else {
+                return Number(cleanVal) === expected.val;
+            }
+        }
+
+        newBtnVerify.addEventListener('click', () => {
+            let correctCount = 0;
+
+            inputIds.forEach(id => {
+                const input = document.getElementById(id) as HTMLInputElement | null;
+                if (!input) return;
+
+                const isCorrect = isAnswerCorrect(id, estadoEjercicio[id]);
+
+                input.disabled = true;
+
+                if (isCorrect) {
+                    input.classList.add('correct');
+                    input.value = correctAnswers[id].display; 
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.value = correctAnswers[id].display; 
+                }
+            });
+
+            if (correctCount === inputIds.length) {
+                feedback.style.color = "#047857";
+                feedback.textContent = "¡Excelente! Has modelado la función y calculado los valores perfectamente.";
+            } else {
+                feedback.style.color = "#b91c1c";
+                feedback.textContent = `Hay errores. Revisa las correcciones en rojo para entender el patrón.`;
+            }
+
+            newBtnVerify.disabled = true;
+        });
+
+        // Integración JSInput API de edX
+        (window as any).getGrade = () => JSON.stringify(estadoEjercicio);
+        (window as any).getState = () => JSON.stringify(estadoEjercicio);
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                estadoEjercicio = JSON.parse(stateStr);
+                inputIds.forEach(id => {
+                    if (estadoEjercicio[id] !== "") {
+                        const input = document.getElementById(id) as HTMLInputElement | null;
+                        if (input) input.value = estadoEjercicio[id];
+                    }
+                });
+            } catch(e) {
+                console.error("Error parseando estado", e);
+            }
+        };
+    };
+
+    document.addEventListener('DOMContentLoaded', setupTablaFuncional);
+    document.addEventListener('astro:page-load', setupTablaFuncional);
+</script>
