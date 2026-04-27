@@ -3,83 +3,72 @@ import Layout from '../../../../layouts/Layout.astro';
 // Ajusta la ruta al Layout según tu estructura de carpetas
 ---
 
-<Layout titulo="La doble recta numérica">
+<Layout titulo="Identificación de la Tasa de Cambio">
     <div class="recurso-wrapper">
         <div class="card">
-            <div class="header-content">
-                <h3>La doble recta numérica: volver a la unidad</h3>
-                <p>Avanza por los pasos para descubrir cómo usar la tasa unitaria.</p>
-            </div>
-            
-            <div class="controls">
-                <button id="btn1" class="btn-step">Paso 1: Par conocido</button>
-                <button id="btn2" class="btn-step" disabled>Paso 2: Valor unitario</button>
-                <button id="btn3" class="btn-step" disabled>Paso 3: Multiplicar</button>
-                <button id="btnReset" class="btn-reset">Reiniciar</button>
+            <div class="header-text">
+                <p>Escribe el valor del salto constante entre cada casilla (+3, -3, etc.).</p>
             </div>
 
-            <div id="svg-container">
-                <svg width="100%" height="100%" viewBox="0 0 800 350" preserveAspectRatio="xMidYMid meet">
+            <div class="interactive-container">
+                
+                <svg class="svg-layer svg-top" viewBox="0 0 700 40">
                     <defs>
-                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
                             <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
                         </marker>
-                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    </defs>
+                    <path d="M 225 35 Q 260 -10 295 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 335 35 Q 370 -10 405 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 445 35 Q 480 -10 515 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 555 35 Q 590 -10 625 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                </svg>
+
+                <input type="text" id="top1" class="jump-input input-blue" style="left: 260px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="top2" class="jump-input input-blue" style="left: 370px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="top3" class="jump-input input-blue" style="left: 480px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="top4" class="jump-input input-blue" style="left: 590px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+
+                <table>
+                    <tr>
+                        <td class="col-header">Bidón B</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td>6</td>
+                        <td>9</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <td class="col-header">Bidón A</td>
+                        <td>12</td>
+                        <td>9</td>
+                        <td>6</td>
+                        <td>3</td>
+                        <td>0</td>
+                    </tr>
+                </table>
+
+                <svg class="svg-layer svg-bottom" viewBox="0 0 700 40">
+                    <defs>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
                             <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
                         </marker>
                     </defs>
-
-                    <line x1="120" y1="120" x2="750" y2="120" stroke="#94a3b8" stroke-width="3" />
-                    <line x1="120" y1="230" x2="750" y2="230" stroke="#94a3b8" stroke-width="3" />
-                    
-                    <text x="100" y="125" font-weight="bold" fill="#1e293b" text-anchor="end">Harina (x)</text>
-                    <text x="100" y="235" font-weight="bold" fill="#1e293b" text-anchor="end">Azúcar (y)</text>
-
-                    <line x1="150" y1="110" x2="150" y2="240" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4" />
-                    <text x="150" y="100" text-anchor="middle" font-size="14">0</text>
-                    <text x="150" y="260" text-anchor="middle" font-size="14">0</text>
-
-                    <g id="g-step1" class="hidden">
-                        <line x1="550" y1="110" x2="550" y2="240" stroke="#1e293b" stroke-width="2" stroke-dasharray="4" />
-                        <circle cx="550" cy="120" r="6" fill="#1e293b" />
-                        <circle cx="550" cy="230" r="6" fill="#1e293b" />
-                        <text x="550" y="100" text-anchor="middle" font-weight="bold" font-size="16">3</text>
-                        <text x="550" y="260" text-anchor="middle" font-weight="bold" font-size="16">2</text>
-                    </g>
-
-                    <g id="g-step2" class="hidden">
-                        <line x1="283" y1="110" x2="283" y2="240" stroke="#059669" stroke-width="2" stroke-dasharray="4" />
-                        <circle cx="283" cy="120" r="6" fill="#059669" />
-                        <circle cx="283" cy="230" r="6" fill="#059669" />
-                        <text x="283" y="100" text-anchor="middle" font-weight="bold" font-size="16" fill="#059669">1</text>
-                        <text x="283" y="260" text-anchor="middle" font-weight="bold" font-size="16" fill="#059669">2/3</text>
-
-                        <path d="M 540 100 Q 416 60 293 100" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                        <text x="416" y="75" text-anchor="middle" fill="#2563eb" font-weight="bold" font-size="14">÷ 3</text>
-
-                        <path d="M 540 250 Q 416 290 293 250" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                        <text x="416" y="295" text-anchor="middle" fill="#d32f2f" font-weight="bold" font-size="14">÷ 3</text>
-                    </g>
-
-                    <g id="g-step3" class="hidden">
-                        <line x1="603" y1="110" x2="603" y2="240" stroke="#9333ea" stroke-width="2" stroke-dasharray="4" />
-                        <circle cx="603" cy="120" r="6" fill="#9333ea" />
-                        <circle cx="603" cy="230" r="6" fill="#9333ea" />
-                        <text x="603" y="100" text-anchor="middle" font-weight="bold" font-size="16" fill="#9333ea">3.4</text>
-                        <text x="603" y="260" text-anchor="middle" font-weight="bold" font-size="16" fill="#9333ea">2.27</text>
-
-                        <path d="M 283 85 Q 443 10 593 85" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                        <text x="443" y="20" text-anchor="middle" fill="#2563eb" font-weight="bold" font-size="14">× 3.4</text>
-
-                        <path d="M 283 265 Q 443 340 593 265" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                        <text x="443" y="330" text-anchor="middle" fill="#d32f2f" font-weight="bold" font-size="14">× 3.4</text>
-                    </g>
+                    <path d="M 225 5 Q 260 50 295 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 335 5 Q 370 50 405 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 445 5 Q 480 50 515 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 555 5 Q 590 50 625 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
                 </svg>
+
+                <input type="text" id="bot1" class="jump-input input-red" style="left: 260px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="bot2" class="jump-input input-red" style="left: 370px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="bot3" class="jump-input input-red" style="left: 480px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="bot4" class="jump-input input-red" style="left: 590px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+
             </div>
 
-            <div class="info-box" id="info-text">
-                Selecciona "Paso 1" para comenzar.
-            </div>
+            <button id="btn-verify" class="btn-verify">Verificar Respuesta</button>
+            <div id="feedback" class="feedback-text"></div>
         </div>
     </div>
 </Layout>
@@ -87,7 +76,7 @@ import Layout from '../../../../layouts/Layout.astro';
 <style>
     .recurso-wrapper {
         font-family: 'Inter', system-ui, sans-serif;
-        background-color: #f8fafc;
+        background: #f8fafc;
         display: flex;
         justify-content: center;
         padding: 40px 20px;
@@ -96,146 +85,206 @@ import Layout from '../../../../layouts/Layout.astro';
 
     .card {
         background: white;
-        padding: 30px;
+        padding: 40px 20px;
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         max-width: 800px;
         width: 100%;
-    }
-
-    .header-content h3 {
-        color: #0f172a;
-        margin-top: 0;
-        text-align: center;
-        font-size: 1.5rem;
-    }
-
-    .header-content p {
-        font-size: 0.95rem;
-        color: #64748b;
-        text-align: center;
-        margin-bottom: 25px;
-    }
-
-    .controls {
         display: flex;
-        gap: 15px;
-        background: #f1f5f9;
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
     }
 
-    button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 6px;
-        font-weight: 700;
-        font-size: 0.95rem;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
+    .header-text { text-align: center; margin-bottom: 20px; }
+    .header-text p { color: #0f172a; font-size: 1.1rem; font-weight: 600; margin: 0; }
 
-    .btn-step { background: #2563eb; color: white; }
-    .btn-step:hover:not(:disabled) { background: #1d4ed8; transform: translateY(-2px); }
-    .btn-step:disabled { background: #cbd5e1; cursor: not-allowed; color: #64748b; transform: none; }
-
-    .btn-reset { background: #ef4444; color: white; }
-    .btn-reset:hover { background: #dc2626; transform: translateY(-2px); }
-
-    #svg-container {
-        width: 100%;
-        height: 350px;
+    .interactive-container {
+        width: 700px;
         position: relative;
+        margin-top: 70px; 
+        margin-bottom: 70px; 
     }
 
-    text { font-family: 'Inter', system-ui, sans-serif; }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        position: relative;
+        z-index: 1;
+    }
 
-    .info-box {
-        border-left: 4px solid #059669;
-        background: #ecfdf5;
-        padding: 15px 20px;
+    td {
+        border: 1px solid #475569;
+        height: 60px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .col-header {
+        width: 150px;
+        background-color: #f1f5f9;
+        font-weight: 700;
+        text-align: right;
+        padding-right: 15px;
+    }
+
+    .jump-input {
+        position: absolute;
+        width: 44px;
+        height: 28px;
+        font-family: 'Inter', sans-serif;
         font-size: 1rem;
-        margin-top: 10px;
-        border-radius: 4px;
-        min-height: 40px;
-        line-height: 1.5;
-        color: #064e3b;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        z-index: 10;
+        transform: translate(-50%, -50%); 
     }
-    
-    /* Clases para animación de SVG */
-    :global(.hidden) { opacity: 0; pointer-events: none; }
-    :global(.visible) { opacity: 1; transition: opacity 0.5s ease-in; }
+
+    .jump-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    .input-blue { color: #2563eb; }
+    .input-blue:focus { border-color: #2563eb; }
+    .input-red { color: #d32f2f; }
+    .input-red:focus { border-color: #d32f2f; }
+
+    .correct { background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #047857 !important; }
+    .incorrect { background-color: #fef2f2 !important; border-color: #ef4444 !important; color: #b91c1c !important; }
+
+    .btn-verify {
+        padding: 12px 30px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #0f172a;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-verify:hover:not(:disabled) { background: #334155; transform: translateY(-2px); }
+    .btn-verify:disabled { background: #cbd5e1; cursor: not-allowed; color: #f8fafc; }
+
+    .feedback-text {
+        margin-top: 15px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        min-height: 20px;
+        text-align: center;
+    }
+
+    .svg-layer {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        pointer-events: none; 
+    }
+    .svg-top { top: -40px; height: 40px; }
+    .svg-bottom { bottom: -40px; height: 40px; }
 </style>
 
 <script>
-    const setupDobleRecta = () => {
-        const btn1 = document.getElementById('btn1') as HTMLButtonElement | null;
-        const btn2 = document.getElementById('btn2') as HTMLButtonElement | null;
-        const btn3 = document.getElementById('btn3') as HTMLButtonElement | null;
-        const btnReset = document.getElementById('btnReset') as HTMLButtonElement | null;
-        
-        const step1 = document.getElementById('g-step1');
-        const step2 = document.getElementById('g-step2');
-        const step3 = document.getElementById('g-step3');
-        const infoText = document.getElementById('info-text');
-
-        if (!btn1 || !btn2 || !btn3 || !btnReset || !step1 || !step2 || !step3 || !infoText) return;
-
-        // Clonar botones para limpiar listeners previos de Astro View Transitions
-        const nBtn1 = btn1.cloneNode(true) as HTMLButtonElement;
-        const nBtn2 = btn2.cloneNode(true) as HTMLButtonElement;
-        const nBtn3 = btn3.cloneNode(true) as HTMLButtonElement;
-        const nBtnR = btnReset.cloneNode(true) as HTMLButtonElement;
-
-        btn1.parentNode?.replaceChild(nBtn1, btn1);
-        btn2.parentNode?.replaceChild(nBtn2, btn2);
-        btn3.parentNode?.replaceChild(nBtn3, btn3);
-        btnReset.parentNode?.replaceChild(nBtnR, btnReset);
-
-        // Estado inicial de reinicio
-        const resetState = () => {
-            step1.classList.replace('visible', 'hidden');
-            step2.classList.replace('visible', 'hidden');
-            step3.classList.replace('visible', 'hidden');
-            
-            nBtn1.disabled = false;
-            nBtn2.disabled = true;
-            nBtn3.disabled = true;
-            
-            infoText.innerHTML = "Selecciona 'Paso 1' para comenzar.";
+    const setupVariacion = () => {
+        const correctAnswers: Record<string, string> = {
+            top1: "+3", top2: "+3", top3: "+3", top4: "+3",
+            bot1: "-3", bot2: "-3", bot3: "-3", bot4: "-3"
         };
 
-        // Forzar limpieza al montar el componente
-        resetState();
+        let estadoSaltos: Record<string, string> = {};
+        const inputIds = Object.keys(correctAnswers);
 
-        // Asignación de eventos
-        nBtn1.addEventListener('click', () => {
-            step1.classList.replace('hidden', 'visible');
-            nBtn1.disabled = true;
-            nBtn2.disabled = false;
-            infoText.innerHTML = "<strong>Paso 1:</strong> Ubicamos el par base conocido de la receta. Sabemos que 3 tazas de harina requieren 2 tazas de azúcar.";
+        inputIds.forEach(id => {
+            estadoSaltos[id] = "";
         });
 
-        nBtn2.addEventListener('click', () => {
-            step2.classList.replace('hidden', 'visible');
-            nBtn2.disabled = true;
-            nBtn3.disabled = false;
-            infoText.innerHTML = "<strong>Paso 2:</strong> Calculamos el valor unitario. Dividimos ambas cantidades por 3. Ahora sabemos que 1 taza de harina requiere 2/3 de taza de azúcar.";
+        const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
+        const feedback = document.getElementById('feedback') as HTMLElement | null;
+
+        if (!btnVerify || !feedback) return;
+
+        function formatAnswer(val: string, expected: string) {
+            let clean = val.trim();
+            // Perdona si pone "3" en lugar de "+3"
+            if (expected === "+3" && clean === "3") return "+3";
+            return clean;
+        }
+
+        inputIds.forEach(id => {
+            const input = document.getElementById(id) as HTMLInputElement | null;
+            if (!input) return;
+
+            // Clonar nodo para resetear event listeners en Astro View Transitions
+            const newClone = input.cloneNode(true) as HTMLInputElement;
+            input.parentNode?.replaceChild(newClone, input);
+
+            newClone.addEventListener('input', (e) => {
+                estadoSaltos[id] = (e.target as HTMLInputElement).value;
+            });
         });
 
-        nBtn3.addEventListener('click', () => {
-            step3.classList.replace('hidden', 'visible');
-            nBtn3.disabled = true;
-            infoText.innerHTML = "<strong>Paso 3:</strong> Multiplicamos el valor unitario por el factor objetivo (3,4). Al escalar la unidad base, evitamos el problema de que 3,4 no sea múltiplo de 3.";
+        const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
+        btnVerify.parentNode?.replaceChild(newBtnVerify, btnVerify);
+
+        newBtnVerify.addEventListener('click', () => {
+            let correctCount = 0;
+
+            inputIds.forEach(id => {
+                const input = document.getElementById(id) as HTMLInputElement | null;
+                if (!input) return;
+
+                const userVal = formatAnswer(estadoSaltos[id], correctAnswers[id]);
+                const correctVal = correctAnswers[id];
+
+                input.disabled = true;
+
+                if (userVal === correctVal) {
+                    input.classList.add('correct');
+                    input.value = correctVal; // Estandariza a "+3" visualmente si puso solo "3"
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.value = correctVal; 
+                }
+            });
+
+            if (correctCount === inputIds.length) {
+                feedback.style.color = "#047857";
+                feedback.textContent = "¡Perfecto! Has identificado la variación constante en ambas variables.";
+            } else {
+                feedback.style.color = "#b91c1c";
+                feedback.textContent = `Hay errores. Recuerda incluir el signo (+ o -) para indicar la dirección del cambio.`;
+            }
+
+            newBtnVerify.disabled = true;
         });
 
-        nBtnR.addEventListener('click', resetState);
+        // Integración JSInput API de edX
+        (window as any).getGrade = () => JSON.stringify(estadoSaltos);
+        (window as any).getState = () => JSON.stringify(estadoSaltos);
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                estadoSaltos = JSON.parse(stateStr);
+                inputIds.forEach(id => {
+                    if (estadoSaltos[id] !== "") {
+                        const input = document.getElementById(id) as HTMLInputElement | null;
+                        if (input) input.value = estadoSaltos[id];
+                    }
+                });
+            } catch(e) {
+                console.error("Error restaurando estado en edX", e);
+            }
+        };
     };
 
-    // Inicialización compatible con View Transitions
-    document.addEventListener('DOMContentLoaded', setupDobleRecta);
-    document.addEventListener('astro:page-load', setupDobleRecta);
+    document.addEventListener('DOMContentLoaded', setupVariacion);
+    document.addEventListener('astro:page-load', setupVariacion);
 </script>
