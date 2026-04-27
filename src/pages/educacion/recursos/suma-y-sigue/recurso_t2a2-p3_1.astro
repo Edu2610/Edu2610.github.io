@@ -1,35 +1,84 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
-// Asegúrate de que la ruta al Layout sea la correcta
+// Ajusta la ruta al Layout según tu estructura de carpetas
 ---
 
-<Layout titulo="Explorador de Variación">
-    <script is:inline src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
-
+<Layout titulo="La doble recta numérica">
     <div class="recurso-wrapper">
         <div class="card">
-            <div class="header-text">
-                <h3>Relación entre Puntos y Variación</h3>
-                <p>Mueve los deslizadores para observar la compensación exacta entre los bidones.</p>
-            </div>
+            <h3 style="color: #0f172a; margin-top: 0; text-align: center;">La doble recta numérica: volver a la unidad</h3>
+            <p style="font-size: 0.95rem; color: #64748b; text-align: center; margin-bottom: 25px;">
+                Avanza por los pasos para descubrir cómo usar la tasa unitaria.
+            </p>
             
             <div class="controls">
-                <div class="slider-group">
-                    <label>Punto A (x): <span id="valA" class="label-val">2.0</span></label>
-                    <input type="range" id="slideA" min="0" max="12" step="0.3" value="2">
-                </div>
-                <div class="slider-group">
-                    <label>Punto B (x): <span id="valB" class="label-val">6.0</span></label>
-                    <input type="range" id="slideB" min="0" max="12" step="0.3" value="6">
-                </div>
+                <button id="btn1" class="btn-step">Paso 1: Par conocido</button>
+                <button id="btn2" class="btn-step" disabled>Paso 2: Valor unitario</button>
+                <button id="btn3" class="btn-step" disabled>Paso 3: Multiplicar</button>
+                <button id="btnReset" class="btn-reset">Reiniciar</button>
             </div>
 
-            <div id="plot"></div>
+            <div id="svg-container">
+                <svg width="100%" height="100%" viewBox="0 0 800 350" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                        </marker>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
+                        </marker>
+                    </defs>
 
-            <div class="info-box">
-                <strong>Análisis del Triángulo:</strong>
-                Mientras <span class="text-blue">x varía <span id="dx">4.0</span></span> unidades, 
-                <span class="text-red">y varía exactamente <span id="dy">4.0</span></span> unidades en sentido opuesto.
+                    <line x1="120" y1="120" x2="750" y2="120" stroke="#94a3b8" stroke-width="3" />
+                    <line x1="120" y1="230" x2="750" y2="230" stroke="#94a3b8" stroke-width="3" />
+                    
+                    <text x="100" y="125" font-weight="bold" fill="#1e293b" text-anchor="end">Harina (x)</text>
+                    <text x="100" y="235" font-weight="bold" fill="#1e293b" text-anchor="end">Azúcar (y)</text>
+
+                    <line x1="150" y1="110" x2="150" y2="240" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4" />
+                    <text x="150" y="100" text-anchor="middle" font-size="14">0</text>
+                    <text x="150" y="260" text-anchor="middle" font-size="14">0</text>
+
+                    <g id="g-step1" class="hidden">
+                        <line x1="550" y1="110" x2="550" y2="240" stroke="#1e293b" stroke-width="2" stroke-dasharray="4" />
+                        <circle cx="550" cy="120" r="6" fill="#1e293b" />
+                        <circle cx="550" cy="230" r="6" fill="#1e293b" />
+                        <text x="550" y="100" text-anchor="middle" font-weight="bold" font-size="16">3</text>
+                        <text x="550" y="260" text-anchor="middle" font-weight="bold" font-size="16">2</text>
+                    </g>
+
+                    <g id="g-step2" class="hidden">
+                        <line x1="283" y1="110" x2="283" y2="240" stroke="#059669" stroke-width="2" stroke-dasharray="4" />
+                        <circle cx="283" cy="120" r="6" fill="#059669" />
+                        <circle cx="283" cy="230" r="6" fill="#059669" />
+                        <text x="283" y="100" text-anchor="middle" font-weight="bold" font-size="16" fill="#059669">1</text>
+                        <text x="283" y="260" text-anchor="middle" font-weight="bold" font-size="16" fill="#059669">2/3</text>
+
+                        <path d="M 540 100 Q 416 60 293 100" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                        <text x="416" y="75" text-anchor="middle" fill="#2563eb" font-weight="bold" font-size="14">÷ 3</text>
+
+                        <path d="M 540 250 Q 416 290 293 250" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                        <text x="416" y="295" text-anchor="middle" fill="#d32f2f" font-weight="bold" font-size="14">÷ 3</text>
+                    </g>
+
+                    <g id="g-step3" class="hidden">
+                        <line x1="603" y1="110" x2="603" y2="240" stroke="#9333ea" stroke-width="2" stroke-dasharray="4" />
+                        <circle cx="603" cy="120" r="6" fill="#9333ea" />
+                        <circle cx="603" cy="230" r="6" fill="#9333ea" />
+                        <text x="603" y="100" text-anchor="middle" font-weight="bold" font-size="16" fill="#9333ea">3.4</text>
+                        <text x="603" y="260" text-anchor="middle" font-weight="bold" font-size="16" fill="#9333ea">2.27</text>
+
+                        <path d="M 283 85 Q 443 10 593 85" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                        <text x="443" y="20" text-anchor="middle" fill="#2563eb" font-weight="bold" font-size="14">× 3.4</text>
+
+                        <path d="M 283 265 Q 443 340 593 265" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                        <text x="443" y="330" text-anchor="middle" fill="#d32f2f" font-weight="bold" font-size="14">× 3.4</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="info-box" id="info-text">
+                Selecciona "Paso 1" para comenzar.
             </div>
         </div>
     </div>
@@ -37,12 +86,12 @@ import Layout from '../../../../layouts/Layout.astro';
 
 <style>
     .recurso-wrapper {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', system-ui, sans-serif;
+        background-color: #f8fafc;
         display: flex;
         justify-content: center;
         padding: 40px 20px;
         width: 100%;
-        background-color: #f8fafc;
     }
 
     .card {
@@ -50,182 +99,129 @@ import Layout from '../../../../layouts/Layout.astro';
         padding: 30px;
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        max-width: 850px;
+        max-width: 800px; /* Ancho máximo ajustado a 800px según requerimiento */
         width: 100%;
     }
-
-    .header-text { margin-bottom: 20px; text-align: center; }
-    .header-text h3 { color: #d32f2f; margin: 0 0 5px 0; font-size: 1.5rem; }
-    .header-text p { color: #64748b; font-size: 0.95rem; margin: 0; }
 
     .controls {
         display: flex;
-        gap: 30px;
+        gap: 15px;
         background: #f1f5f9;
         padding: 20px;
         border-radius: 8px;
-        margin-bottom: 15px;
-        align-items: center;
-        justify-content: space-around;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
-    @media (max-width: 600px) {
-        .controls { flex-direction: column; gap: 15px; }
+    button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s;
     }
 
-    .slider-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        flex-grow: 1;
+    .btn-step { background: #2563eb; color: white; }
+    .btn-step:hover:not(:disabled) { background: #1d4ed8; transform: translateY(-2px); }
+    .btn-step:disabled { background: #cbd5e1; cursor: not-allowed; color: #64748b; transform: none; }
+
+    .btn-reset { background: #ef4444; color: white; }
+    .btn-reset:hover { background: #dc2626; transform: translateY(-2px); }
+
+    #svg-container {
         width: 100%;
+        height: 350px;
+        position: relative;
     }
 
-    .slider-group label { color: #475569; font-size: 0.95rem; }
-    .label-val { font-weight: 800; color: #1e293b; }
-    
-    input[type=range] { width: 100%; cursor: pointer; }
-
-    #plot { width: 100%; height: 550px; }
+    text { font-family: 'Inter', system-ui, sans-serif; }
 
     .info-box {
-        border-left: 4px solid #d32f2f;
-        background: #fff1f2;
+        border-left: 4px solid #059669;
+        background: #ecfdf5;
         padding: 15px 20px;
         font-size: 1rem;
-        margin-top: 15px;
+        margin-top: 10px;
         border-radius: 4px;
-        color: #1e293b;
+        min-height: 40px;
+        line-height: 1.5;
+        color: #064e3b;
     }
-
-    .text-blue { color: #2563eb; font-weight: 600; }
-    .text-red { color: #d32f2f; font-weight: 600; }
+    
+    /* Clases para animación de SVG */
+    :global(.hidden) { opacity: 0; pointer-events: none; }
+    :global(.visible) { opacity: 1; transition: opacity 0.5s ease-in; }
 </style>
 
 <script>
-    declare const Plotly: any;
-
-    const setupTriangulos = () => {
-        const slideA = document.getElementById('slideA') as HTMLInputElement | null;
-        const slideB = document.getElementById('slideB') as HTMLInputElement | null;
-        const valA = document.getElementById('valA') as HTMLElement | null;
-        const valB = document.getElementById('valB') as HTMLElement | null;
-        const dxText = document.getElementById('dx') as HTMLElement | null;
-        const dyText = document.getElementById('dy') as HTMLElement | null;
-        const plotDiv = document.getElementById('plot') as HTMLElement | null;
-
-        if (!slideA || !slideB || !valA || !valB || !dxText || !dyText || !plotDiv) return;
-
-        function update() {
-            const x1 = parseFloat(slideA!.value);
-            const x2 = parseFloat(slideB!.value);
-            const y1 = 12 - x1;
-            const y2 = 12 - x2;
-
-            valA!.innerText = x1.toFixed(1);
-            valB!.innerText = x2.toFixed(1);
-            
-            const deltaX = x2 - x1;
-            const deltaY = y2 - y1;
-            dxText!.innerText = Math.abs(deltaX).toFixed(1);
-            dyText!.innerText = Math.abs(deltaY).toFixed(1);
-
-            const traceLine = {
-                x: [0, 12], y: [12, 0],
-                mode: 'lines', name: 'Recta',
-                line: { color: '#94a3b8', width: 2, dash: 'dot' },
-                hoverinfo: 'skip'
-            };
-
-            const triangle = {
-                x: [x1, x2, x2],
-                y: [y1, y1, y2],
-                mode: 'lines',
-                fill: 'toself',
-                fillcolor: 'rgba(211, 47, 47, 0.1)',
-                line: { color: '#d32f2f', width: 3 },
-                name: 'Variación',
-                hoverinfo: 'skip'
-            };
-
-            const points = {
-                x: [x1, x2], y: [y1, y2],
-                mode: 'markers+text',
-                marker: { size: 12, color: '#1e293b' },
-                text: [`A(${x1.toFixed(1)}, ${y1.toFixed(1)})`, `B(${x2.toFixed(1)}, ${y2.toFixed(1)})`],
-                textposition: 'top center',
-                name: 'Puntos',
-                hoverinfo: 'none'
-            };
-
-            const layout = {
-                xaxis: { title: 'Litros en Bidón B (x)', range: [-0.5, 12.5], dtick: 1, gridcolor: '#e2e8f0' },
-                yaxis: { 
-                    title: 'Litros en Bidón A (y)', 
-                    range: [-0.5, 12.5], 
-                    dtick: 1, 
-                    gridcolor: '#e2e8f0',
-                    scaleanchor: "x", 
-                    scaleratio: 1 
-                },
-                showlegend: false,
-                margin: { t: 30, b: 40, l: 50, r: 20 },
-                hovermode: false,
-                annotations: [
-                    {
-                        x: (x1 + x2) / 2,
-                        y: y1 + 0.7,
-                        text: `Δx = ${deltaX.toFixed(1)}`,
-                        showarrow: false,
-                        font: { color: '#2563eb', weight: 'bold' },
-                        bgcolor: 'rgba(255,255,255,0.8)'
-                    },
-                    {
-                        x: x2 + 1,
-                        y: (y1 + y2) / 2,
-                        text: `Δy = ${deltaY.toFixed(1)}`,
-                        showarrow: false,
-                        font: { color: '#d32f2f', weight: 'bold' },
-                        bgcolor: 'rgba(255,255,255,0.8)'
-                    }
-                ]
-            };
-
-            if (typeof Plotly !== 'undefined') {
-                Plotly.react('plot', [traceLine, triangle, points], layout);
-            }
-        }
-
-        // Clonar sliders para limpiar listeners (View Transitions)
-        const nSlideA = slideA.cloneNode(true) as HTMLInputElement;
-        const nSlideB = slideB.cloneNode(true) as HTMLInputElement;
+    const setupAnimacion = () => {
+        const btn1 = document.getElementById('btn1') as HTMLButtonElement | null;
+        const btn2 = document.getElementById('btn2') as HTMLButtonElement | null;
+        const btn3 = document.getElementById('btn3') as HTMLButtonElement | null;
+        const btnReset = document.getElementById('btnReset') as HTMLButtonElement | null;
         
-        slideA.parentNode?.replaceChild(nSlideA, slideA);
-        slideB.parentNode?.replaceChild(nSlideB, slideB);
+        const step1 = document.getElementById('g-step1');
+        const step2 = document.getElementById('g-step2');
+        const step3 = document.getElementById('g-step3');
+        const infoText = document.getElementById('info-text');
 
-        // Sistema de carga segura (Polling)
-        const initPlot = () => {
-            if (typeof Plotly !== 'undefined') {
-                update();
-            } else {
-                plotDiv.innerHTML = "<p style='text-align:center; color:#64748b; margin-top:100px;'>Cargando motor gráfico...</p>";
-                const checkPlotly = setInterval(() => {
-                    if (typeof Plotly !== 'undefined') {
-                        clearInterval(checkPlotly);
-                        plotDiv.innerHTML = "";
-                        update();
-                    }
-                }, 200);
-            }
+        if (!btn1 || !btn2 || !btn3 || !btnReset || !step1 || !step2 || !step3 || !infoText) return;
+
+        // Clonar botones para limpiar listeners previos de Astro View Transitions
+        const nBtn1 = btn1.cloneNode(true) as HTMLButtonElement;
+        const nBtn2 = btn2.cloneNode(true) as HTMLButtonElement;
+        const nBtn3 = btn3.cloneNode(true) as HTMLButtonElement;
+        const nBtnR = btnReset.cloneNode(true) as HTMLButtonElement;
+
+        btn1.parentNode?.replaceChild(nBtn1, btn1);
+        btn2.parentNode?.replaceChild(nBtn2, btn2);
+        btn3.parentNode?.replaceChild(nBtn3, btn3);
+        btnReset.parentNode?.replaceChild(nBtnR, btnReset);
+
+        // Estado inicial de reinicio
+        const resetState = () => {
+            step1.classList.replace('visible', 'hidden');
+            step2.classList.replace('visible', 'hidden');
+            step3.classList.replace('visible', 'hidden');
+            
+            nBtn1.disabled = false;
+            nBtn2.disabled = true;
+            nBtn3.disabled = true;
+            
+            infoText.innerHTML = "Selecciona 'Paso 1' para comenzar.";
         };
 
-        // Listeners en los nodos clonados
-        nSlideA.addEventListener('input', update);
-        nSlideB.addEventListener('input', update);
+        // Forzar limpieza al montar el componente
+        resetState();
 
-        initPlot();
+        // Asignación de eventos
+        nBtn1.addEventListener('click', () => {
+            step1.classList.replace('hidden', 'visible');
+            nBtn1.disabled = true;
+            nBtn2.disabled = false;
+            infoText.innerHTML = "<strong>Paso 1:</strong> Ubicamos el par base conocido de la receta. Sabemos que 3 tazas de harina requieren 2 tazas de azúcar.";
+        });
+
+        nBtn2.addEventListener('click', () => {
+            step2.classList.replace('hidden', 'visible');
+            nBtn2.disabled = true;
+            nBtn3.disabled = false;
+            infoText.innerHTML = "<strong>Paso 2:</strong> Calculamos el valor unitario. Dividimos ambas cantidades por 3. Ahora sabemos que 1 taza de harina requiere 2/3 de taza de azúcar.";
+        });
+
+        nBtn3.addEventListener('click', () => {
+            step3.classList.replace('hidden', 'visible');
+            nBtn3.disabled = true;
+            infoText.innerHTML = "<strong>Paso 3:</strong> Multiplicamos el valor unitario por el factor objetivo (3,4). Al escalar la unidad base, evitamos el problema de que 3,4 no sea múltiplo de 3.";
+        });
+
+        nBtnR.addEventListener('click', resetState);
     };
 
-    document.addEventListener('DOMContentLoaded', setupTriangulos);
-    document.addEventListener('astro:page-load', setupTriangulos);
+    // Inicialización compatible con View Transitions
+    document.addEventListener('DOMContentLoaded', setupAnimacion);
+    document.addEventListener('astro:page-load', setupAnimacion);
 </script>
