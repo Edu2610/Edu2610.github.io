@@ -1,0 +1,295 @@
+---
+import Layout from '../../../../../layouts/Layout.astro';
+// Ajusta la ruta al Layout según la ubicación de este archivo en tu proyecto
+---
+
+<Layout titulo="Covariación Inversa">
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="header-text">
+                <p class="desc">Encuentra el factor de multiplicación o división entre columnas consecutivas (ej: <strong>x 2</strong>, <strong>÷ 2</strong>).</p>
+            </div>
+
+            <div class="interactive-container">
+                
+                <svg class="svg-layer svg-top" viewBox="0 0 700 40">
+                    <defs>
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                        </marker>
+                    </defs>
+                    <path d="M 225 35 Q 260 -10 295 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 335 35 Q 370 -10 405 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 445 35 Q 480 -10 515 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 555 35 Q 590 -10 625 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                </svg>
+
+                <input type="text" id="top1" class="jump-input input-blue" style="left: 260px; top: -55px;" autocomplete="off">
+                <input type="text" id="top2" class="jump-input input-blue" style="left: 370px; top: -55px;" autocomplete="off">
+                <input type="text" id="top3" class="jump-input input-blue" style="left: 480px; top: -55px;" autocomplete="off">
+                <input type="text" id="top4" class="jump-input input-blue" style="left: 590px; top: -55px;" autocomplete="off">
+
+                <table>
+                    <tr>
+                        <td class="col-header">x (km/h)</td>
+                        <td>10</td>
+                        <td>20</td>
+                        <td>40</td>
+                        <td>80</td>
+                        <td>160</td>
+                    </tr>
+                    <tr>
+                        <td class="col-header">y (h)</td>
+                        <td>10</td>
+                        <td>5</td>
+                        <td>2,5</td>
+                        <td>1,25</td>
+                        <td>0,625</td>
+                    </tr>
+                </table>
+
+                <svg class="svg-layer svg-bottom" viewBox="0 0 700 40">
+                    <defs>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
+                        </marker>
+                    </defs>
+                    <path d="M 225 5 Q 260 50 295 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 335 5 Q 370 50 405 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 445 5 Q 480 50 515 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 555 5 Q 590 50 625 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                </svg>
+
+                <input type="text" id="bot1" class="jump-input input-red" style="left: 260px; bottom: -85px;" autocomplete="off">
+                <input type="text" id="bot2" class="jump-input input-red" style="left: 370px; bottom: -85px;" autocomplete="off">
+                <input type="text" id="bot3" class="jump-input input-red" style="left: 480px; bottom: -85px;" autocomplete="off">
+                <input type="text" id="bot4" class="jump-input input-red" style="left: 590px; bottom: -85px;" autocomplete="off">
+
+            </div>
+
+            <button id="btn-verify" class="btn-verify">Verificar respuesta</button>
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        font-family: 'Inter', system-ui, sans-serif;
+        background-color: #f8fafc;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        width: 100%;
+    }
+
+    .card {
+        background: white;
+        padding: 40px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        max-width: 800px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-text { text-align: center; margin-bottom: 20px; }
+    .header-text p.desc { color: #475569; font-size: 0.95rem; margin: 0; }
+
+    .interactive-container {
+        width: 700px;
+        position: relative;
+        margin-top: 50px; 
+        margin-bottom: 50px; 
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        position: relative;
+        z-index: 1;
+    }
+
+    td {
+        border: 1px solid #475569;
+        height: 60px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .col-header {
+        width: 150px;
+        background-color: #f1f5f9;
+        font-weight: 700;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .jump-input {
+        position: absolute;
+        width: 58px; 
+        height: 28px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        z-index: 10;
+        transform: translate(-50%, -50%); 
+    }
+
+    .jump-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    .input-blue { color: #2563eb; }
+    .input-blue:focus { border-color: #2563eb; }
+    .input-red { color: #d32f2f; }
+    .input-red:focus { border-color: #d32f2f; }
+
+    .correct { background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #047857 !important; }
+    .incorrect { background-color: #fef2f2 !important; border-color: #ef4444 !important; color: #b91c1c !important; }
+
+    .btn-verify {
+        padding: 12px 30px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #0f172a;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-verify:hover:not(:disabled) { background: #334155; transform: translateY(-2px); }
+    .btn-verify:disabled { background: #cbd5e1; cursor: not-allowed; color: #f8fafc; }
+
+    .feedback-text {
+        margin-top: 15px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        min-height: 20px;
+        text-align: center;
+        max-width: 650px;
+        line-height: 1.5;
+    }
+
+    .svg-layer {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        pointer-events: none; 
+    }
+    .svg-top { top: -40px; height: 40px; }
+    .svg-bottom { bottom: -40px; height: 40px; }
+</style>
+
+<script>
+    const setupCovariacionInversa = () => {
+        const correctAnswers: Record<string, string> = {
+            top1: "x 2", top2: "x 2", top3: "x 2", top4: "x 2",
+            bot1: "÷ 2", bot2: "÷ 2", bot3: "÷ 2", bot4: "÷ 2"
+        };
+
+        let estadoSaltos: Record<string, string> = {};
+        const inputIds = Object.keys(correctAnswers);
+
+        inputIds.forEach(id => {
+            estadoSaltos[id] = "";
+        });
+
+        const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
+        const feedback = document.getElementById('feedback') as HTMLElement | null;
+
+        if (!btnVerify || !feedback) return;
+
+        function formatAnswer(val: string) {
+            let clean = val.toLowerCase().replace(/\s+/g, '').replace(',', '.');
+            
+            if (['x2', '*2', '·2'].includes(clean)) return 'x 2';
+            if (['/2', '÷2', ':2'].includes(clean)) return '÷ 2';
+            
+            return val.trim();
+        }
+
+        inputIds.forEach(id => {
+            const input = document.getElementById(id) as HTMLInputElement | null;
+            if (!input) return;
+
+            const newClone = input.cloneNode(true) as HTMLInputElement;
+            input.parentNode?.replaceChild(newClone, input);
+
+            newClone.addEventListener('input', (e) => {
+                estadoSaltos[id] = (e.target as HTMLInputElement).value;
+            });
+        });
+
+        const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
+        btnVerify.parentNode?.replaceChild(newBtnVerify, btnVerify);
+
+        newBtnVerify.addEventListener('click', () => {
+            let correctCount = 0;
+
+            inputIds.forEach(id => {
+                const input = document.getElementById(id) as HTMLInputElement | null;
+                if (!input) return;
+
+                const userVal = formatAnswer(estadoSaltos[id]);
+                const correctVal = correctAnswers[id];
+
+                input.disabled = true;
+
+                if (userVal === correctVal) {
+                    input.classList.add('correct');
+                    input.value = correctVal; 
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.value = correctVal; 
+                }
+            });
+
+            if (correctCount === inputIds.length) {
+                feedback.style.color = "#047857";
+                feedback.innerHTML = "¡Excelente! Has identificado la relación. Cuando la variable <strong>x</strong> se multiplica por un factor, la variable <strong>y</strong> se divide por ese mismo factor. Esto es lo que llamamos <strong>proporcionalidad inversa</strong>.";
+            } else {
+                feedback.style.color = "#b91c1c";
+                feedback.textContent = "Hay errores. Revisa qué factor multiplicativo (x) o divisor (÷) conecta exactamente el valor de una celda con la siguiente.";
+            }
+
+            newBtnVerify.disabled = true;
+        });
+
+        // ==========================================
+        // INTEGRACIÓN EDX (JSInput API)
+        // ==========================================
+        (window as any).getGrade = () => JSON.stringify(estadoSaltos);
+        (window as any).getState = () => JSON.stringify(estadoSaltos);
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                estadoSaltos = JSON.parse(stateStr);
+                inputIds.forEach(id => {
+                    if (estadoSaltos[id] !== "") {
+                        const input = document.getElementById(id) as HTMLInputElement | null;
+                        if (input) input.value = estadoSaltos[id];
+                    }
+                });
+            } catch(e) {
+                console.error("Error restaurando estado en edX", e);
+            }
+        };
+    };
+
+    document.addEventListener('DOMContentLoaded', setupCovariacionInversa);
+    document.addEventListener('astro:page-load', setupCovariacionInversa);
+</script>
