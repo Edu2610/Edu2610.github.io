@@ -1,0 +1,311 @@
+---
+import Layout from '../../../../../layouts/Layout.astro';
+// Asegúrate de que la ruta al Layout sea la correcta
+---
+
+<Layout titulo="Covariación Inversa">
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="header-text">
+                <p class="title">Variación: Velocidad vs Tiempo</p>
+                <p class="desc">Encuentra el factor por el que se multiplica o divide desde la <strong>columna base (10 km/h)</strong>.</p>
+            </div>
+
+            <div class="interactive-container">
+                
+                <svg class="svg-layer svg-top" viewBox="0 0 800 160">
+                    <defs>
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                        </marker>
+                    </defs>
+                    <path d="M 242 155 Q 304 80 366 155" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 242 155 Q 366 10 490 155" fill="none" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow-blue)" />
+                    <path d="M 242 155 Q 428 -60 614 155" fill="none" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow-blue)" />
+                    <path d="M 242 155 Q 490 -130 738 155" fill="none" stroke="#2563eb" stroke-width="5" marker-end="url(#arrow-blue)" />
+                </svg>
+
+                <input type="text" id="top1" class="jump-input input-blue" style="left: 304px; top: -38px;" autocomplete="off">
+                <input type="text" id="top2" class="jump-input input-blue" style="left: 366px; top: -73px;" autocomplete="off">
+                <input type="text" id="top3" class="jump-input input-blue" style="left: 428px; top: -108px;" autocomplete="off">
+                <input type="text" id="top4" class="jump-input input-blue" style="left: 490px; top: -143px;" autocomplete="off">
+
+                <table>
+                    <tr>
+                        <td class="col-header">Velocidad (km/h)</td>
+                        <td>10</td>
+                        <td>20</td>
+                        <td>40</td>
+                        <td>80</td>
+                        <td>160</td>
+                    </tr>
+                    <tr>
+                        <td class="col-header">Tiempo (h)</td>
+                        <td>10</td>
+                        <td>5</td>
+                        <td>2,5</td>
+                        <td>1,25</td>
+                        <td>0,625</td>
+                    </tr>
+                </table>
+
+                <svg class="svg-layer svg-bottom" viewBox="0 0 800 160">
+                    <defs>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
+                        </marker>
+                    </defs>
+                    <path d="M 242 5 Q 304 80 366 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 242 5 Q 366 150 490 5" fill="none" stroke="#d32f2f" stroke-width="3" marker-end="url(#arrow-red)" />
+                    <path d="M 242 5 Q 428 220 614 5" fill="none" stroke="#d32f2f" stroke-width="4" marker-end="url(#arrow-red)" />
+                    <path d="M 242 5 Q 490 290 738 5" fill="none" stroke="#d32f2f" stroke-width="5" marker-end="url(#arrow-red)" />
+                </svg>
+
+                <input type="text" id="bot1" class="jump-input input-red" style="left: 304px; bottom: -38px;" autocomplete="off">
+                <input type="text" id="bot2" class="jump-input input-red" style="left: 366px; bottom: -73px;" autocomplete="off">
+                <input type="text" id="bot3" class="jump-input input-red" style="left: 428px; bottom: -108px;" autocomplete="off">
+                <input type="text" id="bot4" class="jump-input input-red" style="left: 490px; bottom: -143px;" autocomplete="off">
+
+            </div>
+
+            <button id="btn-verify" class="btn-verify">Verificar Respuesta</button>
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        font-family: 'Inter', system-ui, sans-serif;
+        background: #f8fafc;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        width: 100%;
+    }
+
+    .card {
+        background: white;
+        padding: 40px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        max-width: 900px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-text { text-align: center; margin-bottom: 20px; }
+    .header-text p.title { color: #0f172a; margin: 0 0 5px 0; font-size: 1.25rem; font-weight: 700; }
+    .header-text p.desc { color: #64748b; font-size: 0.95rem; margin: 0; }
+
+    .interactive-container {
+        width: 800px;
+        position: relative;
+        margin-top: 140px; 
+        margin-bottom: 180px; 
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        position: relative;
+        z-index: 1;
+    }
+
+    td {
+        border: 1px solid #475569;
+        height: 60px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .col-header {
+        width: 180px;
+        background-color: #f1f5f9;
+        font-weight: 700;
+        text-align: right;
+        padding-right: 15px;
+    }
+
+    .jump-input {
+        position: absolute;
+        width: 48px;
+        height: 28px;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        z-index: 10;
+        transform: translate(-50%, -50%); 
+    }
+
+    .jump-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    .input-blue { color: #2563eb; }
+    .input-blue:focus { border-color: #2563eb; }
+    .input-red { color: #d32f2f; }
+    .input-red:focus { border-color: #d32f2f; }
+
+    .correct { background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #047857 !important; }
+    .incorrect { background-color: #fef2f2 !important; border-color: #ef4444 !important; color: #b91c1c !important; }
+
+    .btn-verify {
+        padding: 12px 30px;
+        margin-top : 10px;
+        border: none;
+        border-radius: 8px;
+        background: #0f172a;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-verify:hover:not(:disabled) { background: #334155; transform: translateY(-2px); }
+    .btn-verify:disabled { background: #cbd5e1; cursor: not-allowed; color: #f8fafc; }
+
+    .feedback-text {
+        margin-top: 15px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        min-height: 20px;
+        text-align: center;
+        max-width: 650px;
+        line-height: 1.5;
+    }
+
+    .svg-layer {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        pointer-events: none; 
+        overflow: visible;
+    }
+    .svg-top { top: -160px; height: 160px; }
+    .svg-bottom { bottom: -160px; height: 160px; }
+</style>
+
+<script>
+    const setupVariacionAuto = () => {
+        const correctAnswers: Record<string, string> = {
+            top1: "x 2", top2: "x 4", top3: "x 8", top4: "x 16",
+            bot1: "÷ 2", bot2: "÷ 4", bot3: "÷ 8", bot4: "÷ 16"
+        };
+
+        let estadoSaltos: Record<string, string> = {};
+        const inputIds = Object.keys(correctAnswers);
+
+        inputIds.forEach(id => {
+            estadoSaltos[id] = "";
+        });
+
+        const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
+        const feedback = document.getElementById('feedback') as HTMLElement | null;
+
+        if (!btnVerify || !feedback) return;
+
+        // Validador indulgente
+        function formatAnswer(val: string, expected: string) {
+            let clean = val.toLowerCase().replace(/\s+/g, '').replace(',', '.');
+            
+            const validMult = ['x', '*', '·'];
+            const validDiv = ['÷', '/', ':'];
+
+            if (expected.startsWith('x')) {
+                const num = expected.substring(2);
+                for (let m of validMult) {
+                    if (clean === m + num || clean === num + m) return expected;
+                }
+            }
+            
+            if (expected.startsWith('÷')) {
+                const num = expected.substring(2);
+                for (let d of validDiv) {
+                    if (clean === d + num || clean === num + d) return expected;
+                }
+            }
+            
+            return val.trim();
+        }
+
+        inputIds.forEach(id => {
+            const input = document.getElementById(id) as HTMLInputElement | null;
+            if (!input) return;
+
+            const newClone = input.cloneNode(true) as HTMLInputElement;
+            input.parentNode?.replaceChild(newClone, input);
+
+            newClone.addEventListener('input', (e) => {
+                estadoSaltos[id] = (e.target as HTMLInputElement).value;
+            });
+        });
+
+        const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
+        btnVerify.parentNode?.replaceChild(newBtnVerify, btnVerify);
+
+        newBtnVerify.addEventListener('click', () => {
+            let correctCount = 0;
+
+            inputIds.forEach(id => {
+                const input = document.getElementById(id) as HTMLInputElement | null;
+                if (!input) return;
+
+                const userVal = formatAnswer(estadoSaltos[id], correctAnswers[id]);
+                const correctVal = correctAnswers[id];
+
+                input.disabled = true;
+
+                if (userVal === correctVal) {
+                    input.classList.add('correct');
+                    input.value = correctVal; 
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.value = correctVal; 
+                }
+            });
+
+            if (correctCount === inputIds.length) {
+                feedback.style.color = "#047857";
+                feedback.innerHTML = "¡Excelente! Has demostrado que <strong>si multiplicamos</strong> la velocidad (x) por un factor, el tiempo (y) <strong>se divide por ese mismo factor</strong>. A esto se le conoce como covariación inversamente proporcional.";
+            } else {
+                feedback.style.color = "#b91c1c";
+                feedback.innerHTML = "Hay errores. Recuerda que los saltos se cuentan <strong>desde la columna base (10)</strong> hasta el valor de la casilla actual. Ej: de 10 a 80 el factor es x 8.";
+            }
+
+            newBtnVerify.disabled = true;
+        });
+
+        // Integración JSInput API de edX
+        (window as any).getGrade = () => JSON.stringify(estadoSaltos);
+        (window as any).getState = () => JSON.stringify(estadoSaltos);
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                estadoSaltos = JSON.parse(stateStr);
+                inputIds.forEach(id => {
+                    if (estadoSaltos[id] !== "") {
+                        const input = document.getElementById(id) as HTMLInputElement | null;
+                        if (input) input.value = estadoSaltos[id];
+                    }
+                });
+            } catch(e) {
+                console.error("Error restaurando estado en edX", e);
+            }
+        };
+    };
+
+    document.addEventListener('DOMContentLoaded', setupVariacionAuto);
+    document.addEventListener('astro:page-load', setupVariacionAuto);
+</script>
