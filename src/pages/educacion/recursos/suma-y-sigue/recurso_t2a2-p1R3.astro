@@ -1,13 +1,13 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
-// Ajusta la ruta al Layout según tu estructura de carpetas
+// Asegúrate de que la ruta al Layout coincida con la estructura de tu proyecto
 ---
 
 <Layout titulo="Identificación de la Tasa de Cambio">
     <div class="recurso-wrapper">
         <div class="card">
             <div class="header-text">
-                <p>Escribe el valor del salto constante entre cada casilla (+3, -3, etc.).</p>
+                <p>Completa la cantidad en el Bidón A y el valor del salto constante entre cada casilla.</p>
             </div>
 
             <div class="interactive-container">
@@ -24,10 +24,10 @@ import Layout from '../../../../layouts/Layout.astro';
                     <path d="M 555 35 Q 590 -10 625 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
                 </svg>
 
-                <input type="text" id="top1" class="jump-input input-blue" style="left: 260px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="top2" class="jump-input input-blue" style="left: 370px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="top3" class="jump-input input-blue" style="left: 480px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="top4" class="jump-input input-blue" style="left: 590px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <div class="static-jump input-blue" style="left: 260px; top: -55px;">+3</div>
+                <div class="static-jump input-blue" style="left: 370px; top: -55px;">+3</div>
+                <div class="static-jump input-blue" style="left: 480px; top: -55px;">+3</div>
+                <div class="static-jump input-blue" style="left: 590px; top: -55px;">+3</div>
 
                 <table>
                     <tr>
@@ -41,10 +41,10 @@ import Layout from '../../../../layouts/Layout.astro';
                     <tr>
                         <td class="col-header">Bidón A</td>
                         <td>12</td>
-                        <td>9</td>
-                        <td>6</td>
-                        <td>3</td>
-                        <td>0</td>
+                        <td><input type="text" id="cell1" class="cell-input" autocomplete="off" inputmode="numeric"></td>
+                        <td><input type="text" id="cell2" class="cell-input" autocomplete="off" inputmode="numeric"></td>
+                        <td><input type="text" id="cell3" class="cell-input" autocomplete="off" inputmode="numeric"></td>
+                        <td><input type="text" id="cell4" class="cell-input" autocomplete="off" inputmode="numeric"></td>
                     </tr>
                 </table>
 
@@ -60,10 +60,10 @@ import Layout from '../../../../layouts/Layout.astro';
                     <path d="M 555 5 Q 590 50 625 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
                 </svg>
 
-                <input type="text" id="bot1" class="jump-input input-red" style="left: 260px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="bot2" class="jump-input input-red" style="left: 370px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="bot3" class="jump-input input-red" style="left: 480px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="bot4" class="jump-input input-red" style="left: 590px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="bot1" class="jump-input input-red" style="left: 260px; bottom: -85px;" autocomplete="off" inputmode="text">
+                <input type="text" id="bot2" class="jump-input input-red" style="left: 370px; bottom: -85px;" autocomplete="off" inputmode="text">
+                <input type="text" id="bot3" class="jump-input input-red" style="left: 480px; bottom: -85px;" autocomplete="off" inputmode="text">
+                <input type="text" id="bot4" class="jump-input input-red" style="left: 590px; bottom: -85px;" autocomplete="off" inputmode="text">
 
             </div>
 
@@ -96,7 +96,7 @@ import Layout from '../../../../layouts/Layout.astro';
     }
 
     .header-text { text-align: center; margin-bottom: 20px; }
-    .header-text p { color: #0f172a; font-size: 1.1rem; font-weight: 600; margin: 0; }
+    .header-text p { color: #0f172a; font-size: 1rem; font-weight: 600; margin: 0; }
 
     .interactive-container {
         width: 700px;
@@ -131,6 +131,16 @@ import Layout from '../../../../layouts/Layout.astro';
         padding-right: 15px;
     }
 
+    .static-jump {
+        position: absolute;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 800;
+        text-align: center;
+        z-index: 10;
+        transform: translate(-50%, -50%);
+    }
+
     .jump-input {
         position: absolute;
         width: 44px;
@@ -149,13 +159,38 @@ import Layout from '../../../../layouts/Layout.astro';
     }
 
     .jump-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+
+    .cell-input {
+        width: 60%;
+        height: 36px;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        color: #1e293b;
+        outline: none;
+        transition: all 0.2s;
+    }
+
+    .cell-input:focus { border-color: #0f172a; }
+
     .input-blue { color: #2563eb; }
-    .input-blue:focus { border-color: #2563eb; }
     .input-red { color: #d32f2f; }
     .input-red:focus { border-color: #d32f2f; }
 
-    .correct { background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #047857 !important; }
-    .incorrect { background-color: #fef2f2 !important; border-color: #ef4444 !important; color: #b91c1c !important; }
+    :global(.correct) {
+        background-color: #ecfdf5 !important;
+        border-color: #10b981 !important;
+        color: #047857 !important;
+    }
+
+    :global(.incorrect) {
+        background-color: #fef2f2 !important;
+        border-color: #ef4444 !important;
+        color: #b91c1c !important;
+    }
 
     .btn-verify {
         padding: 12px 30px;
@@ -175,10 +210,12 @@ import Layout from '../../../../layouts/Layout.astro';
 
     .feedback-text {
         margin-top: 15px;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         font-weight: 600;
         min-height: 20px;
         text-align: center;
+        max-width: 650px;
+        line-height: 1.5;
     }
 
     .svg-layer {
@@ -192,17 +229,17 @@ import Layout from '../../../../layouts/Layout.astro';
 </style>
 
 <script>
-    const setupVariacion = () => {
+    const setupValidacionBidones = () => {
         const correctAnswers: Record<string, string> = {
-            top1: "+3", top2: "+3", top3: "+3", top4: "+3",
+            cell1: "9", cell2: "6", cell3: "3", cell4: "0",
             bot1: "-3", bot2: "-3", bot3: "-3", bot4: "-3"
         };
 
-        let estadoSaltos: Record<string, string> = {};
+        let estadoActual: Record<string, string> = {};
         const inputIds = Object.keys(correctAnswers);
 
         inputIds.forEach(id => {
-            estadoSaltos[id] = "";
+            estadoActual[id] = "";
         });
 
         const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
@@ -210,23 +247,20 @@ import Layout from '../../../../layouts/Layout.astro';
 
         if (!btnVerify || !feedback) return;
 
-        function formatAnswer(val: string, expected: string) {
-            let clean = val.trim();
-            // Perdona si pone "3" en lugar de "+3"
-            if (expected === "+3" && clean === "3") return "+3";
-            return clean;
+        function formatAnswer(val: string) {
+            return val.trim().replace(/\s+/g, '');
         }
 
         inputIds.forEach(id => {
             const input = document.getElementById(id) as HTMLInputElement | null;
             if (!input) return;
 
-            // Clonar nodo para resetear event listeners en Astro View Transitions
+            // Evitar duplicación de listeners por Astro View Transitions
             const newClone = input.cloneNode(true) as HTMLInputElement;
             input.parentNode?.replaceChild(newClone, input);
 
             newClone.addEventListener('input', (e) => {
-                estadoSaltos[id] = (e.target as HTMLInputElement).value;
+                estadoActual[id] = (e.target as HTMLInputElement).value;
             });
         });
 
@@ -240,14 +274,14 @@ import Layout from '../../../../layouts/Layout.astro';
                 const input = document.getElementById(id) as HTMLInputElement | null;
                 if (!input) return;
 
-                const userVal = formatAnswer(estadoSaltos[id], correctAnswers[id]);
+                const userVal = formatAnswer(estadoActual[id]);
                 const correctVal = correctAnswers[id];
 
                 input.disabled = true;
 
                 if (userVal === correctVal) {
                     input.classList.add('correct');
-                    input.value = correctVal; // Estandariza a "+3" visualmente si puso solo "3"
+                    input.value = correctVal; 
                     correctCount++;
                 } else {
                     input.classList.add('incorrect');
@@ -257,26 +291,28 @@ import Layout from '../../../../layouts/Layout.astro';
 
             if (correctCount === inputIds.length) {
                 feedback.style.color = "#047857";
-                feedback.textContent = "¡Perfecto! Has identificado la variación constante en ambas variables.";
+                feedback.textContent = "¡Perfecto! Has completado correctamente las cantidades del Bidón A y reconocido su variación negativa constante.";
             } else {
                 feedback.style.color = "#b91c1c";
-                feedback.textContent = `Hay errores. Recuerda incluir el signo (+ o -) para indicar la dirección del cambio.`;
+                feedback.textContent = "Hay errores. Asegúrate de calcular bien los litros restantes y de incluir el signo correcto en los saltos de las flechas.";
             }
 
             newBtnVerify.disabled = true;
         });
 
-        // Integración JSInput API de edX
-        (window as any).getGrade = () => JSON.stringify(estadoSaltos);
-        (window as any).getState = () => JSON.stringify(estadoSaltos);
+        // ==========================================
+        // INTEGRACIÓN EDX (JSInput API)
+        // ==========================================
+        (window as any).getGrade = () => JSON.stringify(estadoActual);
+        (window as any).getState = () => JSON.stringify(estadoActual);
         (window as any).setState = (stateStr: string) => {
             if (!stateStr) return;
             try {
-                estadoSaltos = JSON.parse(stateStr);
+                estadoActual = JSON.parse(stateStr);
                 inputIds.forEach(id => {
-                    if (estadoSaltos[id] !== "") {
+                    if (estadoActual[id] !== "") {
                         const input = document.getElementById(id) as HTMLInputElement | null;
-                        if (input) input.value = estadoSaltos[id];
+                        if (input) input.value = estadoActual[id];
                     }
                 });
             } catch(e) {
@@ -285,6 +321,6 @@ import Layout from '../../../../layouts/Layout.astro';
         };
     };
 
-    document.addEventListener('DOMContentLoaded', setupVariacion);
-    document.addEventListener('astro:page-load', setupVariacion);
+    document.addEventListener('DOMContentLoaded', setupValidacionBidones);
+    document.addEventListener('astro:page-load', setupValidacionBidones);
 </script>
