@@ -1,71 +1,76 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
-// Ajusta la ruta al Layout según la ubicación de este archivo
+// Ajusta la ruta al Layout según la ubicación real de este archivo
 ---
 
-<Layout titulo="Escalado Multiplicativo">
+<Layout titulo="Proporcionalidad: Covariación y Correspondencia">
     <div class="recurso-wrapper">
-        <div class="container">
-            <div class="panel-controles">
-                <div class="header">
-                    <h2>Escalado Multiplicativo</h2>
-                    <p>Descubre cómo se mantiene la proporción geométrica observando la covariación de las variables.</p>
+        <div class="card">
+            <div class="header-bar">
+                <div>
+                    <h2 id="titulo-modo">Enfoque Covariacional</h2>
+                    <p id="desc-modo">Escalamiento iterativo de las cantidades.</p>
                 </div>
-
-                <div class="caja-control">
-                    <label>Factor Multiplicativo (n): <span id="txt-n" class="txt-n-style">× 2</span></label>
-                    <input type="range" id="slider-n" min="2" max="4" step="1" value="2">
-                </div>
-
-                <div class="info-panel panel-base">
-                    <strong>Relación Base:</strong><br>
-                    3 unidades = Costo 2.
-                </div>
-
-                <div class="info-panel panel-escalado">
-                    Nivel Escalado:<br>
-                    <span id="txt-x-esc">6</span> unidades = Costo <span id="txt-y-esc">4</span>.<br>
-                    <strong>Covariación Multiplicativa (Escalado ×<span id="txt-n-bold">2</span>)</strong>
-                </div>
-
-                <button id="btn-construir" class="btn-construir">Construir Escalado ▶</button>
-                <button id="btn-limpiar" class="btn-limpiar" disabled>Limpiar Gráfico</button>
+                <button id="btn-toggle" class="btn-toggle">Ver Correspondencia ⇄</button>
             </div>
 
-            <div class="panel-visor">
-                <svg id="svg-covariacion" viewBox="0 0 450 600" preserveAspectRatio="xMidYMid meet">
-                    <defs>
-                        <marker id="head-mult" orient="auto" markerWidth="4" markerHeight="4" refX="3" refY="2">
-                            <path d="M0,0 L4,2 L0,4 Z" fill="#0f172a" />
-                        </marker>
-                    </defs>
-
-                    <g id="grid-group"></g>
+            <div class="main-content">
+                <div class="panel-izquierdo">
                     
-                    <line id="eje-x-line" class="eje" /> 
-                    <line id="eje-y-line" class="eje" />  
+                    <!-- MODO 1: COVARIACIÓN -->
+                    <div id="modo-covariacion" class="modo-container active">
+                        <div class="caja-control" style="border-left-color: var(--operator)">
+                            <label>Factor de Escala (n): <span id="txt-factor" style="color: var(--operator); font-size: 16px;">× 4</span></label>
+                            <input type="range" id="slider-factor" min="1" max="5" step="1" value="4">
+                        </div>
+                        <div class="info-box" style="border-left-color: var(--operator);">
+                            <strong>Construcción Iterativa:</strong><br>
+                            El factor multiplicativo repite el bloque base (Δx=3, Δy=2) una cantidad <strong>n</strong> de veces, acumulando los cambios en cada eje de manera secuencial.
+                        </div>
+                        <button id="btn-anim-cov" class="btn-accion" style="background: var(--operator)">Animar Escalamiento ▶</button>
+                        <button id="btn-limpiar-cov" class="btn-accion btn-limpiar">Limpiar Gráfico</button>
+                    </div>
 
-                    <text id="label-origen-val" text-anchor="end" class="eje-text" font-weight="900">0</text>
-                    <text id="label-eje-x-text" text-anchor="end" class="etiqueta-eje-principal">Unidades (x) →</text>
-                    <text id="label-eje-y-text" text-anchor="start" class="etiqueta-eje-principal">Costo (y) ↑</text>
+                    <!-- MODO 2: CORRESPONDENCIA -->
+                    <div id="modo-correspondencia" class="modo-container">
+                        <div class="maquina-coord" id="maquina">
+                            y = <span id="maquina-calc"><span>2/3</span> · <span style="color:var(--primary)" id="maq-x">6</span></span>
+                        </div>
+                        <div class="caja-control" style="border-left-color: var(--machine)">
+                            <label>Tiempo Transcurrido (x): <span id="txt-x" style="color: var(--primary); font-size: 16px;">6</span></label>
+                            <input type="range" id="slider-x" min="0" max="15" step="1" value="6">
+                        </div>
+                        <button id="btn-anim-corr" class="btn-accion" style="background: var(--machine)">Trazar Correspondencia ▶</button>
+                        <button id="btn-limpiar-corr" class="btn-accion btn-limpiar">Limpiar Gráfico</button>
+                    </div>
+                </div>
 
-                    <line id="linea-modelo" class="recta" />
+                <div class="panel-visor">
+                    <svg id="lienzo" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <marker id="head-cov" orient="auto" markerWidth="4" markerHeight="4" refX="3" refY="2">
+                                <path d="M0,0 L4,2 L0,4 Z" fill="var(--operator)" />
+                            </marker>
+                            <marker id="head-cor" orient="auto" markerWidth="4" markerHeight="4" refX="3" refY="2">
+                                <path d="M0,0 L4,2 L0,4 Z" fill="var(--machine)" />
+                            </marker>
+                        </defs>
 
-                    <path id="tri-base" class="triangulo-base" />
-                    <circle id="punto-base" class="punto" r="4" />
-                    <text id="lbl-base-x" class="label-geo" style="fill:#1e40af">x = 3</text>
-                    <text id="lbl-base-y" class="label-geo" style="fill:#1e40af">y = 2</text>
+                        <g id="capa-grilla"></g>
+                        
+                        <line id="eje-x" class="eje" /> 
+                        <line id="eje-y" class="eje" />  
 
-                    <g id="historial-group"></g>
+                        <text id="lbl-o" text-anchor="end" class="eje-num">0</text>
+                        <text id="lbl-ejex" text-anchor="end" class="eje-label">Bidón B (x) →</text>
+                        <text id="lbl-ejey" text-anchor="start" class="eje-label">Bidón A (y) ↑</text>
 
-                    <path id="preview-fill" class="triangulo-escalado" opacity="0" />
-                    <line id="preview-dx" class="arrow-mult" opacity="0" />
-                    <line id="preview-dy" class="arrow-mult" opacity="0" />
-                    <text id="lbl-dx" class="label-geo" opacity="0"></text>
-                    <text id="lbl-dy" class="label-geo" opacity="0"></text>
-
-                    <circle id="punto-guia" class="punto-guia-style" r="5" opacity="0" />
-                </svg>
+                        <line id="recta-principal" class="recta-func" />
+                        
+                        <g id="capa-base"></g>
+                        <g id="capa-animacion"></g>
+                    </svg>
+                </div>
             </div>
         </div>
     </div>
@@ -73,342 +78,404 @@ import Layout from '../../../../layouts/Layout.astro';
 
 <style>
     .recurso-wrapper {
-        --primary: #2563eb;    
-        --scale: #10b981;      
-        --operator: #0f172a;   
-        --bg-color: #f8fafc;
-        --border-color: #cbd5e1;
+        --primary: #D33C31;       
+        --operator: #8B2E28;      
+        --machine: #E87461;       
+        --bg: #F4F4F2;            
+        --text: #4A4A49;          
+        --border: #D8D8D5;        
         
         font-family: 'Inter', system-ui, sans-serif;
-        background-color: var(--bg-color);
+        background-color: var(--bg);
+        color: var(--text);
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 40px 20px;
         width: 100%;
+        min-height: 100vh;
+        box-sizing: border-box;
     }
 
-    .container {
+    .card {
         background: white;
         border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        border: 1px solid var(--border-color);
+        box-shadow: 0 8px 30px rgba(74, 74, 73, 0.08);
+        border: 1px solid var(--border);
         width: 100%;
-        max-width: 900px;
-        height: 650px; 
+        max-width: 950px;
         display: flex;
+        flex-direction: column;
         overflow: hidden;
     }
 
-    @media (max-width: 768px) {
-        .container { flex-direction: column; height: auto; }
-        .panel-controles { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border-color); }
-    }
-
-    .panel-controles {
-        width: 340px;
-        background: #f8fafc;
-        border-right: 1px solid var(--border-color);
-        padding: 24px;
+    .header-bar {
         display: flex;
-        flex-direction: column;
-        gap: 20px;
-        z-index: 10;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 25px;
+        border-bottom: 1px solid var(--border);
     }
 
-    .header h2 { margin: 0 0 5px 0; color: #0f172a; font-size: 18px; line-height: 1.2; }
-    .header p { margin: 0; color: #64748b; font-size: 13px; line-height: 1.4; }
+    .header-bar h2 { margin: 0; font-size: 20px; color: var(--primary); transition: color 0.3s; }
+    .header-bar p { margin: 4px 0 0 0; font-size: 14px; color: var(--text); opacity: 0.8; }
+
+    .btn-toggle {
+        background: var(--text); color: var(--bg); border: none; padding: 10px 20px;
+        border-radius: 8px; font-weight: 600; cursor: pointer; transition: opacity 0.2s;
+    }
+    .btn-toggle:hover { opacity: 0.85; }
+
+    .main-content { display: flex; height: 550px; }
+
+    .panel-izquierdo {
+        width: 340px; background: rgba(244, 244, 242, 0.5); border-right: 1px solid var(--border);
+        padding: 25px; display: flex; flex-direction: column; gap: 20px;
+        box-sizing: border-box;
+    }
+
+    .modo-container { display: none; flex-direction: column; gap: 20px; height: 100%; }
+    .modo-container.active { display: flex; }
 
     .caja-control {
-        background: white;
-        padding: 18px;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-        border-left: 4px solid var(--scale);
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
+        background: white; padding: 15px; border-radius: 8px;
+        border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px;
+        border-left-width: 4px;
+        border-left-style: solid;
     }
 
-    label { font-weight: 800; font-size: 11px; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; }
-    .txt-n-style { color: var(--scale); font-size: 16px; font-weight: 800; }
-
+    .caja-control label { font-weight: 700; font-size: 13px; color: var(--text); text-transform: uppercase; }
+    
     input[type="range"] { 
-        width: 100%; cursor: pointer; height: 6px;
-        background: #e2e8f0; border-radius: 3px; outline: none; -webkit-appearance: none;
+        width: 100%; cursor: pointer; height: 6px; background: var(--border); border-radius: 3px; outline: none; -webkit-appearance: none;
     }
     input[type="range"]::-webkit-slider-thumb {
         -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
-        background: var(--scale); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(74,74,73,0.2);
     }
 
-    .info-panel { padding: 12px; border-radius: 8px; font-size: 13px; line-height: 1.5; }
-    .panel-base { background: #dbeafe; border: 1px solid #bfdbfe; color: #1e3a8a; }
-    .panel-escalado { background: #d1fae5; border: 1px solid #a7f3d0; color: #065f46; }
-    .panel-escalado strong { font-size: 14px; display: block; margin-top: 6px; }
-
-    button {
-        padding: 12px; border: none; border-radius: 8px; font-weight: 800; font-size: 14px;
+    .btn-accion {
+        padding: 12px; border: none; border-radius: 8px; font-weight: 600; font-size: 14px;
         cursor: pointer; transition: all 0.2s; color: white; width: 100%;
     }
+    .btn-accion:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-2px); }
+    .btn-accion:disabled { background: var(--border) !important; cursor: not-allowed; transform: none; color: white; }
 
-    .btn-construir { background: var(--primary); }
-    .btn-construir:hover:not(:disabled) { background: #1d4ed8; transform: translateY(-2px); }
-    .btn-limpiar { background: #64748b; margin-top: auto; }
-    .btn-limpiar:hover:not(:disabled) { background: #475569; }
-    button:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; transform: none; }
+    .btn-limpiar { background: var(--text); margin-top: auto; }
+
+    .maquina-coord {
+        background: white; border: 2px solid var(--border); border-radius: 10px;
+        padding: 15px 10px; text-align: center; font-family: 'Courier New', monospace;
+        font-size: 20px; font-weight: 700; color: var(--text);
+        box-shadow: inset 0 2px 10px rgba(74,74,73,0.03); min-height: 60px;
+        display: flex; justify-content: center; align-items: center;
+    }
+
+    :global(.resultado-pop) { animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    @keyframes pop-in { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+    .info-box { padding: 12px; border-radius: 8px; font-size: 13.5px; line-height: 1.5; border-left-width: 4px; border-left-style: solid; background: white; border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);}
 
     .panel-visor {
-        flex-grow: 1; position: relative; background: white; padding: 20px;
-        display: flex; justify-content: center;
+        flex-grow: 1; background: white; padding: 20px; display: flex; justify-content: center; align-items: center;
     }
+    svg { width: 100%; max-width: 500px; height: 100%; overflow: visible; }
+    
+    .eje { stroke: var(--text); stroke-width: 2.5; stroke-linecap: square; }
+    .eje-num { font-size: 12px; fill: var(--text); font-weight: 500; }
+    .eje-label { font-size: 13px; font-weight: 700; fill: var(--text); }
+    .recta-func { stroke: var(--text); stroke-width: 2; stroke-dasharray: 4; opacity: 0.4; }
 
-    svg { width: 100%; max-width: 500px; height: 100%; }
-
-    .eje { stroke: #0f172a; stroke-width: 2.5; stroke-linecap: square; }
-    .recta { stroke: var(--primary); stroke-width: 3.5; stroke-linecap: round; }
-    .triangulo-base { fill: #3b82f6; opacity: 0.15; stroke: #1e40af; stroke-width: 2; }
-    .triangulo-escalado { fill: #10b981; opacity: 0.1; stroke: #047857; stroke-width: 2; }
-    .punto { fill: #0f172a; }
-    .punto-guia-style { fill: #f59e0b; stroke: white; stroke-width: 2.5; transition: cx 0.2s, cy 0.2s; }
-    .arrow-mult { stroke: var(--operator); stroke-width: 3; stroke-linecap: round; }
-
-    :global(.historial-item) { cursor: pointer; }
-    :global(.historial-item .triangulo-escalado) { transition: opacity 0.2s; }
-    :global(.historial-item:hover .triangulo-escalado) { opacity: 0.3; }
-    :global(.historial-item .arrow-mult) { transition: stroke-width 0.2s; }
-    :global(.historial-item:hover .arrow-mult) { stroke-width: 4.5; }
-
-    .label-geo { 
-        font-size: 13px; font-weight: 800; fill: var(--operator);
-        paint-order: stroke fill; stroke: rgba(255,255,255,0.9); stroke-width: 3.5px;
+    /* Clases inyectadas vía JS que necesitan :global() */
+    :global(.grilla-menor) { stroke: var(--bg); stroke-width: 1; }
+    :global(.grilla-mayor) { stroke: var(--border); stroke-width: 1.5; }
+    
+    :global(.lbl-mat) { 
+        font-size: 14px; 
+        font-weight: 600; 
+        paint-order: stroke fill; 
+        stroke: var(--bg); 
+        stroke-width: 3px; 
     }
+    
+    :global(.tri-base) { fill: var(--primary); opacity: 0.08; stroke: var(--primary); stroke-width: 1.5; stroke-dasharray: 3; }
+    :global(.punto) { fill: var(--text); stroke: white; stroke-width: 2; }
 
-    :global(.historial-item:hover .label-geo) { font-size: 17px; stroke: rgba(255,255,255,1); stroke-width: 6px; }
-
-    .eje-text { font-size: 12px; font-weight: 700; fill: #475569; }
-    .etiqueta-eje-principal { font-size: 13px; font-weight: 800; fill: #0f172a; }
+    @media (max-width: 768px) {
+        .main-content { flex-direction: column; height: auto; }
+        .panel-izquierdo { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+    }
 </style>
 
 <script>
-    const setupCovariacion = () => {
-        const sliderN = document.getElementById('slider-n') as HTMLInputElement | null;
-        const btnConstruir = document.getElementById('btn-construir') as HTMLButtonElement | null;
-        const btnLimpiar = document.getElementById('btn-limpiar') as HTMLButtonElement | null;
+    const setupRecurso = () => {
+        const xMax = 16, yMax = 12;
+        const mX = 40, mY = 30, cW = 420, cH = 400;
+        const baseLine = mY + cH;
+
+        const mapX = (x: number) => mX + (x / xMax) * cW;
+        const mapY = (y: number) => baseLine - (y / yMax) * cH;
+
+        const btnToggle = document.getElementById('btn-toggle');
+        const titulo = document.getElementById('titulo-modo');
+        const desc = document.getElementById('desc-modo');
+        const panCov = document.getElementById('modo-covariacion');
+        const panCorr = document.getElementById('modo-correspondencia');
+        const capaAnim = document.getElementById('capa-animacion');
+        const capaBase = document.getElementById('capa-base');
         
-        if (!sliderN || !btnConstruir || !btnLimpiar) return;
+        const sliderFact = document.getElementById('slider-factor') as HTMLInputElement;
+        const btnAnimCov = document.getElementById('btn-anim-cov') as HTMLButtonElement;
+        const sliderX = document.getElementById('slider-x') as HTMLInputElement;
+        const btnAnimCorr = document.getElementById('btn-anim-corr') as HTMLButtonElement;
 
-        // Lógica Matemática
-        const base_x = 3;
-        const base_y = 2;
-        const xMax = 15; 
-        const yMax = 10; 
+        let modoActual = 'covariacion'; 
+        let animId: number | null = null;
+        let resolucionActual: ((value: any) => void) | null = null; 
 
-        // Configuración SVG
-        const marginX = 45;
-        const marginY = 50; 
-        const chartW = 360; 
-        const chartH = 480; 
-        const baseLineY = marginY + chartH;
+        if (!btnToggle || !capaAnim || !capaBase) return;
 
-        function mapX(x: number) { return marginX + (x / xMax) * chartW; }
-        function mapY(y: number) { return baseLineY - (y / yMax) * chartH; }
+        function configurarPlano() {
+            document.getElementById('eje-x')?.setAttribute('x1', mX.toString());
+            document.getElementById('eje-x')?.setAttribute('y1', baseLine.toString());
+            document.getElementById('eje-x')?.setAttribute('x2', (mX + cW + 20).toString());
+            document.getElementById('eje-x')?.setAttribute('y2', baseLine.toString());
 
-        const grid = document.getElementById('grid-group');
-        const historial = document.getElementById('historial-group');
-        if (grid) grid.innerHTML = '';
-        if (historial) historial.innerHTML = '';
+            document.getElementById('eje-y')?.setAttribute('x1', mX.toString());
+            document.getElementById('eje-y')?.setAttribute('y1', baseLine.toString());
+            document.getElementById('eje-y')?.setAttribute('x2', mX.toString());
+            document.getElementById('eje-y')?.setAttribute('y2', (mY - 10).toString());
 
-        // Trazado de Ejes
-        document.getElementById('eje-x-line')?.setAttribute('x1', marginX.toString());
-        document.getElementById('eje-x-line')?.setAttribute('y1', baseLineY.toString());
-        document.getElementById('eje-x-line')?.setAttribute('x2', (marginX + chartW + 20).toString());
-        document.getElementById('eje-x-line')?.setAttribute('y2', baseLineY.toString());
+            document.getElementById('lbl-o')?.setAttribute('x', (mX - 8).toString());
+            document.getElementById('lbl-o')?.setAttribute('y', (baseLine + 15).toString());
+            document.getElementById('lbl-ejex')?.setAttribute('x', (mX + cW + 20).toString());
+            document.getElementById('lbl-ejex')?.setAttribute('y', (baseLine + 35).toString());
+            document.getElementById('lbl-ejey')?.setAttribute('x', mX.toString());
+            document.getElementById('lbl-ejey')?.setAttribute('y', (mY - 20).toString());
 
-        document.getElementById('eje-y-line')?.setAttribute('x1', marginX.toString());
-        document.getElementById('eje-y-line')?.setAttribute('y1', baseLineY.toString());
-        document.getElementById('eje-y-line')?.setAttribute('x2', marginX.toString());
-        document.getElementById('eje-y-line')?.setAttribute('y2', (marginY - 10).toString());
-
-        document.getElementById('label-origen-val')?.setAttribute('x', (marginX - 10).toString());
-        document.getElementById('label-origen-val')?.setAttribute('y', (baseLineY + 15).toString());
-
-        document.getElementById('label-eje-x-text')?.setAttribute('x', (marginX + chartW + 20).toString());
-        document.getElementById('label-eje-x-text')?.setAttribute('y', (baseLineY + 35).toString());
-
-        document.getElementById('label-eje-y-text')?.setAttribute('x', marginX.toString());
-        document.getElementById('label-eje-y-text')?.setAttribute('y', (marginY - 25).toString());
-
-        // Grilla Dinámica
-        if (grid) {
-            for(let x=3; x<=xMax; x+=3) {
-                let px = mapX(x);
-                grid.innerHTML += `<line x1="${px}" y1="${baseLineY}" x2="${px}" y2="${marginY}" stroke="#cbd5e1" stroke-width="1.5" />`;
-                grid.innerHTML += `<text x="${px}" y="${baseLineY+18}" text-anchor="middle" font-size="12" fill="#475569" font-weight="700">${x}</text>`;
+            const grilla = document.getElementById('capa-grilla');
+            if (grilla) {
+                grilla.innerHTML = '';
+                for(let i=1; i<=xMax; i++) {
+                    let px = mapX(i);
+                    grilla.innerHTML += `<line x1="${px}" y1="${baseLine}" x2="${px}" y2="${mY}" class="${i%3===0 ? 'grilla-mayor' : 'grilla-menor'}" />`;
+                    if(i%3===0) grilla.innerHTML += `<text x="${px}" y="${baseLine+16}" text-anchor="middle" class="eje-num">${i}</text>`;
+                }
+                for(let j=1; j<=yMax; j++) {
+                    let py = mapY(j);
+                    grilla.innerHTML += `<line x1="${mX}" y1="${py}" x2="${mX+cW}" y2="${py}" class="${j%2===0 ? 'grilla-mayor' : 'grilla-menor'}" />`;
+                    if(j%2===0) grilla.innerHTML += `<text x="${mX-8}" y="${py+4}" text-anchor="end" class="eje-num">${j}</text>`;
+                }
             }
-            for(let y=2; y<=yMax; y+=2) {
-                let py = mapY(y);
-                grid.innerHTML += `<line x1="${marginX}" y1="${py}" x2="${marginX+chartW+10}" y2="${py}" stroke="#cbd5e1" stroke-width="1.5" />`;
-                grid.innerHTML += `<text x="${marginX-8}" y="${py+4}" text-anchor="end" font-size="12" fill="#475569" font-weight="700">${y}</text>`;
+
+            document.getElementById('recta-principal')?.setAttribute('x1', mapX(0).toString());
+            document.getElementById('recta-principal')?.setAttribute('y1', mapY(0).toString());
+            document.getElementById('recta-principal')?.setAttribute('x2', mapX(15).toString());
+            document.getElementById('recta-principal')?.setAttribute('y2', mapY(10).toString());
+        }
+
+        function dibujarTrianguloBase() {
+            const bx = mapX(3), by = mapY(2), oy = mapY(0);
+            if(capaBase) {
+                capaBase.innerHTML = `
+                    <path class="tri-base" d="M ${mX} ${oy} L ${bx} ${oy} L ${bx} ${by} Z" />
+                    <text x="${(mX+bx)/2}" y="${oy - 6}" text-anchor="middle" class="lbl-mat" style="fill:var(--text)">Δx=3</text>
+                    <text x="${bx - 6}" y="${(oy+by)/2 + 4}" text-anchor="end" class="lbl-mat" style="fill:var(--text)">Δy=2</text>
+                `;
             }
         }
 
-        const linea = document.getElementById('linea-modelo');
-        if (linea) {
-            linea.setAttribute('x1', mapX(0).toString());
-            linea.setAttribute('y1', mapY(0).toString());
-            linea.setAttribute('x2', mapX(xMax).toString());
-            linea.setAttribute('y2', mapY(yMax).toString());
+        function limpiarVisor() {
+            if(animId) cancelAnimationFrame(animId);
+            if(resolucionActual) resolucionActual({ interrumpido: true });
+            if(capaAnim) capaAnim.innerHTML = '';
+            document.querySelectorAll('.btn-accion').forEach(b => (b as HTMLButtonElement).disabled = false);
+            document.querySelectorAll('input[type="range"]').forEach(i => (i as HTMLInputElement).disabled = false);
         }
 
-        const triBase = document.getElementById('tri-base');
-        const bx = mapX(base_x);
-        const by = mapY(base_y);
-        const originY = mapY(0);
-        if (triBase) triBase.setAttribute('d', `M ${mapX(0)} ${originY} L ${bx} ${originY} L ${bx} ${by} Z`);
-        
-        document.getElementById('punto-base')?.setAttribute('cx', bx.toString());
-        document.getElementById('punto-base')?.setAttribute('cy', by.toString());
-        
-        const lblBx = document.getElementById('lbl-base-x');
-        if (lblBx) {
-            lblBx.setAttribute('x', ((mapX(0)+bx)/2).toString());
-            lblBx.setAttribute('y', (originY - 10).toString());
-            lblBx.setAttribute('text-anchor', 'middle');
-        }
-        
-        const lblBy = document.getElementById('lbl-base-y');
-        if (lblBy) {
-            lblBy.setAttribute('x', (bx - 35).toString());
-            lblBy.setAttribute('y', ((originY+by)/2 + 5).toString());
-        }
+        function dibujarVector(x1: number, y1: number, x2: number, y2: number, color: string, marker: string, duracion: number): Promise<any> {
+            return new Promise(resolve => {
+                resolucionActual = resolve;
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute('x1', x1.toString()); line.setAttribute('y1', y1.toString());
+                line.setAttribute('x2', x1.toString()); line.setAttribute('y2', y1.toString());
+                line.setAttribute('stroke', color);
+                line.setAttribute('stroke-width', '3');
+                line.setAttribute('stroke-linecap', 'round');
+                line.setAttribute('marker-end', `url(#${marker})`);
+                capaAnim?.appendChild(line);
 
-        let isAnimated = false;
-
-        function limpiarAnimacionTemporal() {
-            document.getElementById('preview-dx')?.setAttribute('opacity', '0');
-            document.getElementById('preview-dy')?.setAttribute('opacity', '0');
-            document.getElementById('preview-fill')?.setAttribute('opacity', '0');
-            document.getElementById('lbl-dx')?.setAttribute('opacity', '0');
-            document.getElementById('lbl-dy')?.setAttribute('opacity', '0');
-            document.getElementById('punto-guia')?.setAttribute('opacity', '0');
-            isAnimated = false;
+                let start: number | null = null;
+                function step(ts: number) {
+                    if(!start) start = ts;
+                    let p = Math.min((ts - start) / duracion, 1);
+                    let ease = 1 - Math.pow(1 - p, 3);
+                    
+                    line.setAttribute('x2', (x1 + (x2 - x1) * ease).toString());
+                    line.setAttribute('y2', (y1 + (y2 - y1) * ease).toString());
+                    
+                    if(p < 1) {
+                        animId = requestAnimationFrame(step);
+                    } else {
+                        resolucionActual = null;
+                        resolve({ interrumpido: false });
+                    }
+                }
+                animId = requestAnimationFrame(step);
+            });
         }
 
-        function actualizarControles() {
-            if(isAnimated) limpiarAnimacionTemporal();
-            const n = parseInt(sliderN!.value);
-            const txtN = document.getElementById('txt-n');
-            if(txtN) txtN.textContent = `× ${n}`;
-            const txtXEsc = document.getElementById('txt-x-esc');
-            if(txtXEsc) txtXEsc.textContent = (base_x * n).toString();
-            const txtYEsc = document.getElementById('txt-y-esc');
-            if(txtYEsc) txtYEsc.textContent = (base_y * n).toString();
-            const txtNBold = document.getElementById('txt-n-bold');
-            if(txtNBold) txtNBold.textContent = n.toString();
+        function agregarPunto(x: number, y: number, color: string) {
+            const pt = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            pt.setAttribute('cx', x.toString()); pt.setAttribute('cy', y.toString());
+            pt.setAttribute('r', '5');
+            pt.setAttribute('fill', color);
+            pt.setAttribute('stroke', 'var(--bg)');
+            pt.setAttribute('stroke-width', '2');
+            capaAnim?.appendChild(pt);
         }
 
-        sliderN.addEventListener('input', actualizarControles);
-
-        function animarLinea(lineId: string, x1: number, y1: number, x2: number, y2: number, markerId: string, callback?: () => void) {
-            const line = document.getElementById(lineId);
-            if (!line) return;
-            line.setAttribute('x1', x1.toString()); line.setAttribute('y1', y1.toString());
-            line.setAttribute('x2', x1.toString()); line.setAttribute('y2', y1.toString());
-            line.setAttribute('opacity', '1');
-            line.setAttribute('marker-end', `url(#${markerId})`);
-
-            const duration = 500; 
-            let start: number | null = null;
-            function step(timestamp: number) {
-                if (!start) start = timestamp;
-                const progress = Math.min((timestamp - start) / duration, 1);
-                const ease = 1 - Math.pow(1 - progress, 3);
-                line!.setAttribute('x2', (x1 + (x2 - x1) * ease).toString());
-                line!.setAttribute('y2', (y1 + (y2 - y1) * ease).toString());
-                if (progress < 1) window.requestAnimationFrame(step);
-                else if (callback) callback();
-            }
-            window.requestAnimationFrame(step);
+        function agregarTexto(x: number, y: number, texto: string, color: string, anchor="middle") {
+            const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            txt.setAttribute('x', x.toString()); txt.setAttribute('y', y.toString());
+            txt.setAttribute('text-anchor', anchor);
+            txt.setAttribute('class', 'lbl-mat');
+            txt.style.fill = color;
+            txt.textContent = texto;
+            capaAnim?.appendChild(txt);
         }
 
-        btnConstruir.addEventListener('click', () => {
-            btnConstruir.disabled = true;
-            sliderN.disabled = true;
-            isAnimated = true;
-            limpiarAnimacionTemporal();
+        // --- ASIGNACIÓN DE EVENTOS ---
+        document.getElementById('btn-limpiar-cov')?.addEventListener('click', limpiarVisor);
+        document.getElementById('btn-limpiar-corr')?.addEventListener('click', limpiarVisor);
 
-            const n = parseInt(sliderN.value);
-            const pX = mapX(base_x * n);
-            const pY = mapY(base_y * n);
+        if (sliderFact) {
+            sliderFact.addEventListener('input', (e) => {
+                const target = e.target as HTMLInputElement;
+                const txtFactor = document.getElementById('txt-factor');
+                if (txtFactor) txtFactor.textContent = `× ${target.value}`;
+            });
+        }
 
-            const punto = document.getElementById('punto-guia');
-            if(punto) { punto.setAttribute('cx', pX.toString()); punto.setAttribute('cy', pY.toString()); }
+        if (btnAnimCov) {
+            btnAnimCov.addEventListener('click', async () => {
+                limpiarVisor();
+                btnAnimCov.disabled = true;
+                sliderFact.disabled = true;
 
-            animarLinea('preview-dx', bx, originY, pX, originY, 'head-mult', () => {
-                const lblDx = document.getElementById('lbl-dx');
-                if (lblDx) {
-                    lblDx.setAttribute('x', (pX - 20).toString());
-                    lblDx.setAttribute('y', (originY - 12).toString());
-                    lblDx.setAttribute('text-anchor', 'end');
-                    lblDx.textContent = `× ${n}`;
-                    lblDx.setAttribute('opacity', '1');
+                const n = parseInt(sliderFact.value);
+                const dx = 3, dy = 2; 
+                const duracionFlecha = 300; 
+                const colorOp = 'var(--operator)';
+
+                for(let i = 0; i < n; i++) {
+                    let startX = mapX(i * dx);
+                    let endX = mapX((i + 1) * dx);
+                    let posY = mapY(0);
+                    
+                    let res = await dibujarVector(startX, posY, endX, posY, colorOp, 'head-cov', duracionFlecha);
+                    if (res.interrumpido) return;
                 }
 
-                animarLinea('preview-dy', pX, by, pX, pY, 'head-mult', () => {
-                    const lblDy = document.getElementById('lbl-dy');
-                    if (lblDy) {
-                        lblDy.setAttribute('x', (pX + 8).toString());
-                        lblDy.setAttribute('y', ((by+pY)/2 + 5).toString());
-                        lblDy.setAttribute('text-anchor', 'start');
-                        lblDy.textContent = `× ${n}`;
-                        lblDy.setAttribute('opacity', '1');
-                    }
+                agregarTexto(mapX((n*dx)/2), mapY(0) - 12, `${n} × Δx`, colorOp);
 
-                    const fill = document.getElementById('preview-fill');
-                    if(fill) {
-                        fill.setAttribute('d', `M ${mapX(0)} ${originY} L ${pX} ${originY} L ${pX} ${pY} Z`);
-                        fill.setAttribute('opacity', '1');
-                    }
-                    punto?.setAttribute('opacity', '1');
+                for(let i = 0; i < n; i++) {
+                    let posX = mapX(n * dx);
+                    let startY = mapY(i * dy);
+                    let endY = mapY((i + 1) * dy);
+                    
+                    let res = await dibujarVector(posX, startY, posX, endY, colorOp, 'head-cov', duracionFlecha);
+                    if (res.interrumpido) return;
+                }
 
-                    const hist = document.getElementById('historial-group');
-                    if (hist) {
-                        hist.innerHTML += `
-                            <g class="historial-item">
-                                <path d="M ${mapX(0)} ${originY} L ${pX} ${originY} L ${pX} ${pY} Z" fill="transparent" />
-                                <path class="triangulo-escalado" d="M ${mapX(0)} ${originY} L ${pX} ${originY} L ${pX} ${pY} Z" />
-                                <line class="arrow-mult" x1="${bx}" y1="${originY}" x2="${pX}" y2="${originY}" marker-end="url(#head-mult)" />
-                                <line class="arrow-mult" x1="${pX}" y1="${by}" x2="${pX}" y2="${pY}" marker-end="url(#head-mult)" />
-                                <text x="${pX - 20}" y="${originY - 12}" text-anchor="end" class="label-geo">× ${n}</text>
-                                <text x="${pX + 8}" y="${(by+pY)/2 + 5}" text-anchor="start" class="label-geo">× ${n}</text>
-                                <circle cx="${pX}" cy="${pY}" r="4" fill="#0f172a" />
-                            </g>
-                        `;
-                    }
+                agregarTexto(mapX(n*dx) + 10, mapY((n*dy)/2) + 4, `${n} × Δy`, colorOp, 'start');
+                agregarPunto(mapX(n*dx), mapY(n*dy), colorOp);
 
-                    limpiarAnimacionTemporal();
-                    btnLimpiar.disabled = false;
-                    btnConstruir.disabled = false;
-                    sliderN.disabled = false;
-                });
+                btnAnimCov.disabled = false;
+                sliderFact.disabled = false;
             });
-        });
+        }
 
-        btnLimpiar.addEventListener('click', () => {
-            if(historial) historial.innerHTML = '';
-            limpiarAnimacionTemporal();
-            btnLimpiar.disabled = true;
-        });
+        if (sliderX) {
+            sliderX.addEventListener('input', (e) => {
+                const val = (e.target as HTMLInputElement).value;
+                const txtX = document.getElementById('txt-x');
+                const maqX = document.getElementById('maq-x');
+                const maquinaCalc = document.getElementById('maquina-calc');
+                
+                if (txtX) txtX.textContent = val;
+                if (maqX) maqX.textContent = val;
+                if (maquinaCalc) maquinaCalc.innerHTML = `<span>2/3</span> · <span style="color:var(--primary)">${val}</span>`;
+            });
+        }
 
-        actualizarControles();
-        
-        // Firma JSInput para edX
+        if (btnAnimCorr) {
+            btnAnimCorr.addEventListener('click', async () => {
+                limpiarVisor();
+                btnAnimCorr.disabled = true;
+                sliderX.disabled = true;
+
+                const x = parseFloat(sliderX.value);
+                const y = (2/3) * x;
+                const colorMac = 'var(--machine)';
+                const maq = document.getElementById('maquina-calc');
+                
+                let res1 = await dibujarVector(mapX(0), mapY(0), mapX(x), mapY(0), colorMac, 'head-cor', 600);
+                if(res1.interrumpido) return;
+                
+                agregarTexto(mapX(x/2), mapY(0) - 12, `x = ${x}`, colorMac);
+
+                await new Promise(r => setTimeout(r, 200));
+                
+                if (maq) {
+                    maq.innerHTML = `<span style="color:var(--machine)">${y.toFixed(1)}</span>`;
+                    maq.parentElement?.classList.add('resultado-pop');
+                }
+
+                let res2 = await dibujarVector(mapX(x), mapY(0), mapX(x), mapY(y), colorMac, 'head-cor', 600);
+                if(res2.interrumpido) return;
+
+                agregarTexto(mapX(x) + 10, mapY(y/2) + 4, `y = ${y.toFixed(1)}`, colorMac, 'start');
+                agregarPunto(mapX(x), mapY(y), colorMac);
+
+                btnAnimCorr.disabled = false;
+                sliderX.disabled = false;
+                setTimeout(() => maq?.parentElement?.classList.remove('resultado-pop'), 500);
+            });
+        }
+
+        if (btnToggle) {
+            btnToggle.addEventListener('click', () => {
+                limpiarVisor();
+                if(modoActual === 'covariacion') {
+                    modoActual = 'correspondencia';
+                    if (titulo) { titulo.textContent = 'Enfoque de Correspondencia'; titulo.style.color = 'var(--machine)'; }
+                    if (desc) desc.textContent = 'Correspondencia gráfica desde el dominio (X) hacia el recorrido (Y).';
+                    btnToggle.innerHTML = 'Ver Covariación ⇄';
+                    panCov?.classList.remove('active');
+                    panCorr?.classList.add('active');
+                    if (capaBase) capaBase.innerHTML = ''; 
+                } else {
+                    modoActual = 'covariacion';
+                    if (titulo) { titulo.textContent = 'Enfoque Covariacional'; titulo.style.color = 'var(--primary)'; }
+                    if (desc) desc.textContent = 'Escalamiento iterativo de las cantidades.';
+                    btnToggle.innerHTML = 'Ver Correspondencia ⇄';
+                    panCorr?.classList.remove('active');
+                    panCov?.classList.add('active');
+                    dibujarTrianguloBase();
+                }
+            });
+        }
+
+        configurarPlano();
+        dibujarTrianguloBase();
+
+        // Integración edX
         (window as any).getGrade = () => JSON.stringify({ action: "explore" });
         (window as any).getState = () => JSON.stringify({ action: "explore" });
         (window as any).setState = () => {};
     };
 
-    document.addEventListener('DOMContentLoaded', setupCovariacion);
-    document.addEventListener('astro:page-load', setupCovariacion);
+    document.addEventListener('DOMContentLoaded', setupRecurso);
+    document.addEventListener('astro:page-load', setupRecurso);
 </script>
