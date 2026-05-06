@@ -1,0 +1,413 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+---
+
+<Layout titulo="Tabla de Proporcionalidad">
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="header-text">
+                <h3></h3>
+                <p></p>
+            </div>
+
+            <div class="interactive-container">
+                <table>
+                    <tr class="data-row">
+                        <td class="col-header val-harina">Tiempo (min)</td>
+                        <td class="val-harina">3</td>
+                        <td class="val-harina">6</td>
+                        <td class="val-harina">9</td>
+                        <td class="val-harina">12</td>
+                        <td class="val-harina">15</td>
+                        <td class="val-harina">30</td>
+                        <td class="val-harina">x</td>
+                    </tr>
+
+                    <tr class="middle-row">
+                        <td></td>
+                        
+                        <!-- Estáticos -->
+                        <td>
+                            <div class="mid-container">
+                                <span class="mid-static-text">2/3 · 3</span>
+                                <svg width="16" height="30" viewBox="0 0 16 30">
+                                    <line x1="8" y1="0" x2="8" y2="22" stroke="#ff6b6b" stroke-width="3" />
+                                    <polygon points="2,20 8,30 14,20" fill="#ff6b6b" />
+                                </svg>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mid-container">
+                                <span class="mid-static-text">2/3 · 6</span>
+                                <svg width="16" height="30" viewBox="0 0 16 30">
+                                    <line x1="8" y1="0" x2="8" y2="22" stroke="#ff6b6b" stroke-width="3" />
+                                    <polygon points="2,20 8,30 14,20" fill="#ff6b6b" />
+                                </svg>
+                            </div>
+                        </td>
+
+                        <!-- Inputs Expresiones de Multiplicación -->
+                        <td>
+                            <div class="mid-container">
+                                <input type="text" id="mid3" class="mid-input" autocomplete="off">
+                                <svg width="16" height="30" viewBox="0 0 16 30"><line x1="8" y1="0" x2="8" y2="22" stroke="#ff6b6b" stroke-width="3" /><polygon points="2,20 8,30 14,20" fill="#ff6b6b" /></svg>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mid-container">
+                                <input type="text" id="mid4" class="mid-input" autocomplete="off">
+                                <svg width="16" height="30" viewBox="0 0 16 30"><line x1="8" y1="0" x2="8" y2="22" stroke="#ff6b6b" stroke-width="3" /><polygon points="2,20 8,30 14,20" fill="#ff6b6b" /></svg>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mid-container">
+                                <input type="text" id="mid5" class="mid-input" autocomplete="off">
+                                <svg width="16" height="30" viewBox="0 0 16 30"><line x1="8" y1="0" x2="8" y2="22" stroke="#ff6b6b" stroke-width="3" /><polygon points="2,20 8,30 14,20" fill="#ff6b6b" /></svg>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mid-container">
+                                <input type="text" id="mid6" class="mid-input" autocomplete="off">
+                                <svg width="16" height="30" viewBox="0 0 16 30"><line x1="8" y1="0" x2="8" y2="22" stroke="#ff6b6b" stroke-width="3" /><polygon points="2,20 8,30 14,20" fill="#ff6b6b" /></svg>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mid-container">
+                                <input type="text" id="mid7" class="mid-input" autocomplete="off">
+                                <svg width="16" height="30" viewBox="0 0 16 30"><line x1="8" y1="0" x2="8" y2="22" stroke="#ff6b6b" stroke-width="3" /><polygon points="2,20 8,30 14,20" fill="#ff6b6b" /></svg>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="data-row">
+                        <td class="col-header val-azucar">Líquido (litros)</td>
+                        <td class="val-azucar">2</td>
+                        <td class="val-azucar">4</td>
+                        <!-- Inputs Resultados -->
+                        <td><input type="text" id="bot3" class="cell-input" autocomplete="off"></td>
+                        <td><input type="text" id="bot4" class="cell-input" autocomplete="off"></td>
+                        <td><input type="text" id="bot5" class="cell-input" autocomplete="off"></td>
+                        <td><input type="text" id="bot6" class="cell-input" autocomplete="off"></td>
+                        <td><input type="text" id="bot7" class="cell-input" autocomplete="off"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <button id="btn-verify" class="btn-verify">Verificar Respuestas</button>
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        width: 100%;
+        background: #f8fafc;
+    }
+
+    .card {
+        background: white;
+        padding: 40px 20px; 
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        max-width: 950px; 
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-text {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .header-text h3 {
+        color: #0f172a;
+        margin: 0 0 5px 0;
+        font-size: 1.25rem;
+    }
+
+    .header-text p {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .interactive-container {
+        width: 100%;
+        overflow-x: auto;
+        margin-bottom: 30px; 
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        min-width: 750px;
+    }
+
+    .data-row td {
+        border: 2px solid #1e293b;
+        height: 65px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1.2rem;
+        font-weight: 700;
+        background-color: #ffffff;
+    }
+
+    .col-header {
+        width: 110px;
+        background-color: #f8fafc !important;
+        font-weight: 800;
+    }
+
+    .val-harina { color: #0284c7; } 
+    .val-azucar { color: #dc2626; } 
+
+    .middle-row td {
+        border: none !important;
+        height: 90px;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .mid-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .mid-static-text {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #0f172a;
+        white-space: nowrap;
+    }
+
+    .mid-input {
+        width: 85px;
+        height: 30px;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        color: #0f172a;
+    }
+
+    .cell-input {
+        width: 80%;
+        height: 70%;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        color: #dc2626;
+    }
+
+    .cell-input:focus, .mid-input:focus {
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        border-color: #2563eb;
+    }
+
+    .correct {
+        background-color: #ecfdf5 !important;
+        border-color: #10b981 !important;
+        color: #047857 !important;
+    }
+
+    .incorrect {
+        background-color: #fef2f2 !important;
+        border-color: #ef4444 !important;
+        color: #b91c1c !important;
+    }
+
+    .btn-verify {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        background: #0f172a;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-verify:hover:not(:disabled) {
+        background: #334155;
+        transform: translateY(-2px);
+    }
+
+    .btn-verify:disabled {
+        background: #cbd5e1;
+        cursor: not-allowed;
+        color: #f8fafc;
+    }
+
+    .feedback-text {
+        margin-top: 15px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        min-height: 20px;
+        text-align: center;
+    }
+</style>
+
+<script>
+    const setupTablaProporcionalidad = () => {
+        // Tipado estricto para evitar fallos de ejecución
+        type AnswerType = 'expr_mult' | 'number' | 'algebra';
+        interface AnswerConfig {
+            type: AnswerType;
+            topVal?: string;
+            val?: number;
+            display: string;
+        }
+
+        const correctAnswers: Record<string, AnswerConfig> = {
+            mid3: { type: 'expr_mult', topVal: '9', display: "2/3 · 9" },
+            mid4: { type: 'expr_mult', topVal: '12', display: "2/3 · 12" },
+            mid5: { type: 'expr_mult', topVal: '15', display: "2/3 · 15" },
+            mid6: { type: 'expr_mult', topVal: '30', display: "2/3 · 30" },
+            mid7: { type: 'expr_mult', topVal: 'x', display: "2/3 · x" },
+            bot3: { type: 'number', val: 6, display: "6" },
+            bot4: { type: 'number', val: 8, display: "8" },
+            bot5: { type: 'number', val: 10, display: "10" },
+            bot6: { type: 'number', val: 20, display: "20" },
+            bot7: { type: 'algebra', display: "y" } 
+        };
+
+        let estadoEjercicio: Record<string, string> = {};
+        const inputIds = Object.keys(correctAnswers);
+        
+        // Inicializar estado vacío
+        inputIds.forEach(id => { estadoEjercicio[id] = ""; });
+
+        const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
+        const feedback = document.getElementById('feedback') as HTMLElement | null;
+
+        if (!btnVerify || !feedback) return;
+
+        function isAnswerCorrect(id: string, userString: string): boolean {
+            if (!userString) return false;
+            
+            let cleanVal = userString.toLowerCase().replace(/\s+/g, '').replace(',', '.');
+            cleanVal = cleanVal.replace(/·/g, '*').replace(/×/g, '*');
+
+            const expected = correctAnswers[id];
+
+            if (expected.type === 'expr_mult') {
+                const v = expected.topVal;
+                const validPatterns = [
+                    `2/3*${v}`, 
+                    `${v}*2/3`, 
+                    `(2/3)*${v}`, 
+                    `${v}*(2/3)`
+                ];
+
+                if (v !== 'x') {
+                    validPatterns.push(`2/3x${v}`, `${v}x2/3`); 
+                } else {
+                    validPatterns.push(`2/3x`, `(2/3)x`, `x*2/3`, `2x/3`);
+                }
+
+                return validPatterns.includes(cleanVal);
+            } 
+            else if (expected.type === 'number') {
+                return parseFloat(cleanVal) === expected.val;
+            } 
+            else if (expected.type === 'algebra') {
+                const validAlgebra = ['y', '2/3x', '2/3*x', '2x/3', '(2/3)x'];
+                return validAlgebra.includes(cleanVal);
+            }
+            
+            return false;
+        }
+
+        // Prevenir multiplicidad de eventos por enrutamiento de Astro
+        inputIds.forEach(id => {
+            const input = document.getElementById(id) as HTMLInputElement | null;
+            if (!input) return;
+
+            const newClone = input.cloneNode(true) as HTMLInputElement;
+            input.parentNode?.replaceChild(newClone, input);
+
+            newClone.addEventListener('input', (e) => {
+                estadoEjercicio[id] = (e.target as HTMLInputElement).value;
+            });
+        });
+
+        const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
+        btnVerify.parentNode?.replaceChild(newBtnVerify, btnVerify);
+
+        newBtnVerify.addEventListener('click', () => {
+            let correctCount = 0;
+
+            inputIds.forEach(id => {
+                const input = document.getElementById(id) as HTMLInputElement | null;
+                if (!input) return;
+
+                const isCorrect = isAnswerCorrect(id, estadoEjercicio[id]);
+                input.disabled = true;
+
+                if (isCorrect) {
+                    input.classList.add('correct');
+                    input.value = correctAnswers[id].display;
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.value = correctAnswers[id].display;
+                }
+            });
+
+            if (correctCount === inputIds.length) {
+                feedback.style.color = "#047857";
+                feedback.textContent = "Correcto. El modelo matemático ha sido completado sin errores.";
+            } else {
+                feedback.style.color = "#b91c1c";
+                feedback.textContent = "Existen fallos en las expresiones o cálculos. Revisa las correcciones.";
+            }
+
+            newBtnVerify.disabled = true;
+        });
+
+        // Exposición de API para iframe de edX
+        (window as any).getGrade = () => JSON.stringify(estadoEjercicio);
+        (window as any).getState = () => JSON.stringify(estadoEjercicio);
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                estadoEjercicio = JSON.parse(stateStr);
+                inputIds.forEach(id => {
+                    if (estadoEjercicio[id] !== "") {
+                        const input = document.getElementById(id) as HTMLInputElement | null;
+                        if (input) input.value = estadoEjercicio[id];
+                    }
+                });
+            } catch(e) {
+                console.error("Error al recuperar estado:", e);
+            }
+        };
+    };
+
+    document.addEventListener('DOMContentLoaded', setupTablaProporcionalidad);
+    document.addEventListener('astro:page-load', setupTablaProporcionalidad);
+</script>
