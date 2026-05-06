@@ -6,8 +6,8 @@ import Layout from '../../../../layouts/Layout.astro';
     <div class="recurso-wrapper">
         <div class="card">
             <div class="header-text">
-                <h3></h3>
-                <p></p>
+                <h3>Relación Proporcional</h3>
+                <p>Identifica la constante de proporcionalidad y completa los valores correspondientes.</p>
             </div>
 
             <div class="interactive-container">
@@ -88,7 +88,12 @@ import Layout from '../../../../layouts/Layout.astro';
                         <td><input type="text" id="bot4" class="cell-input" autocomplete="off"></td>
                         <td><input type="text" id="bot5" class="cell-input" autocomplete="off"></td>
                         <td><input type="text" id="bot6" class="cell-input" autocomplete="off"></td>
-                        <td><input type="text" id="bot7" class="cell-input" autocomplete="off"></td>
+                        <td>
+                            <div class="bot-container">
+                                <span class="bot-static-text">y =</span>
+                                <input type="text" id="bot7" class="cell-input" autocomplete="off">
+                            </div>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -227,6 +232,23 @@ import Layout from '../../../../layouts/Layout.astro';
         border-color: #2563eb;
     }
 
+    .bot-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .bot-static-text {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #dc2626;
+    }
+
+    .bot-container .cell-input {
+        width: 60%; 
+    }
+
     .correct {
         background-color: #ecfdf5 !important;
         border-color: #10b981 !important;
@@ -273,7 +295,6 @@ import Layout from '../../../../layouts/Layout.astro';
 
 <script>
     const setupTablaProporcionalidad = () => {
-        // Tipado estricto para evitar fallos de ejecución
         type AnswerType = 'expr_mult' | 'number' | 'algebra';
         interface AnswerConfig {
             type: AnswerType;
@@ -292,13 +313,12 @@ import Layout from '../../../../layouts/Layout.astro';
             bot4: { type: 'number', val: 8, display: "8" },
             bot5: { type: 'number', val: 10, display: "10" },
             bot6: { type: 'number', val: 20, display: "20" },
-            bot7: { type: 'algebra', display: "y" } 
+            bot7: { type: 'algebra', display: "2/3 · x" } 
         };
 
         let estadoEjercicio: Record<string, string> = {};
         const inputIds = Object.keys(correctAnswers);
         
-        // Inicializar estado vacío
         inputIds.forEach(id => { estadoEjercicio[id] = ""; });
 
         const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
@@ -335,14 +355,13 @@ import Layout from '../../../../layouts/Layout.astro';
                 return parseFloat(cleanVal) === expected.val;
             } 
             else if (expected.type === 'algebra') {
-                const validAlgebra = ['y', '2/3x', '2/3*x', '2x/3', '(2/3)x'];
+                const validAlgebra = ['2/3x', '2/3*x', '2x/3', '(2/3)x'];
                 return validAlgebra.includes(cleanVal);
             }
             
             return false;
         }
 
-        // Prevenir multiplicidad de eventos por enrutamiento de Astro
         inputIds.forEach(id => {
             const input = document.getElementById(id) as HTMLInputElement | null;
             if (!input) return;
@@ -389,7 +408,6 @@ import Layout from '../../../../layouts/Layout.astro';
             newBtnVerify.disabled = true;
         });
 
-        // Exposición de API para iframe de edX
         (window as any).getGrade = () => JSON.stringify(estadoEjercicio);
         (window as any).getState = () => JSON.stringify(estadoEjercicio);
         (window as any).setState = (stateStr: string) => {
