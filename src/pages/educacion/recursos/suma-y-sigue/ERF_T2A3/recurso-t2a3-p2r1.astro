@@ -1,0 +1,357 @@
+---
+import Layout from '../../../../../layouts/Layout.astro';
+// Ajusta la ruta al Layout según corresponda en tu estructura de carpetas
+---
+
+<Layout titulo="Relación Velocidad y Tiempo">
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="header-bar">
+                <h2>Construcción del Trayecto</h2>
+                <p>Distancia constante: 100 km. Análisis de bloques por hora.</p>
+            </div>
+
+            <div class="main-content">
+                <div class="panel-izquierdo">
+                    
+                    <div class="caja-control">
+                        <label>Velocidad (x): <span id="val-velocidad" style="color: var(--primary); font-size: 18px; float: right;">25 km/h</span></label>
+                        <input type="range" id="slider-vel" min="0" max="4" step="1" value="2">
+                    </div>
+
+                    <div class="display-datos">
+                        <div class="dato-box">
+                            <span>Distancia Total</span>
+                            <strong style="color: var(--text)">100 km</strong>
+                        </div>
+                        <div class="dato-box">
+                            <span>Tiempo (y)</span>
+                            <strong id="val-tiempo">4 h</strong>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        La longitud de la pista es fija (100 km). Cada bloque representa el avance de <strong>1 hora</strong> a la velocidad seleccionada. Observa cuántos bloques se necesitan para cubrir la distancia total.
+                    </div>
+
+                    <button id="btn-animar" class="btn-accion">Animar Recorrido ▶</button>
+                </div>
+
+                <div class="panel-visor">
+                    <svg id="lienzo" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+                        <defs>
+                            <g id="arbol">
+                                <rect x="-4" y="-15" width="8" height="15" fill="var(--tree-trunk)" />
+                                <circle cx="0" cy="-25" r="16" fill="var(--tree-leaf)" />
+                                <circle cx="-10" cy="-15" r="12" fill="var(--tree-leaf)" />
+                                <circle cx="10" cy="-15" r="12" fill="var(--tree-leaf)" />
+                            </g>
+                        </defs>
+
+                        <path class="montana-fondo" d="M0,350 Q150,150 400,280 T800,180 L800,380 L0,380 Z" />
+                        <path class="montana-media" d="M0,380 Q200,220 450,320 T800,260 L800,380 L0,380 Z" />
+                        <path class="montana-frente" d="M-50,380 Q150,280 350,350 T700,300 L850,380 L-50,380 Z" />
+                        
+                        <use href="#arbol" x="120" y="300" transform="scale(1.2) translate(-20, -50)" />
+                        <use href="#arbol" x="320" y="340" transform="scale(0.8) translate(80, 20)" />
+                        <use href="#arbol" x="650" y="315" transform="scale(1.1) translate(-5, -25)" />
+                        <use href="#arbol" x="780" y="380" transform="scale(0.9) translate(0, -30)" />
+
+                        <rect x="0" y="370" width="800" height="130" class="suelo" />
+                        <rect x="0" y="390" width="800" height="110" class="ruta" />
+                        <line x1="0" y1="445" x2="800" y2="445" class="linea-ruta" />
+
+                        <g id="marcadores">
+                            <line x1="100" y1="390" x2="100" y2="500" class="marcador-linea" />
+                            <rect x="70" y="360" width="60" height="24" fill="var(--text)" rx="4"/>
+                            <text x="100" y="377" class="marcador-texto">0 km</text>
+
+                            <line x1="700" y1="390" x2="700" y2="500" class="marcador-linea" style="stroke-solid: true; stroke-dasharray: none; stroke-width: 3;" />
+                            <rect x="660" y="355" width="80" height="28" fill="white" stroke="var(--text)" stroke-width="2" rx="4"/>
+                            <text x="700" y="375" class="marcador-texto" style="fill: var(--text);">100 km</text>
+                        </g>
+
+                        <g id="capa-bloques"></g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        /* Paleta UI */
+        --primary: #D33C31;       
+        --bg: transparent;            
+        --text: #333333;          
+        --border: #D1D5DB;        
+        
+        /* Paleta Paisaje */
+        --sky: #D0E8F2;
+        --mountain-bg: #9CB4B8;
+        --mountain-mid: #8AA899;
+        --mountain-fg: #7A9E72;
+        --ground: #6B8E4E;
+        --road: #555759;
+        --road-line: #FFFFFF;
+        --tree-trunk: #5C4033;
+        --tree-leaf: #3A5F43;
+        --block-fill: rgba(211, 60, 49, 0.85);
+        --block-stroke: #A82D24;
+
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .recurso-wrapper * { box-sizing: border-box; }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border);
+        width: 100%;
+        max-width: 1000px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .header-bar {
+        padding: 20px 25px;
+        border-bottom: 1px solid var(--border);
+        background: #ffffff;
+    }
+
+    .header-bar h2 { margin: 0; font-size: 22px; color: var(--primary); }
+    .header-bar p { margin: 4px 0 0 0; font-size: 14px; color: #666; }
+
+    .main-content { 
+        display: flex; 
+        flex-direction: row;
+        height: 500px; 
+    }
+
+    .panel-izquierdo {
+        width: 350px; 
+        background: #F9FAFB; 
+        border-right: 1px solid var(--border);
+        padding: 25px; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 20px;
+        flex-shrink: 0;
+    }
+
+    .caja-control {
+        background: white; padding: 15px; border-radius: 8px;
+        border: 1px solid var(--border); border-left: 4px solid var(--primary);
+    }
+
+    .caja-control label { font-weight: 700; font-size: 13px; text-transform: uppercase; display: block; margin-bottom: 15px;}
+    
+    input[type="range"] { 
+        width: 100%; cursor: pointer; height: 6px; background: var(--border); border-radius: 3px; outline: none; -webkit-appearance: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+        background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .display-datos {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .dato-box {
+        background: white; border: 1px solid var(--border); border-radius: 6px;
+        padding: 12px 5px; text-align: center;
+    }
+    .dato-box span { display: block; font-size: 11px; text-transform: uppercase; font-weight: 700; color: #666; }
+    .dato-box strong { display: block; font-size: 24px; font-family: 'Courier New', monospace; color: var(--primary); margin-top: 5px; }
+
+    .info-box {
+        padding: 15px; border-radius: 8px; font-size: 13px; line-height: 1.5; 
+        background: white; border: 1px solid var(--border);
+    }
+
+    .btn-accion {
+        padding: 14px; border: none; border-radius: 8px; font-weight: 700; font-size: 14px;
+        cursor: pointer; transition: all 0.2s; color: white; width: 100%; background: var(--text);
+        margin-top: auto;
+    }
+    .btn-accion:hover:not(:disabled) { background: #000; transform: translateY(-2px); }
+    .btn-accion:disabled { background: var(--border); cursor: not-allowed; }
+
+    .panel-visor {
+        flex-grow: 1; background: var(--sky); position: relative; overflow: hidden;
+        display: flex; flex-direction: column;
+    }
+
+    svg { width: 100%; height: 100%; display: block; }
+    
+    .montana-fondo { fill: var(--mountain-bg); }
+    .montana-media { fill: var(--mountain-mid); }
+    .montana-frente { fill: var(--mountain-fg); }
+    .suelo { fill: var(--ground); }
+    .ruta { fill: var(--road); }
+    .linea-ruta { stroke: var(--road-line); stroke-width: 4; stroke-dasharray: 40 30; }
+    
+    .marcador-linea { stroke: rgba(255,255,255,0.7); stroke-width: 2; stroke-dasharray: 4;}
+    .marcador-texto { font-size: 14px; font-weight: 700; fill: #FFF; text-anchor: middle; font-family: 'Inter', sans-serif;}
+
+    /* Los estilos para SVG inyectado por JS se pasan como propiedades inline en el script en lugar de CSS para evitar conflictos con Astro purgado */
+
+    @media (max-width: 768px) {
+        .main-content { flex-direction: column; height: auto; }
+        .panel-izquierdo { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+        .panel-visor { min-height: 350px; }
+    }
+</style>
+
+<script>
+    const setupRecurso = () => {
+        const sliderVelOriginal = document.getElementById('slider-vel') as HTMLInputElement;
+        const btnAnimarOriginal = document.getElementById('btn-animar') as HTMLButtonElement;
+        const valVel = document.getElementById('val-velocidad');
+        const valTiempo = document.getElementById('val-tiempo');
+        const capaBloques = document.getElementById('capa-bloques');
+
+        if (!sliderVelOriginal || !btnAnimarOriginal || !valVel || !valTiempo || !capaBloques) return;
+
+        // Clonar nodos para limpiar listeners (necesario por Astro View Transitions)
+        const sliderVel = sliderVelOriginal.cloneNode(true) as HTMLInputElement;
+        sliderVelOriginal.parentNode?.replaceChild(sliderVel, sliderVelOriginal);
+        
+        const btnAnimar = btnAnimarOriginal.cloneNode(true) as HTMLButtonElement;
+        btnAnimarOriginal.parentNode?.replaceChild(btnAnimar, btnAnimarOriginal);
+
+        const valoresPermitidos = [10, 20, 25, 50, 100];
+        
+        const pistaXInicial = 100;
+        const pistaAnchoTotal = 600; 
+        const pistaY = 405; 
+        const altoBloque = 45; 
+
+        let velocidadActual = valoresPermitidos[parseInt(sliderVel.value)];
+
+        sliderVel.addEventListener('input', (e) => {
+            const target = e.target as HTMLInputElement;
+            velocidadActual = valoresPermitidos[parseInt(target.value)];
+            valVel.textContent = velocidadActual + ' km/h';
+            valTiempo.textContent = (100 / velocidadActual) + ' h';
+            capaBloques.innerHTML = ''; 
+        });
+
+        const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+        btnAnimar.addEventListener('click', async () => {
+            btnAnimar.disabled = true;
+            sliderVel.disabled = true;
+            capaBloques.innerHTML = '';
+
+            const tiempoTotal = 100 / velocidadActual;
+            const proporcionPx = pistaAnchoTotal / 100; 
+            const anchoBloque = velocidadActual * proporcionPx;
+
+            for (let i = 0; i < tiempoTotal; i++) {
+                const posX = pistaXInicial + (i * anchoBloque);
+                
+                const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                rect.setAttribute("x", posX.toString());
+                rect.setAttribute("y", (pistaY - 20).toString()); 
+                rect.setAttribute("width", anchoBloque.toString());
+                rect.setAttribute("height", altoBloque.toString());
+                rect.setAttribute("fill", "rgba(211, 60, 49, 0.85)");
+                rect.setAttribute("stroke", "#A82D24");
+                rect.setAttribute("stroke-width", "2");
+                rect.setAttribute("rx", "4");
+                rect.style.opacity = "0";
+                
+                const textoGrupo = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                textoGrupo.setAttribute("font-family", "Inter, sans-serif");
+                textoGrupo.setAttribute("font-size", "14px");
+                textoGrupo.setAttribute("font-weight", "bold");
+                textoGrupo.setAttribute("fill", "white");
+                textoGrupo.setAttribute("text-anchor", "middle");
+                textoGrupo.style.opacity = "0";
+                
+                const tspanHora = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+                tspanHora.setAttribute("x", (posX + (anchoBloque / 2)).toString());
+                tspanHora.setAttribute("y", (pistaY - 20 + 18).toString());
+                tspanHora.textContent = "1 h";
+
+                const tspanDist = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+                tspanDist.setAttribute("x", (posX + (anchoBloque / 2)).toString());
+                tspanDist.setAttribute("y", (pistaY - 20 + 34).toString());
+                tspanDist.setAttribute("font-size", "11px");
+                tspanDist.setAttribute("font-weight", "normal");
+                tspanDist.setAttribute("fill", "rgba(255,255,255,0.9)");
+                tspanDist.textContent = anchoBloque >= 50 ? `(${velocidadActual} km)` : "";
+
+                textoGrupo.appendChild(tspanHora);
+                textoGrupo.appendChild(tspanDist);
+
+                capaBloques.appendChild(rect);
+                capaBloques.appendChild(textoGrupo);
+
+                const acumuladoX = posX + anchoBloque;
+                let tick, textoAcumulado;
+                
+                if (i < tiempoTotal - 1) {
+                    tick = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    tick.setAttribute("x1", acumuladoX.toString());
+                    tick.setAttribute("y1", (pistaY + altoBloque + 5).toString());
+                    tick.setAttribute("x2", acumuladoX.toString());
+                    tick.setAttribute("y2", (pistaY + altoBloque + 15).toString());
+                    tick.setAttribute("stroke", "#D1D5DB");
+                    tick.setAttribute("stroke-width", "2");
+                    tick.style.opacity = "0";
+
+                    const distTotal = (i + 1) * velocidadActual;
+                    textoAcumulado = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    textoAcumulado.setAttribute("x", acumuladoX.toString());
+                    textoAcumulado.setAttribute("y", (pistaY + altoBloque + 28).toString());
+                    textoAcumulado.setAttribute("fill", "white");
+                    textoAcumulado.setAttribute("font-size", "12px");
+                    textoAcumulado.setAttribute("font-family", "Inter, sans-serif");
+                    textoAcumulado.setAttribute("text-anchor", "middle");
+                    textoAcumulado.textContent = distTotal + " km";
+                    textoAcumulado.style.opacity = "0";
+
+                    capaBloques.appendChild(tick);
+                    capaBloques.appendChild(textoAcumulado);
+                }
+
+                const animProps = [
+                    { opacity: 0, transform: `translateY(-15px)` },
+                    { opacity: 1, transform: `translateY(20px)` }
+                ];
+                const animConfig: KeyframeAnimationOptions = { duration: 400, fill: "forwards", easing: "ease-out" };
+
+                rect.animate(animProps, animConfig);
+                textoGrupo.animate(animProps, animConfig);
+
+                if (tick && textoAcumulado) {
+                    tick.animate([{ opacity: 0 }, { opacity: 0.8 }], { duration: 300, delay: 200, fill: "forwards" });
+                    textoAcumulado.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, delay: 200, fill: "forwards" });
+                }
+
+                await delay(450); 
+            }
+
+            btnAnimar.disabled = false;
+            sliderVel.disabled = false;
+        });
+    };
+
+    document.addEventListener('DOMContentLoaded', setupRecurso);
+    document.addEventListener('astro:page-load', setupRecurso);
+</script>
