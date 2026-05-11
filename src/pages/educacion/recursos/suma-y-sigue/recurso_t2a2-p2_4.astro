@@ -44,6 +44,7 @@ import Layout from '../../../../layouts/Layout.astro';
 </Layout>
 
 <style>
+    /* Estilos encapsulados para la estructura estática */
     .recurso-wrapper { 
         font-family: 'Inter', sans-serif; 
         background: #F4F4F2; 
@@ -135,21 +136,6 @@ import Layout from '../../../../layouts/Layout.astro';
         padding: 10px 5px;
         font-size: 0.9rem;
     }
-    td {
-        padding: 6px 5px;
-        border-bottom: 1px solid #e2e8f0;
-        color: #4A4A49;
-        font-weight: 500;
-        transition: background-color 0.3s, color 0.3s;
-    }
-    tr:last-child td { border-bottom: none; }
-    
-    .arrow-cell { color: #D33C31; font-weight: bold; font-size: 1.2rem; width: 30px;}
-    .arrow-icon { opacity: 0; transition: opacity 0.3s; }
-    
-    .row-active { background-color: rgba(232, 116, 97, 0.2); }
-    .row-active td { color: #8B2E28; font-weight: bold; }
-    .row-active .arrow-icon { opacity: 1; }
 
     .plot-container {
         flex: 1;
@@ -165,6 +151,25 @@ import Layout from '../../../../layouts/Layout.astro';
         .table-container { flex: none; width: 100%; }
         .header-actions { flex-direction: column; gap: 15px; align-items: flex-start; }
     }
+</style>
+
+<style is:global>
+    /* Estilos globales obligatorios para los elementos generados por JavaScript */
+    #dataTable tbody td {
+        padding: 6px 5px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #4A4A49;
+        font-weight: 500;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    #dataTable tbody tr:last-child td { border-bottom: none; }
+    
+    #dataTable .arrow-cell { color: #D33C31; font-weight: bold; font-size: 1.2rem; width: 30px;}
+    #dataTable .arrow-icon { opacity: 0; transition: opacity 0.3s; }
+    
+    #dataTable .row-active { background-color: rgba(232, 116, 97, 0.2); }
+    #dataTable .row-active td { color: #8B2E28; font-weight: bold; }
+    #dataTable .row-active .arrow-icon { opacity: 1; }
 </style>
 
 <script>
@@ -227,7 +232,6 @@ import Layout from '../../../../layouts/Layout.astro';
             const layoutFinal = { ...layoutBase, annotations: [...anotacionesCompletadas, ...(layoutExtra.annotations || [])] };
             const trazosFinales = [traceLineBase, ...trazosCompletados, ...puntosCompletados, ...trazosExtra];
             
-            // Corrección TS: Acceder a Plotly vía window as any
             if (typeof (window as any).Plotly !== 'undefined') {
                 (window as any).Plotly.react('plot', trazosFinales, layoutFinal);
             }
@@ -337,7 +341,6 @@ import Layout from '../../../../layouts/Layout.astro';
         construirTabla();
 
         const initPlot = () => {
-            // Corrección TS: Acceder a Plotly vía window as any
             if (typeof (window as any).Plotly !== 'undefined') {
                 (window as any).Plotly.newPlot('plot', [traceLineBase], layoutBase, {responsive: true});
             } else {
