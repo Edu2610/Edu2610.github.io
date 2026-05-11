@@ -3,54 +3,34 @@ import Layout from '../../../../layouts/Layout.astro';
 // Asegúrate de que la ruta al Layout sea la correcta
 ---
 
-<Layout titulo="Explorador de Relaciones: Bidones">
+<Layout titulo="Explorador Covariacional: Bidones">
     <script is:inline src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 
     <div class="recurso-wrapper">
         <div class="card">
             <div class="header-actions">
                 <h3 id="mainTitle">Enfoque Covariacional</h3>
-                <button id="btnToggleMode" class="btn-toggle">Ver Correspondencia</button>
+                <button id="btnClear" class="btn-clear">Limpiar Sombras</button>
             </div>
             
-            <!-- Controles Covariación -->
-            <div id="panelCovariation" style="display: block;">
+            <div id="panelCovariation">
                 <div class="header-text">
-                    <p>Mueve los deslizadores para observar la compensación exacta entre los bidones.</p>
+                    <p>Define un punto inicial (x) y un incremento positivo (Δx) para observar la variación conjunta.</p>
                 </div>
                 <div class="controls">
                     <div class="slider-group">
-                        <label>Punto A (x): <span id="valA" class="label-val">2.0</span></label>
-                        <input type="range" id="slideA" min="0" max="12" step="0.3" value="2">
+                        <label>Punto Inicial (x): <span id="valX" class="label-val">2</span></label>
+                        <input type="range" id="slideX" min="0" max="12" step="1" value="2">
                     </div>
                     <div class="slider-group">
-                        <label>Punto B (x): <span id="valB" class="label-val">6.0</span></label>
-                        <input type="range" id="slideB" min="0" max="12" step="0.3" value="6">
+                        <label>Incremento (Δx): <span id="valDx" class="label-val">4</span></label>
+                        <input type="range" id="slideDx" min="0" max="12" step="1" value="4">
                     </div>
                 </div>
                 <div class="info-box info-covariation">
                     <strong>Análisis de Covariación:</strong>
-                    Mientras <span class="text-blue">x varía <span id="dx">4.0</span></span> unidades, 
-                    <span class="text-red">y varía exactamente <span id="dy">4.0</span></span> unidades en sentido opuesto.
-                </div>
-            </div>
-
-            <!-- Controles Correspondencia -->
-            <div id="panelCorrespondence" style="display: none;">
-                <div class="header-text">
-                    <p>Ingresa un valor para el bidón B y observa cómo se determina el valor del bidón A.</p>
-                </div>
-                <div class="controls">
-                    <div style="display: flex; gap: 15px; align-items: center; width: 100%; justify-content: center;">
-                        <label style="color: #475569; font-size: 0.95rem;">Valor de x (Bidón B):</label>
-                        <input type="number" id="inputX" min="0" max="12" step="1" value="5">
-                        <button id="btnAnimate" class="btn-action">Trazar Correspondencia</button>
-                    </div>
-                </div>
-                <div class="info-box info-correspondence">
-                    <strong>Análisis de Correspondencia:</strong>
-                    Regla: <span class="mono-bg">y = 12 - x</span>. 
-                    Para <span class="text-blue">x = <span id="corrX">5</span></span>, el valor asignado es <span class="text-green">y = <span id="corrY">7</span></span>.
+                    Para un incremento de <span class="text-blue">Δx = <span id="dxText">4</span></span>, 
+                    la variable dependiente cambia <span class="text-red">Δy = <span id="dyText">-4</span></span>.
                 </div>
             </div>
 
@@ -74,7 +54,7 @@ import Layout from '../../../../layouts/Layout.astro';
         padding: 30px;
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        max-width: 800px; /* Cambiado de 850px a 800px */
+        max-width: 800px;
         width: 100%;
     }
 
@@ -121,14 +101,10 @@ import Layout from '../../../../layouts/Layout.astro';
     .label-val { font-weight: 800; color: #1e293b; }
     
     input[type=range] { width: 100%; cursor: pointer; }
-    input[type="number"] { padding: 8px; width: 70px; border: 1px solid #cbd5e1; border-radius: 4px; text-align: center; font-size: 1rem; }
 
     button { cursor: pointer; padding: 10px 18px; border: none; border-radius: 6px; font-weight: bold; transition: background 0.2s; font-size: 0.95rem; }
-    .btn-toggle { background: #334155; color: white; }
-    .btn-toggle:hover { background: #1e293b; }
-    .btn-action { background: #16a34a; color: white; }
-    .btn-action:hover { background: #15803d; }
-    .btn-action:disabled { background: #94a3b8; cursor: not-allowed; }
+    .btn-clear { background: #64748b; color: white; }
+    .btn-clear:hover { background: #475569; }
 
     #plot { width: 100%; height: 550px; }
 
@@ -141,61 +117,45 @@ import Layout from '../../../../layouts/Layout.astro';
     }
     
     .info-covariation { border-left: 4px solid #d32f2f; background: #fff1f2; }
-    .info-correspondence { border-left: 4px solid #16a34a; background: #f0fdf4; }
 
     .text-blue { color: #2563eb; font-weight: 600; }
     .text-red { color: #d32f2f; font-weight: 600; }
-    .text-green { color: #16a34a; font-weight: 600; }
-    .mono-bg { font-family: monospace; background: #e2e8f0; padding: 2px 6px; border-radius: 4px; }
 </style>
 
 <script>
     declare const Plotly: any;
 
-    const setupTriangulos = () => {
+    const setupCovariacion = () => {
         // Nodos DOM
-        const btnToggleMode = document.getElementById('btnToggleMode') as HTMLButtonElement | null;
-        const mainTitle = document.getElementById('mainTitle') as HTMLElement | null;
-        const panelCovariation = document.getElementById('panelCovariation') as HTMLElement | null;
-        const panelCorrespondence = document.getElementById('panelCorrespondence') as HTMLElement | null;
-        
-        const slideA = document.getElementById('slideA') as HTMLInputElement | null;
-        const slideB = document.getElementById('slideB') as HTMLInputElement | null;
-        const valA = document.getElementById('valA') as HTMLElement | null;
-        const valB = document.getElementById('valB') as HTMLElement | null;
-        const dxText = document.getElementById('dx') as HTMLElement | null;
-        const dyText = document.getElementById('dy') as HTMLElement | null;
-        
-        const inputX = document.getElementById('inputX') as HTMLInputElement | null;
-        const btnAnimate = document.getElementById('btnAnimate') as HTMLButtonElement | null;
-        const corrXText = document.getElementById('corrX') as HTMLElement | null;
-        const corrYText = document.getElementById('corrY') as HTMLElement | null;
-        
+        const slideX = document.getElementById('slideX') as HTMLInputElement | null;
+        const slideDx = document.getElementById('slideDx') as HTMLInputElement | null;
+        const valX = document.getElementById('valX') as HTMLElement | null;
+        const valDx = document.getElementById('valDx') as HTMLElement | null;
+        const dxText = document.getElementById('dxText') as HTMLElement | null;
+        const dyText = document.getElementById('dyText') as HTMLElement | null;
+        const btnClear = document.getElementById('btnClear') as HTMLButtonElement | null;
         const plotDiv = document.getElementById('plot') as HTMLElement | null;
 
-        if (!slideA || !slideB || !inputX || !plotDiv || !btnToggleMode) return;
+        if (!slideX || !slideDx || !plotDiv) return;
 
-        // Estado del componente
-        let currentMode = 'covariation';
-        let animationId: number | null = null;
-
-        // Estado guardado para edX
+        // Estado local para edX
         let estadoEjercicio = {
-    posA: slideA.value,
-    posB: slideB.value,
-    mode: 'covariation',
-    inputX: inputX.value
-};
+            posX: slideX.value,
+            posDx: slideDx.value
+        };
+
+        let shadowTraces: any[] = [];
 
         const layoutBase = {
-            xaxis: { title: 'Litros en Bidón B (x)', range: [-0.5, 12.5], dtick: 1, gridcolor: '#e2e8f0' },
+            xaxis: { title: 'Litros en Bidón B (x)', range: [0, 12.5], dtick: 1, gridcolor: '#e2e8f0', rangemode: 'nonnegative', constrain: 'domain' },
             yaxis: { 
                 title: 'Litros en Bidón A (y)', 
-                range: [-0.5, 12.5], 
+                range: [0, 12.5], 
                 dtick: 1, 
                 gridcolor: '#e2e8f0',
                 scaleanchor: "x", 
-                scaleratio: 1 
+                scaleratio: 1,
+                rangemode: 'nonnegative'
             },
             showlegend: false,
             margin: { t: 30, b: 40, l: 50, r: 20 },
@@ -209,193 +169,101 @@ import Layout from '../../../../layouts/Layout.astro';
             hoverinfo: 'skip'
         };
 
-        function renderCovariation() {
-            const x1 = parseFloat(slideA!.value);
-            const x2 = parseFloat(slideB!.value);
+        function renderPlot(saveShadow = false) {
+            let x1 = parseFloat(slideX!.value);
+            let dx = parseFloat(slideDx!.value);
+            
+            // Corrección de límites
+            if (x1 + dx > 12) {
+                dx = 12 - x1;
+                slideDx!.value = dx.toString();
+            }
+            
+            let x2 = x1 + dx;
             const y1 = 12 - x1;
             const y2 = 12 - x2;
+            const dy = y2 - y1;
 
-            valA!.innerText = x1.toFixed(1);
-            valB!.innerText = x2.toFixed(1);
-            
-            const deltaX = x2 - x1;
-            const deltaY = y2 - y1;
-            dxText!.innerText = Math.abs(deltaX).toFixed(1);
-            dyText!.innerText = Math.abs(deltaY).toFixed(1);
+            valX!.innerText = x1.toString();
+            valDx!.innerText = dx.toString();
+            dxText!.innerText = dx.toString();
+            dyText!.innerText = dy.toString();
 
-            estadoEjercicio.posA = x1.toString();
-            estadoEjercicio.posB = x2.toString();
+            // Guardar estado edX
+            estadoEjercicio.posX = x1.toString();
+            estadoEjercicio.posDx = dx.toString();
 
-            const triangle = {
+            const currentTriangle = {
                 x: [x1, x2, x2], y: [y1, y1, y2],
-                mode: 'lines', fill: 'toself', fillcolor: 'rgba(211, 47, 47, 0.1)',
-                line: { color: '#d32f2f', width: 3 }, name: 'Variación', hoverinfo: 'skip'
+                mode: 'lines', fill: 'toself', fillcolor: 'rgba(211, 47, 47, 0.2)',
+                line: { color: '#d32f2f', width: 3 },
+                hoverinfo: 'skip'
             };
+
+            if (saveShadow && dx > 0) {
+                shadowTraces.push({
+                    x: [x1, x2, x2], y: [y1, y1, y2],
+                    mode: 'lines', fill: 'toself', fillcolor: 'rgba(100, 116, 139, 0.2)',
+                    line: { color: '#64748b', width: 1.5 },
+                    hoverinfo: 'skip'
+                });
+            }
 
             const points = {
                 x: [x1, x2], y: [y1, y2],
-                mode: 'markers+text', marker: { size: 12, color: '#1e293b' },
-                text: [`A(${x1.toFixed(1)}, ${y1.toFixed(1)})`, `B(${x2.toFixed(1)}, ${y2.toFixed(1)})`],
-                textposition: 'top center', hoverinfo: 'none'
+                mode: 'markers+text', marker: { size: 10, color: '#1e293b' },
+                text: [`A(${x1}, ${y1})`, `B(${x2}, ${y2})`],
+                textposition: ['top right', 'bottom right'],
+                hoverinfo: 'skip'
             };
 
-            const layout = { ...layoutBase, annotations: [
-                { x: (x1 + x2) / 2, y: y1+0.7, text: `Δx = ${deltaX.toFixed(1)}`, showarrow: false, font: { color: '#2563eb', weight: 'bold' }, bgcolor: 'rgba(255,255,255,0.8)' },
-                { x: x2+1, y: (y1 + y2) / 2, text: `Δy = ${deltaY.toFixed(1)}`, showarrow: false, font: { color: '#d32f2f', weight: 'bold' }, bgcolor: 'rgba(255,255,255,0.8)' }
-            ]};
-
-            if (typeof Plotly !== 'undefined') Plotly.react('plot', [traceLineBase, triangle, points], layout);
-        }
-
-        function resetCorrespondenceView(x: number, y: number) {
-            corrXText!.innerText = x.toFixed(1);
-            corrYText!.innerText = y.toFixed(1);
-            estadoEjercicio.inputX = x.toString();
-            if (typeof Plotly !== 'undefined') Plotly.react('plot', [traceLineBase], layoutBase);
-        }
-
-        function animateCorrespondence() {
-            if (animationId) cancelAnimationFrame(animationId);
-            btnAnimate!.disabled = true;
-
-            let targetX = parseFloat(inputX!.value);
-            if(targetX < 0) targetX = 0;
-            if(targetX > 12) targetX = 12;
-            inputX!.value = targetX.toString();
-            estadoEjercicio.inputX = targetX.toString();
-
-            const targetY = 12 - targetX;
-            corrXText!.innerText = targetX.toFixed(1);
-            corrYText!.innerText = targetY.toFixed(1);
-
-            let currentX = targetX;
-            let currentY = 0;
-            let pathX = [targetX];
-            let pathY = [0];
+            const layout = { ...layoutBase, annotations: [] as any[] };
             
-            const speed = 0.4; 
-            let phase = targetY > 0 ? 1 : 2; 
-
-            function step() {
-                let complete = false;
-
-                if (phase === 1) {
-                    currentY += speed;
-                    if (currentY >= targetY) {
-                        currentY = targetY;
-                        phase = targetX > 0 ? 2 : 3;
+            if (dx > 0) {
+                layout.annotations.push(
+                    { 
+                        x: (x1 + x2) / 2, y: y1, 
+                        text: `Δx = ${dx}`, 
+                        showarrow: false, font: { color: '#2563eb', weight: 'bold' },
+                        yshift: 10, yanchor: 'bottom'
+                    },
+                    { 
+                        x: x2, y: (y1 + y2) / 2, 
+                        text: `Δy = ${dy}`, 
+                        showarrow: false, font: { color: '#d32f2f', weight: 'bold' },
+                        xshift: 10, xanchor: 'left'
                     }
-                    pathX.push(targetX);
-                    pathY.push(currentY);
-                } else if (phase === 2) {
-                    currentX -= speed;
-                    if (currentX <= 0) {
-                        currentX = 0;
-                        complete = true;
-                    }
-                    pathX.push(currentX);
-                    pathY.push(targetY);
-                } else {
-                    complete = true;
-                }
-
-                const pathTrace = {
-                    x: pathX, y: pathY,
-                    mode: 'lines',
-                    line: { color: '#16a34a', width: 3, dash: 'dash' },
-                    hoverinfo: 'skip'
-                };
-
-                const pointTrace = {
-                    x: [targetX], y: [targetY],
-                    mode: 'markers+text',
-                    marker: { size: 12, color: '#16a34a' },
-                    text: [`(${targetX.toFixed(1)}, ${targetY.toFixed(1)})`],
-                    textposition: 'top right',
-                    hoverinfo: 'none'
-                };
-
-                Plotly.react('plot', [traceLineBase, pathTrace, pointTrace], layoutBase);
-
-                if (!complete) {
-                    animationId = requestAnimationFrame(step);
-                } else {
-                    const finalLayout = { ...layoutBase, annotations: [] as any[] };
-                    
-                    if (targetY > 0) {
-                        finalLayout.annotations.push({
-                            x: targetX, y: targetY, ax: targetX, ay: 0,
-                            xref: 'x', yref: 'y', axref: 'x', ayref: 'y',
-                            showarrow: true, arrowhead: 2, arrowcolor: '#16a34a', arrowwidth: 3
-                        });
-                    }
-                    if (targetX > 0) {
-                        finalLayout.annotations.push({
-                            x: 0, y: targetY, ax: targetX, ay: targetY,
-                            xref: 'x', yref: 'y', axref: 'x', ayref: 'y',
-                            showarrow: true, arrowhead: 2, arrowcolor: '#16a34a', arrowwidth: 3
-                        });
-                    }
-
-                    Plotly.react('plot', [traceLineBase, pointTrace], finalLayout);
-                    btnAnimate!.disabled = false;
-                }
+                );
             }
-            
-            Plotly.react('plot', [traceLineBase], layoutBase).then(() => {
-                animationId = requestAnimationFrame(step);
-            });
+
+            if (typeof Plotly !== 'undefined') {
+                Plotly.react('plot', [traceLineBase, ...shadowTraces, currentTriangle, points], layout);
+            }
         }
 
-        btnToggleMode!.addEventListener('click', () => {
-            if (animationId) cancelAnimationFrame(animationId);
-            if (btnAnimate) btnAnimate.disabled = false;
+        // Eventos
+        slideX!.addEventListener('input', () => renderPlot(false));
+        slideDx!.addEventListener('input', () => renderPlot(false));
+        
+        slideX!.addEventListener('change', () => renderPlot(true));
+        slideDx!.addEventListener('change', () => renderPlot(true));
 
-            if (currentMode === 'covariation') {
-                currentMode = 'correspondence';
-                estadoEjercicio.mode = 'correspondence';
-                mainTitle!.innerText = 'Enfoque de Correspondencia';
-                mainTitle!.style.color = '#16a34a';
-                btnToggleMode!.innerText = 'Ver Covariación';
-                panelCovariation!.style.display = 'none';
-                panelCorrespondence!.style.display = 'block';
-                
-                const x = parseFloat(inputX!.value) || 5;
-                resetCorrespondenceView(x, 12-x);
-            } else {
-                currentMode = 'covariation';
-                estadoEjercicio.mode = 'covariation';
-                mainTitle!.innerText = 'Enfoque Covariacional';
-                mainTitle!.style.color = '#d32f2f';
-                btnToggleMode!.innerText = 'Ver Correspondencia';
-                panelCovariation!.style.display = 'block';
-                panelCorrespondence!.style.display = 'none';
-                renderCovariation();
-            }
+        btnClear!.addEventListener('click', () => {
+            shadowTraces = [];
+            renderPlot(false);
         });
 
-        slideA!.addEventListener('input', renderCovariation);
-        slideB!.addEventListener('input', renderCovariation);
-        btnAnimate!.addEventListener('click', animateCorrespondence);
-
+        // Inicialización robusta para evitar errores si Plotly tarda en cargar
         const initPlot = () => {
             if (typeof Plotly !== 'undefined') {
-                if (currentMode === 'covariation') {
-                    renderCovariation();
-                } else {
-                    resetCorrespondenceView(parseFloat(inputX!.value) || 5, 12 - (parseFloat(inputX!.value) || 5));
-                }
+                renderPlot(true);
             } else {
                 plotDiv!.innerHTML = "<p style='text-align:center; color:#64748b; margin-top:100px;'>Cargando motor gráfico...</p>";
                 const checkPlotly = setInterval(() => {
                     if (typeof Plotly !== 'undefined') {
                         clearInterval(checkPlotly);
                         plotDiv!.innerHTML = "";
-                        if (currentMode === 'covariation') {
-                            renderCovariation();
-                        } else {
-                            resetCorrespondenceView(parseFloat(inputX!.value) || 5, 12 - (parseFloat(inputX!.value) || 5));
-                        }
+                        renderPlot(true);
                     }
                 }, 200);
             }
@@ -403,7 +271,7 @@ import Layout from '../../../../layouts/Layout.astro';
 
         initPlot();
 
-        // JSInput API
+        // JSInput API de edX
         (window as any).getGrade = () => JSON.stringify(estadoEjercicio);
         (window as any).getState = () => JSON.stringify(estadoEjercicio);
         (window as any).setState = (stateStr: string) => {
@@ -412,29 +280,11 @@ import Layout from '../../../../layouts/Layout.astro';
                 const state = JSON.parse(stateStr);
                 estadoEjercicio = state;
                 
-                if (state.posA) slideA!.value = state.posA;
-                if (state.posB) slideB!.value = state.posB;
-                if (state.inputX && inputX) inputX.value = state.inputX;
+                if (state.posX) slideX!.value = state.posX;
+                if (state.posDx) slideDx!.value = state.posDx;
                 
-                if (state.mode === 'correspondence' && currentMode !== 'correspondence') {
-                    currentMode = 'correspondence';
-                    mainTitle!.innerText = 'Enfoque de Correspondencia';
-                    mainTitle!.style.color = '#16a34a';
-                    btnToggleMode!.innerText = 'Ver Covariación';
-                    panelCovariation!.style.display = 'none';
-                    panelCorrespondence!.style.display = 'block';
-                    const x = parseFloat(inputX!.value) || 5;
-                    resetCorrespondenceView(x, 12-x);
-                } else if (state.mode !== 'correspondence' && currentMode !== 'covariation') {
-                    currentMode = 'covariation';
-                    mainTitle!.innerText = 'Enfoque Covariacional';
-                    mainTitle!.style.color = '#d32f2f';
-                    btnToggleMode!.innerText = 'Ver Correspondencia';
-                    panelCovariation!.style.display = 'block';
-                    panelCorrespondence!.style.display = 'none';
-                    renderCovariation();
-                } else {
-                    if (currentMode === 'covariation') renderCovariation();
+                if (typeof Plotly !== 'undefined') {
+                    renderPlot(false);
                 }
             } catch(e) {
                 console.error("Error restaurando estado en edX", e);
@@ -442,6 +292,6 @@ import Layout from '../../../../layouts/Layout.astro';
         };
     };
 
-    document.addEventListener('DOMContentLoaded', setupTriangulos);
-    document.addEventListener('astro:page-load', setupTriangulos);
+    document.addEventListener('DOMContentLoaded', setupCovariacion);
+    document.addEventListener('astro:page-load', setupCovariacion);
 </script>
