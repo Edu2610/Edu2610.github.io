@@ -1,0 +1,363 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+// Asegúrate de que la ruta al Layout sea la correcta
+---
+
+<Layout titulo="Correspondencia Secuencial: Bidones">
+    <script is:inline src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="header-actions">
+                <h3 id="mainTitle">Correspondencia de Valores</h3>
+                <div>
+                    <button id="btnAnimate" class="btn-action">Iniciar Animación</button>
+                    <button id="btnReset" class="btn-reset">Reiniciar</button>
+                </div>
+            </div>
+            
+            <div class="workspace">
+                <div class="table-container">
+                    <div class="table-title">
+                        Regla de correspondencia<br>
+                        <span class="mono-eq">y = 12 - x</span>
+                    </div>
+                    <table id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>Bidón B<br>(x)</th>
+                                <th></th>
+                                <th>Bidón A<br>(y)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+
+                <div class="plot-container">
+                    <div id="plot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper { 
+        font-family: 'Inter', sans-serif; 
+        background: #F4F4F2; 
+        display: flex; 
+        justify-content: center; 
+        padding: 40px 20px; 
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .card { 
+        background: white; 
+        padding: 30px; 
+        border-radius: 12px; 
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+        max-width: 900px; 
+        width: 100%; 
+    }
+    .header-actions { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        border-bottom: 1px solid #e2e8f0; 
+        padding-bottom: 15px; 
+        margin-bottom: 20px;
+    }
+    #mainTitle { 
+        margin: 0; 
+        font-size: 1.5rem; 
+        color: #D33C31; 
+    }
+    button { 
+        cursor: pointer; 
+        padding: 10px 18px; 
+        border: none; 
+        border-radius: 6px; 
+        font-weight: bold; 
+        transition: background 0.2s; 
+        font-size: 0.95rem; 
+    }
+    .btn-action { background: #D33C31; color: white; }
+    .btn-action:hover { background: #8B2E28; }
+    .btn-action:disabled { background: #E87461; cursor: not-allowed; }
+    .btn-reset { background: #4A4A49; color: white; margin-left: 10px; }
+    .btn-reset:hover { background: #2a2a2a; }
+
+    .workspace {
+        display: flex;
+        gap: 20px;
+        align-items: stretch;
+    }
+
+    .table-container {
+        flex: 0 0 200px;
+        background: #F4F4F2;
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #e2e8f0;
+    }
+    
+    .table-title {
+        text-align: center;
+        color: #4A4A49;
+        font-weight: bold;
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+        line-height: 1.4;
+        padding-bottom: 8px;
+        border-bottom: 1px dashed #cbd5e1;
+    }
+    .mono-eq {
+        font-family: monospace;
+        font-size: 1.15rem;
+        color: #D33C31;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        background: white;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    th {
+        background: #4A4A49;
+        color: white;
+        padding: 10px 5px;
+        font-size: 0.9rem;
+    }
+    td {
+        padding: 6px 5px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #4A4A49;
+        font-weight: 500;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    tr:last-child td { border-bottom: none; }
+    
+    .arrow-cell { color: #D33C31; font-weight: bold; font-size: 1.2rem; width: 30px;}
+    .arrow-icon { opacity: 0; transition: opacity 0.3s; }
+    
+    .row-active { background-color: rgba(232, 116, 97, 0.2); }
+    .row-active td { color: #8B2E28; font-weight: bold; }
+    .row-active .arrow-icon { opacity: 1; }
+
+    .plot-container {
+        flex: 1;
+        min-width: 0;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 5px;
+    }
+    #plot { width: 100%; height: 500px; }
+
+    @media (max-width: 700px) {
+        .workspace { flex-direction: column; }
+        .table-container { flex: none; width: 100%; }
+        .header-actions { flex-direction: column; gap: 15px; align-items: flex-start; }
+    }
+</style>
+
+<script>
+    const setupCorrespondenciaSecuencial = () => {
+        const btnAnimate = document.getElementById('btnAnimate') as HTMLButtonElement | null;
+        const btnReset = document.getElementById('btnReset') as HTMLButtonElement | null;
+        const tbody = document.querySelector('#dataTable tbody') as HTMLElement | null;
+        const plotDiv = document.getElementById('plot') as HTMLElement | null;
+
+        if (!btnAnimate || !btnReset || !tbody || !plotDiv) return;
+        
+        const puntosAAnimar = [2, 6, 10];
+        
+        let trazosCompletados: any[] = [];
+        let puntosCompletados: any[] = [];
+        let anotacionesCompletadas: any[] = [];
+        let animacionEnCurso = false;
+
+        function construirTabla() {
+            tbody!.innerHTML = '';
+            for (let x = 1; x <= 12; x++) {
+                const y = 12 - x;
+                const tr = document.createElement('tr');
+                tr.id = `row-${x}`;
+                tr.innerHTML = `
+                    <td>${x}</td>
+                    <td class="arrow-cell"><span class="arrow-icon">&#8594;</span></td>
+                    <td>${y}</td>
+                `;
+                tbody!.appendChild(tr);
+            }
+        }
+
+        const layoutBase = {
+            xaxis: { title: 'Litros en Bidón B (x)', range: [0, 12.5], dtick: 1, gridcolor: '#e2e8f0', rangemode: 'nonnegative', constrain: 'domain' },
+            yaxis: { 
+                title: 'Litros en Bidón A (y)', 
+                range: [0, 12.5], 
+                dtick: 1, 
+                gridcolor: '#e2e8f0',
+                scaleanchor: "x", 
+                scaleratio: 1,
+                rangemode: 'nonnegative'
+            },
+            showlegend: false,
+            margin: { t: 20, b: 40, l: 50, r: 20 },
+            hovermode: false
+        };
+
+        const traceLineBase = {
+            x: [0, 12], y: [12, 0],
+            mode: 'lines',
+            line: { color: '#4A4A49', width: 1.5, dash: 'dot' },
+            hoverinfo: 'skip'
+        };
+
+        const esperar = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+        function renderizarGraficoPlano(trazosExtra: any[] = [], layoutExtra: any = {}) {
+            const layoutFinal = { ...layoutBase, annotations: [...anotacionesCompletadas, ...(layoutExtra.annotations || [])] };
+            const trazosFinales = [traceLineBase, ...trazosCompletados, ...puntosCompletados, ...trazosExtra];
+            
+            // Corrección TS: Acceder a Plotly vía window as any
+            if (typeof (window as any).Plotly !== 'undefined') {
+                (window as any).Plotly.react('plot', trazosFinales, layoutFinal);
+            }
+        }
+
+        function trazarLineaAnimada(xTarget: number, yTarget: number) {
+            return new Promise<void>(resolve => {
+                let currentX = xTarget;
+                let currentY = 0;
+                let pathX = [xTarget];
+                let pathY = [0];
+                
+                const speed = 0.5; 
+                let phase = 1;
+
+                function step() {
+                    let frameCompleto = false;
+
+                    if (phase === 1) {
+                        currentY += speed;
+                        if (currentY >= yTarget) {
+                            currentY = yTarget;
+                            phase = 2;
+                        }
+                        pathX.push(xTarget);
+                        pathY.push(currentY);
+                    } else if (phase === 2) {
+                        currentX -= speed;
+                        if (currentX <= 0) {
+                            currentX = 0;
+                            frameCompleto = true;
+                        }
+                        pathX.push(currentX);
+                        pathY.push(yTarget);
+                    }
+
+                    const traceAnimado = {
+                        x: pathX, y: pathY,
+                        mode: 'lines',
+                        line: { color: '#D33C31', width: 2.5, dash: 'dash' },
+                        hoverinfo: 'skip'
+                    };
+
+                    const puntoAnimado = {
+                        x: [xTarget], y: [yTarget],
+                        mode: 'markers',
+                        marker: { size: 10, color: '#8B2E28' },
+                        hoverinfo: 'none'
+                    };
+
+                    renderizarGraficoPlano([traceAnimado, puntoAnimado]);
+
+                    if (!frameCompleto) {
+                        requestAnimationFrame(step);
+                    } else {
+                        trazosCompletados.push(traceAnimado);
+                        puntosCompletados.push(puntoAnimado);
+                        
+                        anotacionesCompletadas.push({
+                            x: 0, y: yTarget, ax: xTarget, ay: yTarget,
+                            xref: 'x', yref: 'y', axref: 'x', ayref: 'y',
+                            showarrow: true, arrowhead: 2, arrowcolor: '#D33C31', arrowwidth: 2.5
+                        });
+                        
+                        renderizarGraficoPlano();
+                        resolve();
+                    }
+                }
+                requestAnimationFrame(step);
+            });
+        }
+
+        async function ejecutarAnimacion() {
+            if (animacionEnCurso) return;
+            animacionEnCurso = true;
+            btnAnimate!.disabled = true;
+
+            for (let i = 0; i < puntosAAnimar.length; i++) {
+                const x = puntosAAnimar[i];
+                const y = 12 - x;
+
+                const fila = document.getElementById(`row-${x}`);
+                if (fila) fila.classList.add('row-active');
+                
+                await esperar(600);
+                await trazarLineaAnimada(x, y);
+                await esperar(800);
+            }
+            
+            animacionEnCurso = false;
+        }
+
+        function resetearEntorno() {
+            if (animacionEnCurso) return; 
+            
+            const filas = document.querySelectorAll('#dataTable tbody tr');
+            filas.forEach(f => f.classList.remove('row-active'));
+
+            trazosCompletados = [];
+            puntosCompletados = [];
+            anotacionesCompletadas = [];
+            
+            renderizarGraficoPlano();
+            btnAnimate!.disabled = false;
+        }
+
+        construirTabla();
+
+        const initPlot = () => {
+            // Corrección TS: Acceder a Plotly vía window as any
+            if (typeof (window as any).Plotly !== 'undefined') {
+                (window as any).Plotly.newPlot('plot', [traceLineBase], layoutBase, {responsive: true});
+            } else {
+                plotDiv.innerHTML = "<p style='text-align:center; color:#4A4A49; margin-top:100px;'>Cargando motor gráfico...</p>";
+                const checkPlotly = setInterval(() => {
+                    if (typeof (window as any).Plotly !== 'undefined') {
+                        clearInterval(checkPlotly);
+                        plotDiv.innerHTML = "";
+                        (window as any).Plotly.newPlot('plot', [traceLineBase], layoutBase, {responsive: true});
+                    }
+                }, 200);
+            }
+        };
+
+        initPlot();
+
+        btnAnimate.addEventListener('click', ejecutarAnimacion);
+        btnReset.addEventListener('click', resetearEntorno);
+    };
+
+    document.addEventListener('DOMContentLoaded', setupCorrespondenciaSecuencial);
+    document.addEventListener('astro:page-load', setupCorrespondenciaSecuencial);
+</script>
