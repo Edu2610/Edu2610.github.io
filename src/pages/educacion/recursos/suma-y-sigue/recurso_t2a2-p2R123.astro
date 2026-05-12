@@ -1,0 +1,427 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+// Ajusta la ruta al Layout según tu estructura de carpetas
+---
+
+<Layout titulo="Doble Recta Numérica - Reto Final">
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="controls">
+                <button id="btnVerify" class="btn-verify">Comprobar paso</button>
+            </div>
+
+            <div id="svg-container">
+                <svg width="100%" height="100%" viewBox="0 0 800 650">
+                    <defs>
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                        </marker>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
+                        </marker>
+                    </defs>
+
+                    <!-- Líneas Principales -->
+                    <line x1="80" y1="250" x2="760" y2="250" stroke="#94a3b8" stroke-width="3" />
+                    <line x1="80" y1="400" x2="760" y2="400" stroke="#94a3b8" stroke-width="3" />
+                    
+                    <text x="75" y="255" font-weight="bold" fill="#1e293b" text-anchor="end">Tiempo (x)</text>
+                    <text x="75" y="405" font-weight="bold" fill="#1e293b" text-anchor="end">Litros (y)</text>
+
+                    <!-- x = 0 -->
+                    <line x1="100" y1="240" x2="100" y2="410" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4" />
+                    <text x="100" y="235" text-anchor="middle" font-size="14">0</text>
+                    <text x="100" y="435" text-anchor="middle" font-size="14">0</text>
+
+                    <!-- Par Base (x = 7.5, y = 5) -->
+                    <line x1="400" y1="240" x2="400" y2="410" stroke="#1e293b" stroke-width="2" stroke-dasharray="4" />
+                    <circle cx="400" cy="250" r="6" fill="#1e293b" />
+                    <circle cx="400" cy="400" r="6" fill="#1e293b" />
+                    <text x="400" y="235" text-anchor="middle" font-weight="bold" font-size="16">7.5</text>
+                    <text x="400" y="435" text-anchor="middle" font-weight="bold" font-size="16">5</text>
+
+                    <!-- PASO 1: Volver a la Unidad -->
+                    <g id="step1-group">
+                        <!-- Nodo Unidad -->
+                        <line x1="150" y1="240" x2="150" y2="410" stroke="#059669" stroke-width="2" stroke-dasharray="4" />
+                        <circle cx="150" cy="250" r="6" fill="#059669" />
+                        <circle cx="150" cy="400" r="6" fill="#059669" />
+
+                        <foreignObject x="125" y="190" width="50" height="30">
+                            <input type="text" id="unit-x" class="input-box green-border" autocomplete="off" placeholder="?">
+                        </foreignObject>
+                        <foreignObject x="180" y="190" width="40" height="30" id="corr-unit-x" class="hidden">
+                            <div class="correction-box">1</div>
+                        </foreignObject>
+
+                        <foreignObject x="125" y="440" width="50" height="30">
+                            <input type="text" id="unit-y" class="input-box green-border" autocomplete="off" placeholder="?">
+                        </foreignObject>
+                        <foreignObject x="180" y="440" width="45" height="30" id="corr-unit-y" class="hidden">
+                            <div class="correction-box">2/3</div>
+                        </foreignObject>
+
+                        <!-- Flechas y Divisores -->
+                        <path d="M 390 250 Q 275 120 160 250" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                        <foreignObject x="250" y="140" width="50" height="30">
+                            <input type="text" id="div-x" placeholder="÷ ?" class="input-box blue-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="305" y="140" width="40" height="30" id="corr-div-x" class="hidden">
+                            <div class="correction-box">7.5</div>
+                        </foreignObject>
+
+                        <path d="M 390 400 Q 275 530 160 400" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                        <foreignObject x="250" y="480" width="50" height="30">
+                            <input type="text" id="div-y" placeholder="÷ ?" class="input-box red-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="305" y="480" width="40" height="30" id="corr-div-y" class="hidden">
+                            <div class="correction-box">7.5</div>
+                        </foreignObject>
+                    </g>
+
+                    <!-- PASO 2: Ir al Objetivo -->
+                    <g id="step2-group" class="hidden">
+                        <!-- Nodo Objetivo -->
+                        <line x1="680" y1="240" x2="680" y2="410" stroke="#9333ea" stroke-width="2" stroke-dasharray="4" />
+                        <circle cx="680" cy="250" r="6" fill="#9333ea" />
+                        <circle cx="680" cy="400" r="6" fill="#9333ea" />
+
+                        <foreignObject x="655" y="190" width="50" height="30">
+                            <input type="text" id="final-x" class="input-box purple-border" autocomplete="off" placeholder="?">
+                        </foreignObject>
+                        <foreignObject x="710" y="190" width="45" height="30" id="corr-final-x" class="hidden">
+                            <div class="correction-box">14.5</div>
+                        </foreignObject>
+                        
+                        <foreignObject x="655" y="440" width="50" height="30">
+                            <input type="text" id="final-y" class="input-box purple-border" autocomplete="off" placeholder="?">
+                        </foreignObject>
+                        <foreignObject x="710" y="440" width="45" height="30" id="corr-final-y" class="hidden">
+                            <div class="correction-box">29/3</div>
+                        </foreignObject>
+
+                        <!-- Flechas y Multiplicadores -->
+                        <path d="M 140 250 Q 405 -20 670 250" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                        <foreignObject x="380" y="70" width="50" height="30">
+                            <input type="text" id="mult-x" placeholder="× ?" class="input-box blue-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="435" y="70" width="45" height="30" id="corr-mult-x" class="hidden">
+                            <div class="correction-box">14.5</div>
+                        </foreignObject>
+
+                        <path d="M 140 400 Q 405 670 670 400" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                        <foreignObject x="380" y="550" width="50" height="30">
+                            <input type="text" id="mult-y" placeholder="× ?" class="input-box red-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="435" y="550" width="45" height="30" id="corr-mult-y" class="hidden">
+                            <div class="correction-box">14.5</div>
+                        </foreignObject>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .card { 
+        background: white; 
+        padding: 20px; 
+        border-radius: 12px; 
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+        max-width: 850px; 
+        width: 100%; 
+    }
+
+    .controls { 
+        display: flex; 
+        gap: 10px; 
+        background: #f1f5f9; 
+        padding: 15px; 
+        border-radius: 8px; 
+        margin-bottom: 20px; 
+        justify-content: center;
+    }
+
+    button { 
+        padding: 8px 24px; 
+        border: none; 
+        border-radius: 6px; 
+        font-weight: bold; 
+        cursor: pointer; 
+        transition: background 0.2s; 
+        color: white; 
+    }
+    
+    .btn-verify { background: #2563eb; }
+    .btn-verify:hover:not(:disabled) { background: #1d4ed8; }
+    .btn-verify:disabled { background: #cbd5e1; cursor: not-allowed; }
+    
+    #svg-container { width: 100%; height: 550px; position: relative; }
+    text { font-family: sans-serif; }
+    
+    .hidden { opacity: 0; pointer-events: none; }
+    .visible { opacity: 1; transition: opacity 0.5s ease-in; }
+    
+    .input-box {
+        width: 100%; height: 100%;
+        text-align: center;
+        font-weight: bold; font-size: 14px;
+        border: 2px solid; border-radius: 4px;
+        box-sizing: border-box;
+        outline: none;
+        background: white;
+        transition: all 0.3s;
+    }
+
+    .blue-border { border-color: #2563eb; color: #2563eb; }
+    .red-border { border-color: #d32f2f; color: #d32f2f; }
+    .green-border { border-color: #059669; color: #059669; }
+    .purple-border { border-color: #9333ea; color: #9333ea; }
+    
+    .input-box:focus { box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+    .input-box.correct { background-color: #dcfce7; border-color: #059669 !important; color: #059669; }
+    .input-box.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; text-decoration: line-through; opacity: 0.7; }
+    
+    .correction-box { 
+        background: #dcfce7; 
+        color: #059669; 
+        border: 2px dashed #059669; 
+        border-radius: 4px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-weight: bold; 
+        font-size: 14px; 
+        width: 100%; 
+        height: 100%; 
+        box-sizing: border-box; 
+    }
+
+    .input-box:disabled { cursor: default; }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    .error { border-color: #ef4444 !important; animation: shake 0.3s; }
+</style>
+
+<script>
+    const setupDobleRecta = () => {
+        const originalBtnVerify = document.getElementById('btnVerify') as HTMLButtonElement | null;
+        if (!originalBtnVerify) return;
+
+        const btnVerify = originalBtnVerify.cloneNode(true) as HTMLButtonElement;
+        originalBtnVerify.parentNode?.replaceChild(btnVerify, originalBtnVerify);
+
+        const inputIds = [
+            'div-x', 'div-y', 'unit-x', 'unit-y', 
+            'mult-x', 'mult-y', 'final-x', 'final-y'
+        ];
+        
+        const inputs: Record<string, HTMLInputElement> = {};
+        const stateObj: Record<string, string> = {};
+        const statusObj: Record<string, string> = {};
+
+        inputIds.forEach(id => {
+            const el = document.getElementById(id) as HTMLInputElement | null;
+            if (el) {
+                const clone = el.cloneNode(true) as HTMLInputElement;
+                el.parentNode?.replaceChild(clone, el);
+                inputs[id] = clone;
+                clone.dataset.prev = ""; // Registro del último valor válido para bloquear inputs erróneos en vivo
+                stateObj[id] = "";
+                statusObj[id] = "";
+            }
+        });
+
+        let currentStep = 1;
+
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', (e) => {
+                const el = e.target as HTMLInputElement;
+                const val = el.value;
+                
+                // Expresión regular que admite strings vacíos, números con un solo separador decimal y hasta 2 décimas, o formato de fracción.
+                const regex = /^$|^\d*([.,]\d{0,2})?$|^\d+\/\d*$/;
+                
+                if (!regex.test(val)) {
+                    el.value = el.dataset.prev || "";
+                    return;
+                }
+                
+                el.dataset.prev = el.value;
+                el.classList.remove('incorrect', 'correct', 'error'); 
+                stateObj[el.id] = el.value.trim();
+            });
+        });
+
+        // Motor matemático para analizar fracciones y decimales indistintamente
+        function parseMath(val: string): number {
+            if (!val) return NaN;
+            let s = val.trim().replace(',', '.');
+            if (s.includes('/')) {
+                const parts = s.split('/');
+                if (parts.length === 2 && parts[1] !== '' && Number(parts[1]) !== 0) {
+                    return Number(parts[0]) / Number(parts[1]);
+                }
+                return NaN;
+            }
+            return Number(s);
+        }
+
+        function isValidInput(val: string): boolean {
+            if (!val || val.trim() === '') return false;
+            if (val.includes('/') && val.endsWith('/')) return false; // Bloquea divisores a medias como "2/"
+            const num = parseMath(val);
+            if (isNaN(num) || num <= 0) return false;
+            return true;
+        }
+
+        function showError(element: HTMLElement) {
+            element.classList.add('error');
+            setTimeout(() => element.classList.remove('error'), 300);
+        }
+
+        // Evalúa usando tolerancia para permitir truncamientos como 0.66 o 9.66
+        function checkAnswer(val: string, expectedValue: number): boolean {
+            const num = parseMath(val);
+            if (isNaN(num)) return false;
+            return Math.abs(num - expectedValue) <= 0.015;
+        }
+
+        function aplicarEstadoVisual() {
+            const step2Group = document.getElementById('step2-group');
+            if (!step2Group) return;
+
+            // Renderizado Paso 1
+            if (currentStep >= 2) {
+                ['div-x', 'div-y', 'unit-x', 'unit-y'].forEach(id => {
+                    inputs[id].disabled = true;
+                    inputs[id].value = stateObj[id];
+                    const corr = document.getElementById(`corr-${id}`);
+                    
+                    if (statusObj[id] === 'correct') {
+                        inputs[id].classList.add('correct');
+                        if(corr) corr.classList.replace('visible', 'hidden');
+                    } else if (statusObj[id] === 'incorrect') {
+                        inputs[id].classList.add('incorrect');
+                        if(corr) corr.classList.replace('hidden', 'visible');
+                    }
+                });
+                
+                step2Group.classList.replace('hidden', 'visible');
+            } else {
+                ['div-x', 'div-y', 'unit-x', 'unit-y'].forEach(id => {
+                    inputs[id].disabled = false;
+                    inputs[id].classList.remove('correct', 'incorrect');
+                    const corr = document.getElementById(`corr-${id}`);
+                    if(corr) corr.classList.replace('visible', 'hidden');
+                });
+                step2Group.classList.replace('visible', 'hidden');
+            }
+
+            // Renderizado Paso 2
+            if (currentStep === 3) {
+                ['mult-x', 'mult-y', 'final-x', 'final-y'].forEach(id => {
+                    inputs[id].disabled = true;
+                    inputs[id].value = stateObj[id];
+                    const corr = document.getElementById(`corr-${id}`);
+
+                    if (statusObj[id] === 'correct') {
+                        inputs[id].classList.add('correct');
+                        if(corr) corr.classList.replace('visible', 'hidden');
+                    } else if (statusObj[id] === 'incorrect') {
+                        inputs[id].classList.add('incorrect');
+                        if(corr) corr.classList.replace('hidden', 'visible');
+                    }
+                });
+                btnVerify.disabled = true;
+            } else {
+                ['mult-x', 'mult-y', 'final-x', 'final-y'].forEach(id => {
+                    inputs[id].disabled = false;
+                    inputs[id].classList.remove('correct', 'incorrect');
+                    const corr = document.getElementById(`corr-${id}`);
+                    if(corr) corr.classList.replace('visible', 'hidden');
+                });
+                if (currentStep === 2) btnVerify.disabled = false;
+            }
+        }
+
+        btnVerify.addEventListener('click', () => {
+            if (currentStep === 1) {
+                const ids = ['div-x', 'div-y', 'unit-x', 'unit-y'];
+                let allValid = true;
+
+                ids.forEach(id => {
+                    if (!isValidInput(stateObj[id])) {
+                        showError(inputs[id]);
+                        allValid = false;
+                    }
+                });
+
+                if (allValid) {
+                    statusObj['div-x'] = checkAnswer(stateObj['div-x'], 7.5) ? 'correct' : 'incorrect';
+                    statusObj['div-y'] = checkAnswer(stateObj['div-y'], 7.5) ? 'correct' : 'incorrect';
+                    statusObj['unit-x'] = checkAnswer(stateObj['unit-x'], 1) ? 'correct' : 'incorrect';
+                    statusObj['unit-y'] = checkAnswer(stateObj['unit-y'], 2/3) ? 'correct' : 'incorrect';
+                    
+                    currentStep = 2;
+                    aplicarEstadoVisual();
+                }
+                
+            } else if (currentStep === 2) {
+                const ids = ['mult-x', 'mult-y', 'final-x', 'final-y'];
+                let allValid = true;
+
+                ids.forEach(id => {
+                    if (!isValidInput(stateObj[id])) {
+                        showError(inputs[id]);
+                        allValid = false;
+                    }
+                });
+
+                if (allValid) {
+                    statusObj['mult-x'] = checkAnswer(stateObj['mult-x'], 14.5) ? 'correct' : 'incorrect';
+                    statusObj['mult-y'] = checkAnswer(stateObj['mult-y'], 14.5) ? 'correct' : 'incorrect';
+                    statusObj['final-x'] = checkAnswer(stateObj['final-x'], 14.5) ? 'correct' : 'incorrect';
+                    statusObj['final-y'] = checkAnswer(stateObj['final-y'], 29/3) ? 'correct' : 'incorrect';
+
+                    currentStep = 3;
+                    aplicarEstadoVisual();
+                }
+            }
+        });
+
+        const fullState = () => ({ stateObj, statusObj, currentStep });
+
+        (window as any).getGrade = () => JSON.stringify(fullState());
+        (window as any).getState = () => JSON.stringify(fullState());
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                const parsed = JSON.parse(stateStr);
+                Object.assign(stateObj, parsed.stateObj || {});
+                Object.assign(statusObj, parsed.statusObj || {});
+                currentStep = parsed.currentStep || 1;
+                aplicarEstadoVisual();
+            } catch(e) {
+                console.error("Error restaurando estado en edX", e);
+            }
+        };
+    };
+
+    document.addEventListener('DOMContentLoaded', setupDobleRecta);
+    document.addEventListener('astro:page-load', setupDobleRecta);
+</script>
