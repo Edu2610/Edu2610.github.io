@@ -1,0 +1,353 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+// Ajusta la ruta al Layout según tu estructura de carpetas
+---
+
+<Layout titulo="Variación Escalar Múltiple">
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="interactive-container">
+                
+                <svg class="svg-layer svg-top" viewBox="0 0 810 300">
+                    <defs>
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                        </marker>
+                    </defs>
+                    <path d="M 188 300 Q 485 -200 782 300" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 284 300 Q 525 -100 766 300" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 379 300 Q 564 0 749 300" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 475 300 Q 604 100 733 300" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 570 300 Q 644 200 717 300" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                </svg>
+
+                <input type="text" id="top1" class="jump-input input-blue" style="left: 485px; top: -250px;" autocomplete="off" placeholder="× ?">
+                <input type="text" id="top2" class="jump-input input-blue" style="left: 525px; top: -200px;" autocomplete="off" placeholder="× ?">
+                <input type="text" id="top3" class="jump-input input-blue" style="left: 564px; top: -150px;" autocomplete="off" placeholder="× ?">
+                <input type="text" id="top4" class="jump-input input-blue" style="left: 604px; top: -100px;" autocomplete="off" placeholder="× ?">
+                <input type="text" id="top5" class="jump-input input-blue" style="left: 644px; top: -50px;" autocomplete="off" placeholder="× ?">
+
+                <table>
+                    <colgroup>
+                        <col><col><col><col><col><col><col><col>
+                    </colgroup>
+                    <tr>
+                        <td class="col-header">Tiempo (min)</td>
+                        <td>3</td>
+                        <td>6</td>
+                        <td>9</td>
+                        <td>12</td>
+                        <td>15</td>
+                        <td style="color: #94a3b8; border-style: dashed;">...</td>
+                        <td>60</td>
+                    </tr>
+                    <tr>
+                        <td class="col-header">Agua (lt)</td>
+                        <td>2</td>
+                        <td>4</td>
+                        <td>6</td>
+                        <td>8</td>
+                        <td>10</td>
+                        <td style="color: #94a3b8; border-style: dashed;">...</td>
+                        <td><input type="text" id="final_y" class="table-input" autocomplete="off"></td>
+                    </tr>
+                </table>
+
+                <svg class="svg-layer svg-bottom" viewBox="0 0 810 300">
+                    <defs>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
+                        </marker>
+                    </defs>
+                    <path d="M 188 0 Q 485 500 782 0" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 284 0 Q 525 400 766 0" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 379 0 Q 564 300 749 0" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 475 0 Q 604 200 733 0" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 570 0 Q 644 100 717 0" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                </svg>
+
+                <input type="text" id="bot1" class="jump-input input-red" style="left: 485px; bottom: -280px;" autocomplete="off" placeholder="× ?">
+                <input type="text" id="bot2" class="jump-input input-red" style="left: 525px; bottom: -230px;" autocomplete="off" placeholder="× ?">
+                <input type="text" id="bot3" class="jump-input input-red" style="left: 564px; bottom: -180px;" autocomplete="off" placeholder="× ?">
+                <input type="text" id="bot4" class="jump-input input-red" style="left: 604px; bottom: -130px;" autocomplete="off" placeholder="× ?">
+                <input type="text" id="bot5" class="jump-input input-red" style="left: 644px; bottom: -80px;" autocomplete="off" placeholder="× ?">
+
+            </div>
+
+            <button id="btn-verify" class="btn-verify">Verificar Relaciones</button>
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        font-family: 'Inter', system-ui, sans-serif;
+        background: #f8fafc;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        width: 100%;
+    }
+
+    .card {
+        background: white;
+        padding: 40px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        max-width: 850px; 
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-sizing: border-box;
+    }
+
+    .interactive-container {
+        width: 810px; 
+        position: relative;
+        margin-top: 280px; 
+        margin-bottom: 280px; 
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        position: relative;
+        z-index: 1;
+    }
+
+    colgroup col:first-child { width: 140px; }
+    colgroup col:not(:first-child) { width: auto; }
+
+    td {
+        border: 1px solid #475569;
+        height: 70px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .col-header {
+        background-color: #f1f5f9;
+        font-weight: 700;
+        text-align: center;
+        padding: 0 10px;
+        color: #0f172a;
+        font-size: 1rem;
+    }
+
+    .jump-input {
+        position: absolute;
+        width: 60px; 
+        height: 28px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 800;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 4px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        z-index: 10;
+        transform: translate(-50%, -50%); 
+    }
+
+    .jump-input:focus {
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .input-blue { color: #2563eb; }
+    .input-blue:focus { border-color: #2563eb; }
+    
+    .input-red { color: #d32f2f; }
+    .input-red:focus { border-color: #d32f2f; }
+
+    .table-input {
+        width: 50px;
+        height: 34px;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 4px;
+        background: #ffffff;
+        color: #d32f2f;
+        transition: all 0.2s;
+        outline: none;
+    }
+    
+    .table-input:focus {
+        box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15);
+        border-color: #d32f2f;
+    }
+
+    :global(.correct) {
+        background-color: #ecfdf5 !important;
+        border-color: #10b981 !important;
+        color: #047857 !important;
+    }
+
+    :global(.incorrect) {
+        background-color: #fef2f2 !important;
+        border-color: #ef4444 !important;
+        color: #b91c1c !important;
+    }
+
+    .btn-verify {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        background: #0f172a;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+        margin-top: 20px;
+    }
+
+    .btn-verify:hover:not(:disabled) {
+        background: #334155;
+        transform: translateY(-2px);
+    }
+
+    .btn-verify:disabled {
+        background: #cbd5e1;
+        cursor: not-allowed;
+        color: #f8fafc;
+    }
+
+    .feedback-text {
+        margin-top: 15px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        min-height: 20px;
+        text-align: center;
+    }
+
+    .svg-layer {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        pointer-events: none; 
+        overflow: visible;
+    }
+    .svg-top { top: -300px; height: 300px; }
+    .svg-bottom { bottom: -300px; height: 300px; }
+</style>
+
+<script>
+    const setupVariacionEscalar = () => {
+        const correctAnswers: Record<string, string> = {
+            top1: "x 20", top2: "x 10", top3: "x 20/3", top4: "x 5", top5: "x 4",
+            bot1: "x 20", bot2: "x 10", bot3: "x 20/3", bot4: "x 5", bot5: "x 4",
+            final_y: "40"
+        };
+
+        let estadoActual: Record<string, string> = {};
+        const inputIds = Object.keys(correctAnswers);
+
+        inputIds.forEach(id => {
+            estadoActual[id] = "";
+        });
+
+        const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
+        const feedback = document.getElementById('feedback') as HTMLElement | null;
+
+        if (!btnVerify || !feedback) return;
+
+        function formatAnswer(userVal: string, inputId: string) {
+            let clean = userVal.toLowerCase().replace(/\s+/g, '').replace(',', '.');
+            
+            if (inputId === 'final_y') {
+                let num = parseFloat(clean);
+                return isNaN(num) ? clean : num.toString();
+            }
+
+            if (['x20/3', '*20/3', '20/3', 'x6.66', '*6.66', '6.66', 'x6.67', '*6.67', '6.67'].includes(clean)) return 'x 20/3';
+            if (['x20', '*20', '20'].includes(clean)) return 'x 20';
+            if (['x10', '*10', '10'].includes(clean)) return 'x 10';
+            if (['x5', '*5', '5'].includes(clean)) return 'x 5';
+            if (['x4', '*4', '4'].includes(clean)) return 'x 4';
+            
+            return userVal;
+        }
+
+        inputIds.forEach(id => {
+            const input = document.getElementById(id) as HTMLInputElement | null;
+            if (!input) return;
+
+            const newClone = input.cloneNode(true) as HTMLInputElement;
+            input.parentNode?.replaceChild(newClone, input);
+
+            newClone.addEventListener('input', (e) => {
+                estadoActual[id] = (e.target as HTMLInputElement).value;
+            });
+        });
+
+        const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
+        btnVerify.parentNode?.replaceChild(newBtnVerify, btnVerify);
+
+        newBtnVerify.addEventListener('click', () => {
+            let correctCount = 0;
+
+            inputIds.forEach(id => {
+                const input = document.getElementById(id) as HTMLInputElement | null;
+                if (!input) return;
+
+                const userVal = formatAnswer(estadoActual[id], id);
+                const correctVal = correctAnswers[id];
+
+                input.disabled = true;
+
+                if (userVal === correctVal) {
+                    input.classList.add('correct');
+                    if (id !== 'final_y') input.value = correctVal; 
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.value = correctVal; 
+                }
+            });
+
+            if (correctCount === inputIds.length) {
+                feedback.style.color = "#047857";
+                feedback.textContent = "Has identificado correctamente todos los factores y cantidades.";
+            } else {
+                feedback.style.color = "#b91c1c";
+                feedback.textContent = `Hay errores. Revisa las casillas en rojo para identificar el valor correcto.`;
+            }
+
+            newBtnVerify.disabled = true;
+        });
+
+        // ==========================================
+        // INTEGRACIÓN EDX (JSInput API)
+        // ==========================================
+        (window as any).getGrade = () => JSON.stringify(estadoActual);
+        (window as any).getState = () => JSON.stringify(estadoActual);
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                estadoActual = JSON.parse(stateStr);
+                inputIds.forEach(id => {
+                    if (estadoActual[id] !== "") {
+                        const input = document.getElementById(id) as HTMLInputElement | null;
+                        if (input) input.value = estadoActual[id];
+                    }
+                });
+            } catch(e) {
+                console.error("Error restaurando estado en edX", e);
+            }
+        };
+    };
+
+    document.addEventListener('DOMContentLoaded', setupVariacionEscalar);
+    document.addEventListener('astro:page-load', setupVariacionEscalar);
+</script>
