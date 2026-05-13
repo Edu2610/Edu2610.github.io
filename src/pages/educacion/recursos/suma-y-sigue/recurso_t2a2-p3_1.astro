@@ -6,10 +6,6 @@ import Layout from '../../../../layouts/Layout.astro';
 <Layout titulo="La doble recta numérica">
     <div class="recurso-wrapper">
         <div class="card">
-            <h3 style="color: #0f172a; margin-top: 0; text-align: center;">La doble recta numérica: volver a la unidad</h3>
-            <p style="font-size: 0.95rem; color: #64748b; text-align: center; margin-bottom: 25px;">
-                Avanza por los pasos para volver a la unidad.
-            </p>
             
             <div class="controls">
                 <button id="btn1" class="btn-step">Paso 1: Par conocido</button>
@@ -36,50 +32,45 @@ import Layout from '../../../../layouts/Layout.astro';
                     <text x="100" y="235" font-weight="bold" fill="#1e293b" text-anchor="end">Agua (y)</text>
 
                     <line x1="150" y1="110" x2="150" y2="240" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4" />
-                    <text x="150" y="100" text-anchor="middle" font-size="14">0</text>
-                    <text x="150" y="260" text-anchor="middle" font-size="14">0</text>
+                    <text x="150" y="100" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">1</text>
 
                     <g id="g-step1" class="hidden">
-                        <line x1="550" y1="110" x2="550" y2="240" stroke="#1e293b" stroke-width="2" stroke-dasharray="4" />
-                        <circle cx="550" cy="120" r="6" fill="#1e293b" />
-                        <circle cx="550" cy="230" r="6" fill="#1e293b" />
-                        <text x="550" y="100" text-anchor="middle" font-weight="bold" font-size="16">3</text>
-                        <text x="550" y="260" text-anchor="middle" font-weight="bold" font-size="16">2</text>
+                        <line x1="500" y1="110" x2="500" y2="240" stroke="#1e293b" stroke-width="2" stroke-dasharray="4" />
+                        <circle cx="500" cy="120" r="6" fill="#1e293b" />
+                        <circle cx="500" cy="230" r="6" fill="#1e293b" />
+                        <text x="500" y="100" text-anchor="middle" font-weight="bold" font-size="16">3</text>
+                        <text x="500" y="260" text-anchor="middle" font-weight="bold" font-size="16">2</text>
                     </g>
 
                     <g id="g-step2" class="hidden">
-                        <line x1="283" y1="110" x2="283" y2="240" stroke="#059669" stroke-width="2" stroke-dasharray="4" />
-                        <circle cx="283" cy="120" r="6" fill="#059669" />
-                        <circle cx="283" cy="230" r="6" fill="#059669" />
-                        <text x="283" y="100" text-anchor="middle" font-weight="bold" font-size="16" fill="#059669">1</text>
-                        <text x="283" y="260" text-anchor="middle" font-weight="bold" font-size="16" fill="#059669">2/3</text>
+                        <circle cx="150" cy="120" r="6" fill="#059669" />
+                        <circle cx="150" cy="230" r="6" fill="#059669" />
+                        <text x="150" y="100" text-anchor="middle" font-weight="bold" font-size="16" fill="#059669">1</text>
+                        <text x="150" y="260" text-anchor="middle" font-weight="bold" font-size="16" fill="#059669">2/3</text>
 
-                        <path d="M 540 100 Q 416 60 293 100" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                        <text x="416" y="75" text-anchor="middle" fill="#2563eb" font-weight="bold" font-size="14">÷ 3</text>
+                        <path d="M 490 100 Q 320 60 160 100" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                        <text x="320" y="75" text-anchor="middle" fill="#2563eb" font-weight="bold" font-size="14">÷ 3</text>
 
-                        <path d="M 540 250 Q 416 290 293 250" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                        <text x="416" y="295" text-anchor="middle" fill="#d32f2f" font-weight="bold" font-size="14">÷ 3</text>
+                        <path d="M 490 250 Q 320 290 160 250" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                        <text x="320" y="295" text-anchor="middle" fill="#d32f2f" font-weight="bold" font-size="14">÷ 3</text>
                     </g>
 
                     <g id="g-step3" class="hidden">
-                        <line x1="603" y1="110" x2="603" y2="240" stroke="#9333ea" stroke-width="2" stroke-dasharray="4" />
-                        <circle cx="603" cy="120" r="6" fill="#9333ea" />
-                        <circle cx="603" cy="230" r="6" fill="#9333ea" />
-                        <text x="603" y="100" text-anchor="middle" font-weight="bold" font-size="16" fill="#9333ea">3.4</text>
-                        <text x="603" y="260" text-anchor="middle" font-weight="bold" font-size="16" fill="#9333ea">2.27</text>
+                        <line x1="570" y1="110" x2="570" y2="240" stroke="#9333ea" stroke-width="2" stroke-dasharray="4" />
+                        <circle cx="570" cy="120" r="6" fill="#9333ea" />
+                        <circle cx="570" cy="230" r="6" fill="#9333ea" />
+                        <text x="570" y="100" text-anchor="middle" font-weight="bold" font-size="16" fill="#9333ea">3.4</text>
+                        <text x="570" y="260" text-anchor="middle" font-weight="bold" font-size="16" fill="#9333ea">2.27</text>
 
-                        <path d="M 283 85 Q 443 10 593 85" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                        <text x="443" y="20" text-anchor="middle" fill="#2563eb" font-weight="bold" font-size="14">× 3.4</text>
+                        <path d="M 150 85 Q 360 10 560 85" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                        <text x="360" y="20" text-anchor="middle" fill="#2563eb" font-weight="bold" font-size="14">× 3.4</text>
 
-                        <path d="M 283 265 Q 443 340 593 265" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                        <text x="443" y="330" text-anchor="middle" fill="#d32f2f" font-weight="bold" font-size="14">× 3.4</text>
+                        <path d="M 150 265 Q 360 340 560 265" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                        <text x="360" y="330" text-anchor="middle" fill="#d32f2f" font-weight="bold" font-size="14">× 3.4</text>
                     </g>
                 </svg>
             </div>
-
-            <div class="info-box" id="info-text">
-                Selecciona "Paso 1" para comenzar.
-            </div>
+            
         </div>
     </div>
 </Layout>
@@ -99,7 +90,7 @@ import Layout from '../../../../layouts/Layout.astro';
         padding: 30px;
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        max-width: 800px; /* Ancho máximo ajustado a 800px según requerimiento */
+        max-width: 800px;
         width: 100%;
     }
 
@@ -138,18 +129,6 @@ import Layout from '../../../../layouts/Layout.astro';
     }
 
     text { font-family: 'Inter', system-ui, sans-serif; }
-
-    .info-box {
-        border-left: 4px solid #059669;
-        background: #ecfdf5;
-        padding: 15px 20px;
-        font-size: 1rem;
-        margin-top: 10px;
-        border-radius: 4px;
-        min-height: 40px;
-        line-height: 1.5;
-        color: #064e3b;
-    }
     
     /* Clases para animación de SVG */
     :global(.hidden) { opacity: 0; pointer-events: none; }
@@ -166,9 +145,8 @@ import Layout from '../../../../layouts/Layout.astro';
         const step1 = document.getElementById('g-step1');
         const step2 = document.getElementById('g-step2');
         const step3 = document.getElementById('g-step3');
-        const infoText = document.getElementById('info-text');
 
-        if (!btn1 || !btn2 || !btn3 || !btnReset || !step1 || !step2 || !step3 || !infoText) return;
+        if (!btn1 || !btn2 || !btn3 || !btnReset || !step1 || !step2 || !step3) return;
 
         // Clonar botones para limpiar listeners previos de Astro View Transitions
         const nBtn1 = btn1.cloneNode(true) as HTMLButtonElement;
@@ -190,8 +168,6 @@ import Layout from '../../../../layouts/Layout.astro';
             nBtn1.disabled = false;
             nBtn2.disabled = true;
             nBtn3.disabled = true;
-            
-            infoText.innerHTML = "Selecciona 'Paso 1' para comenzar.";
         };
 
         // Forzar limpieza al montar el componente
@@ -202,20 +178,17 @@ import Layout from '../../../../layouts/Layout.astro';
             step1.classList.replace('hidden', 'visible');
             nBtn1.disabled = true;
             nBtn2.disabled = false;
-            infoText.innerHTML = "<strong>Paso 1:</strong> Ubicamos el par base conocido de la receta. Sabemos que 3 tazas de harina requieren 2 tazas de azúcar.";
         });
 
         nBtn2.addEventListener('click', () => {
             step2.classList.replace('hidden', 'visible');
             nBtn2.disabled = true;
             nBtn3.disabled = false;
-            infoText.innerHTML = "<strong>Paso 2:</strong> Calculamos el valor unitario. Dividimos ambas cantidades por 3. Ahora sabemos que 1 taza de harina requiere 2/3 de taza de azúcar.";
         });
 
         nBtn3.addEventListener('click', () => {
             step3.classList.replace('hidden', 'visible');
             nBtn3.disabled = true;
-            infoText.innerHTML = "<strong>Paso 3:</strong> Multiplicamos el valor unitario por el factor objetivo (3,4). Al escalar la unidad base, evitamos el problema de que 3,4 no sea múltiplo de 3.";
         });
 
         nBtnR.addEventListener('click', resetState);
