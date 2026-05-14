@@ -4,40 +4,50 @@ import Layout from '../../../../layouts/Layout.astro';
 ---
 
 <Layout titulo="Explorador de Llenado: Covariación Constante">
-    <script is:inline src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
-
     <div class="recurso-wrapper">
         <div class="card">
             <div class="header">
-                <h3 style="color: var(--primary); margin: 0; font-size: 1.4rem;">Enfoque Covariacional</h3>
+                <h3>Enfoque Covariacional Animado</h3>
+                <p>Selecciona un instante inicial y traza el triángulo para observar el cambio en el próximo minuto.</p>
             </div>
             
-            <div>
-                <p style="font-size: 0.95rem; color: var(--dark); margin-top: 0;">Selecciona un instante inicial y traza el triángulo para observar el cambio en el próximo minuto.</p>
-                
-                <div class="controls">
-                    <div class="control-row">
-                        <div class="slider-group">
-                            <label>Punto de inicio en el tiempo: <span id="valA" class="label-val">0</span> minutos</label>
-                            <input type="range" id="slideA" min="0" max="14" step="1" value="0">
-                        </div>
-                    </div>
-                    <div class="control-row">
-                        <div class="btn-group">
-                            <button id="btnDraw" class="btn-primary">Trazar Triángulo (Δx = 1)</button>
-                            <button id="btnClear" class="btn-secondary">Limpiar Gráfico</button>
-                        </div>
+            <div class="controls">
+                <div class="control-row">
+                    <div class="slider-group">
+                        <label>Punto de inicio en el tiempo: <span id="valA" class="label-val">0</span> minutos</label>
+                        <input type="range" id="slideA" min="0" max="14" step="1" value="0">
                     </div>
                 </div>
-
-                <div class="info-box info-covariation">
-                    <strong>Análisis de Covariación Constante:</strong>
-                    Al avanzar <span style="font-weight:bold;">Δx = 1 minuto</span> desde cualquier punto, 
-                    el volumen de líquido siempre aumenta <span style="color:var(--primary); font-weight:bold;">Δy = 2/3 de litro</span>. La forma del triángulo se mantiene invariable a lo largo de toda la recta.
+                <div class="control-row">
+                    <div class="btn-group">
+                        <button id="btnDraw" class="btn-primary">Trazar Triángulo (Δx = 1)</button>
+                        <button id="btnClear" class="btn-secondary">Limpiar Gráfico</button>
+                    </div>
                 </div>
             </div>
 
-            <div id="plot"></div>
+            <div class="info-box">
+                <strong>Análisis de Covariación Constante:</strong>
+                Al pulsar "Trazar", verás cómo, al avanzar <b>Δx = 1 minuto</b>, el volumen siempre aumenta 
+                <b style="color:var(--primary);">Δy = 2/3 de litro</b>. La forma del triángulo es idéntica en cualquier punto de la recta.
+            </div>
+
+            <div class="panel-visor">
+                <svg id="lienzo" viewBox="0 0 520 380" preserveAspectRatio="xMidYMid meet">
+                    <g id="capa-grilla"></g>
+                    <line id="eje-x" class="eje" />
+                    <line id="eje-y" class="eje" />
+                    <text id="lbl-o" text-anchor="end" class="eje-num">0</text>
+                    <text id="lbl-ejex" text-anchor="end" class="eje-label">Tiempo (min) →</text>
+                    <text id="lbl-ejey" text-anchor="start" class="eje-label">Líquido (L) ↑</text>
+                    
+                    <line id="recta-principal" class="recta-func" />
+                    
+                    <g id="capa-trace"></g>
+                    <g id="capa-triangulos"></g>
+                    <circle id="punto-preview" class="punto-preview" r="6" />
+                </svg>
+            </div>
         </div>
     </div>
 </Layout>
@@ -48,7 +58,7 @@ import Layout from '../../../../layouts/Layout.astro';
         --primary-dark: #8B2E28;
         --dark: #4A4A49;
         --bg: #F4F4F2;
-        --border: #cbd5e1;
+        --border: #e2e8f0;
         
         font-family: 'Inter', system-ui, sans-serif;
         background-color: var(--bg);
@@ -57,6 +67,7 @@ import Layout from '../../../../layouts/Layout.astro';
         align-items: center;
         padding: 40px 20px;
         width: 100%;
+        box-sizing: border-box;
     }
 
     .card { 
@@ -64,11 +75,16 @@ import Layout from '../../../../layouts/Layout.astro';
         padding: 25px; 
         border-radius: 12px; 
         box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
-        max-width: 800px; 
+        max-width: 750px; 
         width: 100%; 
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
     
-    .header { border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; }
+    .header { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .header h3 { color: var(--primary); margin: 0; font-size: 1.4rem; }
+    .header p { font-size: 0.95rem; color: var(--dark); margin: 5px 0 0 0; }
     
     .controls { 
         display: flex; 
@@ -77,7 +93,6 @@ import Layout from '../../../../layouts/Layout.astro';
         background: #f8fafc; 
         padding: 20px; 
         border-radius: 8px; 
-        margin-bottom: 15px; 
         border: 1px solid var(--border);
     }
     
@@ -89,183 +104,256 @@ import Layout from '../../../../layouts/Layout.astro';
 
     .slider-group { display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
     .slider-group label { color: #475569; font-size: 0.95rem; }
-    .label-val { font-weight: 800; color: var(--dark); font-size: 1.1rem; }
+    .label-val { font-weight: bold; color: var(--dark); font-size: 1.1rem; }
     
+    input[type="range"] { 
+        -webkit-appearance: none; width: 100%; height: 8px; background: #cbd5e1; border-radius: 4px; outline: none; cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb { 
+        -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.3); 
+    }
+
     .btn-group { display: flex; gap: 10px; width: 100%; }
     @media (max-width: 600px) {
         .btn-group { flex-direction: column; }
     }
-    
-    #plot { width: 100%; height: 550px; }
-    
-    .info-box { padding: 15px; font-size: 0.95rem; margin-top: 10px; border-radius: 4px; line-height: 1.5; }
-    .info-covariation { border-left: 4px solid var(--primary); background: #fef2f2; color: var(--dark); }
-    
-    button { cursor: pointer; padding: 10px 16px; border: none; border-radius: 6px; font-weight: bold; transition: background 0.2s; font-size: 0.95rem; flex: 1; }
-    
+
+    button { 
+        cursor: pointer; padding: 12px 16px; border: none; border-radius: 6px; font-weight: bold; transition: all 0.2s; font-size: 0.95rem; flex: 1;
+    }
     .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
-    
+    .btn-primary:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-1px); }
     .btn-secondary { background: #cbd5e1; color: #475569; }
     .btn-secondary:hover:not(:disabled) { background: #94a3b8; color: white; }
+    button:disabled { background: var(--border); color: #94a3b8; cursor: not-allowed; transform: none; }
     
-    button:disabled { background: #e2e8f0; color: #94a3b8; cursor: not-allowed; }
+    .info-box { 
+        padding: 15px; font-size: 0.95rem; border-radius: 6px; line-height: 1.5;
+        border-left: 4px solid var(--primary); background: #fef2f2; color: var(--dark); 
+    }
+
+    .panel-visor {
+        background: white; border: 1px solid var(--border); border-radius: 8px;
+        display: flex; justify-content: center; align-items: center; padding: 15px;
+    }
+
+    svg { width: 100%; max-width: 550px; height: auto; overflow: visible; }
     
-    input[type="range"] { -webkit-appearance: none; width: 100%; height: 8px; background: #cbd5e1; border-radius: 4px; outline: none; }
-    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+    .grilla { stroke: var(--border); stroke-width: 1; }
+    .eje { stroke: var(--dark); stroke-width: 2; stroke-linecap: square; }
+    .eje-num { font-size: 11px; fill: var(--dark); font-weight: 500; }
+    .eje-label { font-size: 12px; font-weight: bold; fill: var(--dark); }
+    .recta-func { stroke: var(--dark); stroke-width: 2.5; }
+    
+    /* Animaciones SVG */
+    .triangulo-fill { 
+        fill: rgba(211, 60, 49, 0.12); 
+        stroke: var(--primary-dark); 
+        stroke-width: 2;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .punto-tri { fill: var(--dark); opacity: 0; transition: opacity 0.2s ease; }
+    .punto-preview { fill: white; stroke: var(--primary); stroke-width: 3; }
+    
+    .lbl-delta { opacity: 0; transition: opacity 0.3s ease; }
+    .lbl-delta-x { font-size: 11px; font-weight: bold; fill: var(--dark); }
+    .lbl-delta-y { font-size: 11px; font-weight: bold; fill: var(--primary); }
+
+    .anim-show { opacity: 1 !important; }
+
+    .trace-line {
+        fill: none;
+        stroke-width: 2;
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+    }
+    
+    .trace-line-x { stroke: var(--dark); }
+    .trace-line-y { stroke: var(--primary); }
+
+    @keyframes drawLine {
+        to { stroke-dashoffset: 0; }
+    }
 </style>
 
 <script>
-    declare const Plotly: any;
-
-    const setupCovariacionPlotly = () => {
+    const setupGraficoCovariacion = () => {
         const slideA = document.getElementById('slideA') as HTMLInputElement | null;
-        const valA = document.getElementById('valA') as HTMLElement | null;
-        const btnDraw = document.getElementById('btnDraw') as HTMLButtonElement | null;
-        const btnClear = document.getElementById('btnClear') as HTMLButtonElement | null;
-        const plotDiv = document.getElementById('plot') as HTMLElement | null;
+        if (!slideA) return; // Previene errores si el script se ejecuta en otra página
 
-        if (!slideA || !valA || !btnDraw || !btnClear || !plotDiv) return;
+        const valA = document.getElementById('valA');
+        const btnDraw = document.getElementById('btnDraw') as HTMLButtonElement;
+        const btnClear = document.getElementById('btnClear') as HTMLButtonElement;
+        const capaTrace = document.getElementById('capa-trace');
+        const capaTriangulos = document.getElementById('capa-triangulos');
+        const puntoPreview = document.getElementById('punto-preview');
 
         const k_fill = 2/3; 
         const xMax = 15;
         const yMax = 10;
-        
-        let drawnTriangles: number[] = [];
+        const unitSize = 28; 
+        const cW = xMax * unitSize; 
+        const cH = yMax * unitSize; 
+        const mX = 35;
+        const mY = 25;
+        const baseLine = mY + cH;
 
-        const layoutBase = {
-            xaxis: { 
-                title: { text: 'Tiempo (minutos)', font: { color: '#4A4A49', weight: 'bold' } }, 
-                range: [-0.5, xMax + 0.5], 
-                dtick: 1, 
-                gridcolor: '#e2e8f0',
-                tickfont: { color: '#4A4A49' }
-            },
-            yaxis: { 
-                title: { text: 'Líquido Acumulado (litros)', font: { color: '#4A4A49', weight: 'bold' } }, 
-                range: [-0.5, yMax + 0.5], 
-                dtick: 1, 
-                gridcolor: '#e2e8f0',
-                tickfont: { color: '#4A4A49' },
-                scaleanchor: "x", 
-                scaleratio: 1     
-            },
-            showlegend: false,
-            margin: { t: 30, b: 40, l: 50, r: 20 },
-            hovermode: false,
-            plot_bgcolor: 'white',
-            paper_bgcolor: 'white'
-        };
+        const mapX = (x: number) => mX + (x * unitSize);
+        const mapY = (y: number) => baseLine - (y * unitSize);
 
-        const traceLineBase = {
-            x: [0, xMax], y: [0, yMax],
-            mode: 'lines', name: 'Recta',
-            line: { color: '#4A4A49', width: 2.5 },
-            hoverinfo: 'skip'
-        };
+        const drawnTriangles = new Set<number>();
 
-        function renderCovariation() {
-            const currentX = parseInt(slideA!.value);
-            valA!.innerText = currentX.toString();
+        function inicializarPlano() {
+            document.getElementById('eje-x')?.setAttribute('x1', mX.toString());
+            document.getElementById('eje-x')?.setAttribute('y1', baseLine.toString());
+            document.getElementById('eje-x')?.setAttribute('x2', (mX + cW + 15).toString());
+            document.getElementById('eje-x')?.setAttribute('y2', baseLine.toString());
 
-            let traces: any[] = [traceLineBase];
-            let annotations: any[] = [];
+            document.getElementById('eje-y')?.setAttribute('x1', mX.toString());
+            document.getElementById('eje-y')?.setAttribute('y1', baseLine.toString());
+            document.getElementById('eje-y')?.setAttribute('x2', mX.toString());
+            document.getElementById('eje-y')?.setAttribute('y2', (mY - 10).toString());
 
-            drawnTriangles.forEach(x1 => {
-                const x2 = x1 + 1;
-                const y1 = x1 * k_fill;
-                const y2 = x2 * k_fill;
+            document.getElementById('lbl-o')?.setAttribute('x', (mX - 6).toString());
+            document.getElementById('lbl-o')?.setAttribute('y', (baseLine + 12).toString());
+            document.getElementById('lbl-ejex')?.setAttribute('x', (mX + cW + 15).toString());
+            document.getElementById('lbl-ejex')?.setAttribute('y', (baseLine + 30).toString());
+            document.getElementById('lbl-ejey')?.setAttribute('x', mX.toString());
+            document.getElementById('lbl-ejey')?.setAttribute('y', (mY - 15).toString());
 
-                // Lógica Anticolisión
-                const hasNeighborRight = drawnTriangles.includes(x2);
-
-                traces.push({
-                    x: [x1, x2, x2, x1], 
-                    y: [y1, y1, y2, y1],
-                    mode: 'lines', fill: 'toself', fillcolor: 'rgba(211, 60, 49, 0.12)', 
-                    line: { color: '#8B2E28', width: 2 }, 
-                    hoverinfo: 'skip'
-                });
-
-                traces.push({
-                    x: [x1, x2], y: [y1, y2],
-                    mode: 'markers', marker: { size: 8, color: '#4A4A49' },
-                    hoverinfo: 'skip'
-                });
-
-                // Anotación delta x (abajo de la línea)
-                annotations.push({
-                    x: (x1 + x2) / 2, 
-                    y: y1, 
-                    yshift: -12, 
-                    yanchor: 'top',
-                    text: 'Δx = 1', showarrow: false, 
-                    font: { color: '#4A4A49', weight: 'bold', size: 12 }, 
-                    bgcolor: 'rgba(255,255,255,0.7)'
-                });
-                
-                // Anotación delta y (con sistema anticolisión)
-                annotations.push({
-                    x: x2, 
-                    y: (y1 + y2) / 2, 
-                    xshift: hasNeighborRight ? -8 : 8, 
-                    xanchor: hasNeighborRight ? 'right' : 'left', 
-                    text: 'Δy = 2/3', showarrow: false, 
-                    font: { color: '#D33C31', weight: 'bold', size: 12 }, 
-                    bgcolor: 'rgba(255,255,255,0.7)'
-                });
-            });
-
-            // Preview del punto actual
-            traces.push({
-                x: [currentX], y: [currentX * k_fill],
-                mode: 'markers', marker: { size: 12, color: '#D33C31', symbol: 'circle-open', line: {width: 3} },
-                hoverinfo: 'skip'
-            });
-
-            const layout = { ...layoutBase, annotations: annotations };
-            
-            if (typeof Plotly !== 'undefined') {
-                Plotly.react('plot', traces, layout);
+            const grilla = document.getElementById('capa-grilla');
+            if (grilla) {
+                grilla.innerHTML = '';
+                for(let i = 1; i <= xMax; i++) {
+                    let px = mapX(i);
+                    grilla.innerHTML += `<line x1="${px}" y1="${baseLine}" x2="${px}" y2="${mY}" class="grilla" />`;
+                    grilla.innerHTML += `<text x="${px}" y="${baseLine + 12}" text-anchor="middle" class="eje-num">${i}</text>`;
+                }
+                for(let j = 1; j <= yMax; j++) {
+                    let py = mapY(j);
+                    grilla.innerHTML += `<line x1="${mX}" y1="${py}" x2="${mX + cW}" y2="${py}" class="grilla" />`;
+                    grilla.innerHTML += `<text x="${mX - 6}" y="${py + 3}" text-anchor="end" class="eje-num">${j}</text>`;
+                }
             }
-            
-            btnDraw!.disabled = drawnTriangles.includes(currentX);
+
+            document.getElementById('recta-principal')?.setAttribute('x1', mapX(0).toString());
+            document.getElementById('recta-principal')?.setAttribute('y1', mapY(0).toString());
+            document.getElementById('recta-principal')?.setAttribute('x2', mapX(15).toString());
+            document.getElementById('recta-principal')?.setAttribute('y2', mapY(10).toString());
         }
 
-        // Sistema de carga segura para Plotly
-        const initPlot = () => {
-            if (typeof Plotly !== 'undefined') {
-                renderCovariation();
-            } else {
-                plotDiv!.innerHTML = "<p style='text-align:center; color:#64748b; margin-top:100px;'>Cargando motor gráfico...</p>";
-                const checkPlotly = setInterval(() => {
-                    if (typeof Plotly !== 'undefined') {
-                        clearInterval(checkPlotly);
-                        plotDiv!.innerHTML = "";
-                        renderCovariation();
-                    }
-                }, 200);
-            }
-        };
+        function crearTrianguloConsolidado(x1: number) {
+            const x2 = x1 + 1;
+            const y1 = x1 * k_fill;
+            const y2 = x2 * k_fill;
 
-        btnDraw.addEventListener('click', () => {
+            const px1 = mapX(x1), px2 = mapX(x2);
+            const py1 = mapY(y1), py2 = mapY(y2);
+
+            const colisionDerecha = drawnTriangles.has(x2);
+            const anchorY = colisionDerecha ? 'end' : 'start';
+            const offsetX = colisionDerecha ? -6 : 6;
+            const bgX = colisionDerecha ? px2 - 42 : px2 + offsetX;
+
+            return `
+                <polygon points="${px1},${py1} ${px2},${py1} ${px2},${py2}" class="triangulo-fill anim-show" />
+                <circle cx="${px1}" cy="${py1}" r="4" class="punto-tri anim-show" />
+                <circle cx="${px2}" cy="${py2}" r="4" class="punto-tri anim-show" />
+                <g class="lbl-delta anim-show">
+                    <rect x="${(px1+px2)/2 - 16}" y="${py1 + 4}" width="32" height="14" fill="rgba(255,255,255,0.8)" rx="2"/>
+                    <text x="${(px1+px2)/2}" y="${py1 + 15}" text-anchor="middle" class="lbl-delta-x">Δx=1</text>
+                </g>
+                <g class="lbl-delta anim-show">
+                    <rect x="${bgX}" y="${(py1+py2)/2 - 7}" width="38" height="14" fill="rgba(255,255,255,0.8)" rx="2"/>
+                    <text x="${px2 + offsetX}" y="${(py1+py2)/2 + 3}" text-anchor="${anchorY}" class="lbl-delta-y">Δy=2/3</text>
+                </g>
+            `;
+        }
+
+        function animarNuevoTriangulo(x1: number) {
+            btnDraw.disabled = true;
+            slideA!.disabled = true;
+
+            const x2 = x1 + 1;
+            const y1 = x1 * k_fill;
+            const y2 = x2 * k_fill;
+
+            const px1 = mapX(x1), px2 = mapX(x2);
+            const py1 = mapY(y1), py2 = mapY(y2);
+
+            if(capaTrace) capaTrace.innerHTML = ''; 
+
+            if(capaTrace) {
+                capaTrace.innerHTML = `
+                    <line id="trace-x" x1="${px1}" y1="${py1}" x2="${px2}" y2="${py1}" class="trace-line trace-line-x" />
+                    <line id="trace-y" x1="${px2}" y1="${py1}" x2="${px2}" y2="${py2}" class="trace-line trace-line-y" />
+                    <circle cx="${px1}" cy="${py1}" r="4" class="punto-tri" id="p1-trace"/>
+                    <circle cx="${px2}" cy="${py2}" r="4" class="punto-tri" id="p2-trace"/>
+                `;
+            }
+
+            const tX = document.getElementById('trace-x');
+            const tY = document.getElementById('trace-y');
+            const p1 = document.getElementById('p1-trace');
+            const p2 = document.getElementById('p2-trace');
+
+            const lenX = Math.abs(px2 - px1);
+            const lenY = Math.abs(py2 - py1);
+
+            if(tX) {
+                tX.style.strokeDasharray = lenX.toString();
+                tX.style.strokeDashoffset = lenX.toString();
+            }
+            if(tY) {
+                tY.style.strokeDasharray = lenY.toString();
+                tY.style.strokeDashoffset = lenY.toString();
+            }
+
+            p1?.classList.add('anim-show');
+
+            setTimeout(() => { if(tX) tX.style.animation = 'drawLine 0.5s ease-out forwards'; }, 100);
+            setTimeout(() => { if(tY) tY.style.animation = 'drawLine 0.4s ease-out forwards'; }, 600); 
+            setTimeout(() => { p2?.classList.add('anim-show'); }, 1000);
+
+            setTimeout(() => {
+                drawnTriangles.add(x1); 
+                if(capaTrace) capaTrace.innerHTML = ''; 
+                if(capaTriangulos) capaTriangulos.innerHTML += crearTrianguloConsolidado(x1); 
+                
+                btnDraw.disabled = false;
+                slideA!.disabled = false;
+                actualizarUI(); 
+            }, 1300);
+        }
+
+        function actualizarUI() {
             const x = parseInt(slideA!.value);
-            if (!drawnTriangles.includes(x)) {
-                drawnTriangles.push(x);
-                renderCovariation();
-            }
+            if(valA) valA.innerText = x.toString();
+            
+            puntoPreview?.setAttribute('cx', mapX(x).toString());
+            puntoPreview?.setAttribute('cy', mapY(x * k_fill).toString());
+
+            if(btnDraw) btnDraw.disabled = drawnTriangles.has(x);
+        }
+
+        slideA?.addEventListener('input', actualizarUI);
+
+        btnDraw?.addEventListener('click', () => {
+            const x = parseInt(slideA!.value);
+            if (!drawnTriangles.has(x)) animarNuevoTriangulo(x);
         });
 
-        btnClear.addEventListener('click', () => {
-            drawnTriangles = [];
-            renderCovariation();
+        btnClear?.addEventListener('click', () => {
+            drawnTriangles.clear();
+            if(capaTriangulos) capaTriangulos.innerHTML = '';
+            actualizarUI();
         });
 
-        slideA.addEventListener('input', renderCovariation);
-
-        initPlot();
+        inicializarPlano();
+        actualizarUI();
     };
 
-    document.addEventListener('DOMContentLoaded', setupCovariacionPlotly);
-    document.addEventListener('astro:page-load', setupCovariacionPlotly);
+    document.addEventListener('DOMContentLoaded', setupGraficoCovariacion);
+    document.addEventListener('astro:page-load', setupGraficoCovariacion);
 </script>
