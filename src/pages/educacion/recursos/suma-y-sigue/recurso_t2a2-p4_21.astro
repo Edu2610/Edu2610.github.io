@@ -3,64 +3,41 @@ import Layout from '../../../../layouts/Layout.astro';
 // Ajusta la ruta al Layout según la ubicación real de este archivo
 ---
 
-<Layout titulo="Proporcionalidad: Covariación">
+<Layout titulo="Proporcionalidad: Correspondencia">
     <div class="recurso-wrapper">
         <div class="card">
             <div class="main-content">
                 <div class="panel-izquierdo">
-                    <div class="caja-control">
-                        <label>Factor de variación (n): <span id="txt-factor" style="color: var(--operator); font-size: 16px;">× 4</span></label>
-                        <input type="range" id="slider-factor" min="1" max="5" step="1" value="4">
+                    <div class="maquina-coord" id="box-ecuacion">
+                        y = <span>2/3</span> · <span style="color:var(--primary)" id="ecuacion-x">6</span>
                     </div>
 
-                    <!-- Tabla geométrica-tabular sincronizada -->
-                    <div class="tabla-cov">
-                        <div class="tabla-cols">
-                            <div class="col col-b">
-                                <div style="color: var(--text); font-size: 14px;">Δx</div>
-                                <div style="color: var(--text); font-size: 14px;">Δy</div>
-                            </div>
-                            <div class="col col-b">
-                                <div>3</div>
-                                <div>2</div>
-                            </div>
-                            <div class="col col-res" style="color: var(--operator);">
-                                <div id="res-x" style="opacity: 0;">12</div>
-                                <div id="res-y" style="opacity: 0;">8</div>
-                            </div>
+                    <div class="maquina-coord" style="flex-direction: column; gap: 8px;">
+                        <div style="font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text); opacity: 0.6; letter-spacing: 0.5px;">
+                            Correspondencia
                         </div>
-                        
-                        <svg class="svg-overlay" viewBox="0 0 290 190">
-                            <defs>
-                                <marker id="head-tabla" orient="auto" markerWidth="5" markerHeight="5" refX="4" refY="2.5">
-                                    <path d="M0,0 L5,2.5 L0,5 Z" fill="var(--operator)" />
-                                </marker>
-                            </defs>
-                            
-                            <!-- Flecha Superior (Δx): Por encima de la fila -->
-                            <path id="path-x" d="M 115,48 Q 192.5,0 270,48" fill="none" stroke="var(--operator)" stroke-width="2.5" marker-end="url(#head-tabla)" stroke-dasharray="200" stroke-dashoffset="200" />
-                            <text id="lbl-path-x" x="192.5" y="16" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--operator)" opacity="0">× 4</text>
-                            
-                            <!-- Flecha Inferior (Δy): Por debajo de la fila -->
-                            <path id="path-y" d="M 115,142 Q 192.5,190 270,142" fill="none" stroke="var(--operator)" stroke-width="2.5" marker-end="url(#head-tabla)" stroke-dasharray="200" stroke-dashoffset="200" />
-                            <text id="lbl-path-y" x="192.5" y="185" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--operator)" opacity="0">× 4</text>
-                        </svg>
+                        <div id="box-correspondencia" style="display: flex; justify-content: center; align-items: center; min-height: 25px; width: 100%;">
+                            <span style="color:var(--primary)">x = 6</span>
+                        </div>
                     </div>
 
-                    <button id="btn-anim-cov" class="btn-accion">Animar ▶</button>
-                    <button id="btn-limpiar-cov" class="btn-accion btn-limpiar">Limpiar</button>
+                    <div class="caja-control">
+                        <label>x: <span id="txt-x" style="color: var(--primary); font-size: 16px;">6</span></label>
+                        <input type="range" id="slider-x" min="0" max="15" step="1" value="6">
+                    </div>
+                    <button id="btn-anim-corr" class="btn-accion">Animar ▶</button>
+                    <button id="btn-limpiar-corr" class="btn-accion btn-limpiar">Limpiar</button>
                 </div>
 
                 <div class="panel-visor">
                     <svg id="lienzo" viewBox="0 0 550 450" preserveAspectRatio="xMidYMid meet">
                         <defs>
-                            <marker id="head-cov" orient="auto" markerWidth="4" markerHeight="4" refX="3" refY="2">
-                                <path d="M0,0 L4,2 L0,4 Z" fill="var(--operator)" />
+                            <marker id="head-cor" orient="auto" markerWidth="4" markerHeight="4" refX="3" refY="2">
+                                <path d="M0,0 L4,2 L0,4 Z" fill="var(--machine)" />
                             </marker>
                         </defs>
 
                         <g id="capa-grilla"></g>
-                        
                         <line id="eje-x" class="eje" /> 
                         <line id="eje-y" class="eje" />  
 
@@ -69,8 +46,6 @@ import Layout from '../../../../layouts/Layout.astro';
                         <text id="lbl-ejey" text-anchor="start" class="eje-label">y ↑</text>
 
                         <line id="recta-principal" class="recta-func" />
-                        
-                        <g id="capa-base"></g>
                         <g id="capa-animacion"></g>
                     </svg>
                 </div>
@@ -82,7 +57,7 @@ import Layout from '../../../../layouts/Layout.astro';
 <style>
     .recurso-wrapper {
         --primary: #D33C31;       
-        --operator: #8B2E28;      
+        --machine: #E87461;       
         --bg: #F4F4F2;            
         --text: #4A4A49;          
         --border: #D8D8D5;        
@@ -122,7 +97,7 @@ import Layout from '../../../../layouts/Layout.astro';
     .caja-control {
         background: white; padding: 15px; border-radius: 8px;
         border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px;
-        border-left: 4px solid var(--operator);
+        border-left: 4px solid var(--machine);
     }
 
     .caja-control label { font-weight: 700; font-size: 13px; color: var(--text); text-transform: uppercase; }
@@ -135,57 +110,29 @@ import Layout from '../../../../layouts/Layout.astro';
         background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(74,74,73,0.2);
     }
 
-    /* Estilos para la tabla tabular */
-    .tabla-cov {
-        position: relative;
-        background: white;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        border-left: 4px solid var(--operator);
-        width: 100%;
-        height: 190px;
-        box-sizing: border-box;
-        overflow: visible;
-    }
-    
-    .tabla-cols {
-        display: flex;
-        height: 100%;
-        padding: 55px 0; 
-        box-sizing: border-box;
-    }
-    
-    .col {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 18px;
-        font-weight: 700;
-    }
-    
-    .col-b { border-right: 2px dashed var(--border); }
-    .col-res { background: rgba(139, 46, 40, 0.04); border-top-right-radius: 8px; border-bottom-right-radius: 8px;}
-
-    .svg-overlay {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        pointer-events: none;
-    }
-
-    :global(.res-pop) { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-    @keyframes pop { 0% { transform: scale(0.5); opacity: 0;} 100% { transform: scale(1); opacity: 1;} }
-
     .btn-accion {
         padding: 12px; border: none; border-radius: 8px; font-weight: 600; font-size: 14px;
-        cursor: pointer; transition: all 0.2s; color: white; width: 100%; background: var(--operator);
+        cursor: pointer; transition: all 0.2s; color: white; width: 100%; background: var(--machine);
     }
     .btn-accion:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-2px); }
     .btn-accion:disabled { background: var(--border) !important; cursor: not-allowed; transform: none; color: white; }
 
     .btn-limpiar { background: var(--text); margin-top: auto; }
+
+    .maquina-coord {
+        background: white; border: 2px solid var(--border); border-radius: 10px;
+        padding: 15px 10px; text-align: center; font-family: 'Courier New', monospace;
+        font-size: 20px; font-weight: 700; color: var(--text);
+        box-shadow: inset 0 2px 10px rgba(74,74,73,0.03); min-height: 60px;
+        display: flex; justify-content: center; align-items: center;
+    }
+
+    #box-ecuacion {
+        font-size: 18px;
+        min-height: 40px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.7);
+    }
 
     .panel-visor {
         flex-grow: 1; background: white; padding: 20px; display: flex; justify-content: center; align-items: center;
@@ -195,21 +142,27 @@ import Layout from '../../../../layouts/Layout.astro';
     .eje { stroke: var(--text); stroke-width: 2.5; stroke-linecap: square; }
     .recta-func { stroke: var(--text); stroke-width: 2; stroke-dasharray: 4; opacity: 0.4; }
 
-    /* Clases inyectadas vía JS que necesitan :global() */
+    /* Animaciones CSS del recuadro */
+    :global(.anim-flecha) {
+        display: inline-block; max-width: 0; opacity: 0; overflow: hidden;
+        white-space: nowrap; vertical-align: middle; transition: max-width 0.4s ease, opacity 0.3s ease;
+    }
+    :global(.anim-flecha.activa) { max-width: 50px; opacity: 1; }
+    
+    :global(.anim-y) {
+        opacity: 0; transform: translateX(-10px); display: inline-block; transition: all 0.3s ease 0.1s;
+    }
+    :global(.anim-y.activa) { opacity: 1; transform: translateX(0); }
+
+    /* Clases SVG inyectadas */
     :global(.grilla-menor) { stroke: var(--bg); stroke-width: 1; }
     :global(.grilla-mayor) { stroke: var(--border); stroke-width: 1.5; }
     :global(.eje-num) { font-size: 12px; fill: var(--text); font-weight: 500; }
     :global(.eje-label) { font-size: 13px; font-weight: 700; fill: var(--text); }
     
     :global(.lbl-mat) { 
-        font-size: 14px; 
-        font-weight: 600; 
-        paint-order: stroke fill; 
-        stroke: var(--bg); 
-        stroke-width: 3px; 
+        font-size: 14px; font-weight: 600; paint-order: stroke fill; stroke: var(--bg); stroke-width: 3px; 
     }
-    
-    :global(.tri-base) { fill: var(--primary); opacity: 0.08; stroke: var(--primary); stroke-width: 1.5; stroke-dasharray: 3; }
     :global(.punto) { fill: var(--text); stroke: white; stroke-width: 2; }
 
     @media (max-width: 768px) {
@@ -221,8 +174,9 @@ import Layout from '../../../../layouts/Layout.astro';
 <script>
     const setupRecurso = () => {
         const xMax = 16, yMax = 12;
-        const cW = xMax * 28;
-        const cH = yMax * 28;
+        // Escala 1:1 estricta: 28px por unidad en ambos ejes. Da un buen tamaño.
+        const cW = xMax * 28; // 448
+        const cH = yMax * 28; // 336
         const mX = 50, mY = 40; 
         const baseLine = mY + cH;
 
@@ -230,22 +184,15 @@ import Layout from '../../../../layouts/Layout.astro';
         const mapY = (y: number) => baseLine - (y / yMax) * cH;
 
         const capaAnim = document.getElementById('capa-animacion');
-        const capaBase = document.getElementById('capa-base');
-        const sliderFact = document.getElementById('slider-factor') as HTMLInputElement;
-        const btnAnimCov = document.getElementById('btn-anim-cov') as HTMLButtonElement;
-        const btnLimpiarCov = document.getElementById('btn-limpiar-cov') as HTMLButtonElement;
-
-        const pathX = document.querySelector<SVGPathElement>('#path-x');
-const pathY = document.querySelector<SVGPathElement>('#path-y');
-const lblPathX = document.querySelector<SVGTextElement>('#lbl-path-x');
-const lblPathY = document.querySelector<SVGTextElement>('#lbl-path-y');
-const resX = document.querySelector<HTMLElement>('#res-x');
-const resY = document.querySelector<HTMLElement>('#res-y');
+        const sliderX = document.getElementById('slider-x') as HTMLInputElement;
+        const btnAnimCorr = document.getElementById('btn-anim-corr') as HTMLButtonElement;
+        const btnLimpiarCorr = document.getElementById('btn-limpiar-corr') as HTMLButtonElement;
+        const boxCorr = document.getElementById('box-correspondencia');
 
         let animId: number | null = null;
         let resolucionActual: ((value: any) => void) | null = null; 
 
-        if (!capaAnim || !capaBase) return;
+        if (!capaAnim) return;
 
         function configurarPlano() {
             document.getElementById('eje-x')?.setAttribute('x1', mX.toString());
@@ -268,6 +215,7 @@ const resY = document.querySelector<HTMLElement>('#res-y');
             const grilla = document.getElementById('capa-grilla');
             if (grilla) {
                 grilla.innerHTML = '';
+                // Se marca cada 2 unidades para evitar la distorsión visual de rectángulos de 2x3
                 for(let i=1; i<=xMax; i++) {
                     let px = mapX(i);
                     grilla.innerHTML += `<line x1="${px}" y1="${baseLine}" x2="${px}" y2="${mY}" class="${i%2===0 ? 'grilla-mayor' : 'grilla-menor'}" />`;
@@ -286,43 +234,22 @@ const resY = document.querySelector<HTMLElement>('#res-y');
             document.getElementById('recta-principal')?.setAttribute('y2', mapY(10).toString());
         }
 
-        function dibujarTrianguloBase() {
-            const bx = mapX(3), by = mapY(2), oy = mapY(0);
-            if(capaBase) {
-                capaBase.innerHTML = `
-                    <path class="tri-base" d="M ${mX} ${oy} L ${bx} ${oy} L ${bx} ${by} Z" />
-                    <text x="${(mX+bx)/2}" y="${oy - 6}" text-anchor="middle" class="lbl-mat" style="fill:var(--text)">Δx=3</text>
-                    <text x="${bx - 6}" y="${(oy+by)/2 + 4}" text-anchor="end" class="lbl-mat" style="fill:var(--text)">Δy=2</text>
-                `;
-            }
-        }
-
-        function reiniciarTabla() {
-            if(pathX) { pathX.style.transition = 'none'; pathX.style.strokeDashoffset = '200'; }
-            if(pathY) { pathY.style.transition = 'none'; pathY.style.strokeDashoffset = '200'; }
-            if(lblPathX) { lblPathX.style.transition = 'none'; lblPathX.style.opacity = '0'; }
-            if(lblPathY) { lblPathY.style.transition = 'none'; lblPathY.style.opacity = '0'; }
-            
-            if(resX) {
-                resX.style.opacity = '0';
-                resX.classList.remove('res-pop');
-            }
-            if(resY) {
-                resY.style.opacity = '0';
-                resY.classList.remove('res-pop');
-            }
+        function restaurarMedio() {
+            if (!sliderX || !boxCorr) return;
+            const val = sliderX.value;
+            boxCorr.innerHTML = `<span style="color:var(--primary)">x = ${val}</span>`;
         }
 
         function limpiarVisor() {
             if(animId) cancelAnimationFrame(animId);
             if(resolucionActual) resolucionActual({ interrumpido: true });
             if(capaAnim) capaAnim.innerHTML = '';
-            if(btnAnimCov) btnAnimCov.disabled = false;
-            if(sliderFact) sliderFact.disabled = false;
-            reiniciarTabla();
+            if(btnAnimCorr) btnAnimCorr.disabled = false;
+            if(sliderX) sliderX.disabled = false;
+            restaurarMedio();
         }
 
-        function dibujarVector(x1: number, y1: number, x2: number, y2: number, color: string, marker: string, duracion: number): Promise<any> {
+        function dibujarVector(x1: number, y1: number, x2: number, y2: number, color: string, marker: string | null, duracion: number, isDashed = false): Promise<any> {
             return new Promise(resolve => {
                 resolucionActual = resolve;
                 const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -331,7 +258,14 @@ const resY = document.querySelector<HTMLElement>('#res-y');
                 line.setAttribute('stroke', color);
                 line.setAttribute('stroke-width', '3');
                 line.setAttribute('stroke-linecap', 'round');
-                line.setAttribute('marker-end', `url(#${marker})`);
+                
+                if (marker) {
+                    line.setAttribute('marker-end', `url(#${marker})`);
+                }
+                if (isDashed) {
+                    line.setAttribute('stroke-dasharray', '6, 5');
+                }
+                
                 capaAnim?.appendChild(line);
 
                 let start: number | null = null;
@@ -374,92 +308,62 @@ const resY = document.querySelector<HTMLElement>('#res-y');
             capaAnim?.appendChild(txt);
         }
 
-        if (btnLimpiarCov) {
-            btnLimpiarCov.addEventListener('click', limpiarVisor);
+        if (btnLimpiarCorr) {
+            btnLimpiarCorr.addEventListener('click', limpiarVisor);
         }
 
-        if (sliderFact) {
-            sliderFact.addEventListener('input', (e) => {
-                const target = e.target as HTMLInputElement;
-                const txtFactor = document.getElementById('txt-factor');
-                if (txtFactor) txtFactor.textContent = `× ${target.value}`;
-                if (lblPathX) lblPathX.textContent = `× ${target.value}`;
-                if (lblPathY) lblPathY.textContent = `× ${target.value}`;
-                reiniciarTabla();
+        if (sliderX) {
+            sliderX.addEventListener('input', (e) => {
+                const val = (e.target as HTMLInputElement).value;
+                const txtX = document.getElementById('txt-x');
+                const ecuacionX = document.getElementById('ecuacion-x');
+                
+                if(txtX) txtX.textContent = val;
+                if(ecuacionX) ecuacionX.textContent = val;
+                restaurarMedio();
             });
         }
 
-        if (btnAnimCov) {
-            btnAnimCov.addEventListener('click', async () => {
+        if (btnAnimCorr) {
+            btnAnimCorr.addEventListener('click', async () => {
                 limpiarVisor();
-                btnAnimCov.disabled = true;
-                if(sliderFact) sliderFact.disabled = true;
+                btnAnimCorr.disabled = true;
+                if(sliderX) sliderX.disabled = true;
 
-                const n = parseInt(sliderFact.value);
-                const dx = 3, dy = 2; 
-                const duracionFlecha = 300; 
-                const colorOp = 'var(--operator)';
+                const x = parseFloat(sliderX.value);
+                const y = (2/3) * x;
+                const colorMac = 'var(--machine)';
                 
-                const tiempoTotalX = n * duracionFlecha;
-                const tiempoTotalY = n * duracionFlecha;
-
-                if (pathX && lblPathX) {
-                    pathX.style.transition = `stroke-dashoffset ${tiempoTotalX}ms linear`;
-                    pathX.style.strokeDashoffset = '0';
-                    lblPathX.style.transition = `opacity 0.3s ease ${tiempoTotalX / 2}ms`;
-                    lblPathX.style.opacity = '1';
+                if (boxCorr) {
+                    boxCorr.innerHTML = `
+                        <span style="color:var(--primary)">x = ${x}</span>
+                        <span class="anim-flecha" id="box-arrow">&nbsp;⟶&nbsp;</span>
+                        <span class="anim-y" id="box-y" style="color:var(--machine)">y = ${y.toFixed(1)}</span>
+                    `;
                 }
+                
+                let res1 = await dibujarVector(mapX(x), mapY(0), mapX(x), mapY(y), colorMac, null, 600, true);
+                if(res1.interrumpido) return;
+                
+                agregarTexto(mapX(x) + 10, mapY(y/2) + 4, `x = ${x}`, colorMac, 'start');
+                agregarPunto(mapX(x), mapY(y), colorMac);
 
-                for(let i = 0; i < n; i++) {
-                    let startX = mapX(i * dx);
-                    let endX = mapX((i + 1) * dx);
-                    let posY = mapY(0);
-                    
-                    let res = await dibujarVector(startX, posY, endX, posY, colorOp, 'head-cov', duracionFlecha);
-                    if (res.interrumpido) return;
-                }
+                await new Promise(r => setTimeout(r, 200));
 
-                agregarTexto(mapX((n*dx)/2), mapY(0) - 12, `${n} × Δx`, colorOp);
+                let res2 = await dibujarVector(mapX(x), mapY(y), mapX(0), mapY(y), colorMac, 'head-cor', 600, true);
+                if(res2.interrumpido) return;
 
-                if (resX) {
-                    resX.textContent = (n * dx).toString();
-                    resX.style.opacity = '1';
-                    resX.classList.add('res-pop');
-                }
+                agregarTexto(mapX(x/2), mapY(y) - 12, `y = ${y.toFixed(1)}`, colorMac);
 
-                if (pathY && lblPathY) {
-                    pathY.style.transition = `stroke-dashoffset ${tiempoTotalY}ms linear`;
-                    pathY.style.strokeDashoffset = '0';
-                    lblPathY.style.transition = `opacity 0.3s ease ${tiempoTotalY / 2}ms`;
-                    lblPathY.style.opacity = '1';
-                }
+                document.getElementById('box-arrow')?.classList.add('activa');
+                document.getElementById('box-y')?.classList.add('activa');
 
-                for(let i = 0; i < n; i++) {
-                    let posX = mapX(n * dx);
-                    let startY = mapY(i * dy);
-                    let endY = mapY((i + 1) * dy);
-                    
-                    let res = await dibujarVector(posX, startY, posX, endY, colorOp, 'head-cov', duracionFlecha);
-                    if (res.interrumpido) return;
-                }
-
-                agregarTexto(mapX(n*dx) + 10, mapY((n*dy)/2) + 4, `${n} × Δy`, colorOp, 'start');
-                agregarPunto(mapX(n*dx), mapY(n*dy), colorOp);
-
-                if (resY) {
-                    resY.textContent = (n * dy).toString();
-                    resY.style.opacity = '1';
-                    resY.classList.add('res-pop');
-                }
-
-                btnAnimCov.disabled = false;
-                if(sliderFact) sliderFact.disabled = false;
+                btnAnimCorr.disabled = false;
+                if(sliderX) sliderX.disabled = false;
             });
         }
 
         configurarPlano();
-        dibujarTrianguloBase();
-        reiniciarTabla(); 
 
         // Integración edX
         (window as any).getGrade = () => JSON.stringify({ action: "explore" });
