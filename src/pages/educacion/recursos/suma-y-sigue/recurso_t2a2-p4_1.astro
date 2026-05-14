@@ -7,7 +7,7 @@ import Layout from '../../../../layouts/Layout.astro';
     <div class="recurso-wrapper">
         <div class="card">
             <div class="header">
-                <h3>Enfoque Covariacional Animado</h3>
+                <h3></h3>
                 <p>Selecciona un instante inicial y traza el triángulo para observar el cambio en el próximo minuto.</p>
             </div>
             
@@ -24,12 +24,6 @@ import Layout from '../../../../layouts/Layout.astro';
                         <button id="btnClear" class="btn-secondary">Limpiar Gráfico</button>
                     </div>
                 </div>
-            </div>
-
-            <div class="info-box">
-                <strong>Análisis de Covariación Constante:</strong>
-                Al pulsar "Trazar", verás cómo, al avanzar <b>Δx = 1 minuto</b>, el volumen siempre aumenta 
-                <b style="color:var(--primary);">Δy = 2/3 de litro</b>. La forma del triángulo es idéntica en cualquier punto de la recta.
             </div>
 
             <div class="panel-visor">
@@ -52,7 +46,7 @@ import Layout from '../../../../layouts/Layout.astro';
     </div>
 </Layout>
 
-<style>
+<style is:global>
     .recurso-wrapper {
         --primary: #D33C31;
         --primary-dark: #8B2E28;
@@ -70,7 +64,7 @@ import Layout from '../../../../layouts/Layout.astro';
         box-sizing: border-box;
     }
 
-    .card { 
+    .recurso-wrapper .card { 
         background: white; 
         padding: 25px; 
         border-radius: 12px; 
@@ -82,11 +76,11 @@ import Layout from '../../../../layouts/Layout.astro';
         gap: 15px;
     }
     
-    .header { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-    .header h3 { color: var(--primary); margin: 0; font-size: 1.4rem; }
-    .header p { font-size: 0.95rem; color: var(--dark); margin: 5px 0 0 0; }
+    .recurso-wrapper .header { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .recurso-wrapper .header h3 { color: var(--primary); margin: 0; font-size: 1.4rem; }
+    .recurso-wrapper .header p { font-size: 0.95rem; color: var(--dark); margin: 5px 0 0 0; }
     
-    .controls { 
+    .recurso-wrapper .controls { 
         display: flex; 
         flex-direction: column; 
         gap: 15px; 
@@ -96,81 +90,76 @@ import Layout from '../../../../layouts/Layout.astro';
         border: 1px solid var(--border);
     }
     
-    .control-row { display: flex; gap: 20px; align-items: center; justify-content: space-between; width: 100%; }
+    .recurso-wrapper .control-row { display: flex; gap: 20px; align-items: center; justify-content: space-between; width: 100%; }
     
     @media (max-width: 600px) {
-        .control-row { flex-direction: column; align-items: stretch; }
+        .recurso-wrapper .control-row { flex-direction: column; align-items: stretch; }
     }
 
-    .slider-group { display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
-    .slider-group label { color: #475569; font-size: 0.95rem; }
-    .label-val { font-weight: bold; color: var(--dark); font-size: 1.1rem; }
+    .recurso-wrapper .slider-group { display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
+    .recurso-wrapper .slider-group label { color: #475569; font-size: 0.95rem; }
+    .recurso-wrapper .label-val { font-weight: bold; color: var(--dark); font-size: 1.1rem; }
     
-    input[type="range"] { 
+    .recurso-wrapper input[type="range"] { 
         -webkit-appearance: none; width: 100%; height: 8px; background: #cbd5e1; border-radius: 4px; outline: none; cursor: pointer;
     }
-    input[type="range"]::-webkit-slider-thumb { 
+    .recurso-wrapper input[type="range"]::-webkit-slider-thumb { 
         -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.3); 
     }
 
-    .btn-group { display: flex; gap: 10px; width: 100%; }
+    .recurso-wrapper .btn-group { display: flex; gap: 10px; width: 100%; }
     @media (max-width: 600px) {
-        .btn-group { flex-direction: column; }
+        .recurso-wrapper .btn-group { flex-direction: column; }
     }
 
-    button { 
+    .recurso-wrapper button { 
         cursor: pointer; padding: 12px 16px; border: none; border-radius: 6px; font-weight: bold; transition: all 0.2s; font-size: 0.95rem; flex: 1;
     }
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-1px); }
-    .btn-secondary { background: #cbd5e1; color: #475569; }
-    .btn-secondary:hover:not(:disabled) { background: #94a3b8; color: white; }
-    button:disabled { background: var(--border); color: #94a3b8; cursor: not-allowed; transform: none; }
-    
-    .info-box { 
-        padding: 15px; font-size: 0.95rem; border-radius: 6px; line-height: 1.5;
-        border-left: 4px solid var(--primary); background: #fef2f2; color: var(--dark); 
-    }
+    .recurso-wrapper .btn-primary { background: var(--primary); color: white; }
+    .recurso-wrapper .btn-primary:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-1px); }
+    .recurso-wrapper .btn-secondary { background: #cbd5e1; color: #475569; }
+    .recurso-wrapper .btn-secondary:hover:not(:disabled) { background: #94a3b8; color: white; }
+    .recurso-wrapper button:disabled { background: var(--border); color: #94a3b8; cursor: not-allowed; transform: none; }
 
-    .panel-visor {
+    .recurso-wrapper .panel-visor {
         background: white; border: 1px solid var(--border); border-radius: 8px;
         display: flex; justify-content: center; align-items: center; padding: 15px;
     }
 
-    svg { width: 100%; max-width: 550px; height: auto; overflow: visible; }
+    .recurso-wrapper svg { width: 100%; max-width: 550px; height: auto; overflow: visible; }
     
-    .grilla { stroke: var(--border); stroke-width: 1; }
-    .eje { stroke: var(--dark); stroke-width: 2; stroke-linecap: square; }
-    .eje-num { font-size: 11px; fill: var(--dark); font-weight: 500; }
-    .eje-label { font-size: 12px; font-weight: bold; fill: var(--dark); }
-    .recta-func { stroke: var(--dark); stroke-width: 2.5; }
+    .recurso-wrapper .grilla { stroke: var(--border); stroke-width: 1; }
+    .recurso-wrapper .eje { stroke: var(--dark); stroke-width: 2; stroke-linecap: square; }
+    .recurso-wrapper .eje-num { font-size: 11px; fill: var(--dark); font-weight: 500; }
+    .recurso-wrapper .eje-label { font-size: 12px; font-weight: bold; fill: var(--dark); }
+    .recurso-wrapper .recta-func { stroke: var(--dark); stroke-width: 2.5; }
     
-    /* Animaciones SVG */
-    .triangulo-fill { 
+    /* Animaciones SVG (Afectarán correctamente a los inyectados por JS) */
+    .recurso-wrapper .triangulo-fill { 
         fill: rgba(211, 60, 49, 0.12); 
         stroke: var(--primary-dark); 
         stroke-width: 2;
         opacity: 0;
         transition: opacity 0.3s ease;
     }
-    .punto-tri { fill: var(--dark); opacity: 0; transition: opacity 0.2s ease; }
-    .punto-preview { fill: white; stroke: var(--primary); stroke-width: 3; }
+    .recurso-wrapper .punto-tri { fill: var(--dark); opacity: 0; transition: opacity 0.2s ease; }
+    .recurso-wrapper .punto-preview { fill: white; stroke: var(--primary); stroke-width: 3; }
     
-    .lbl-delta { opacity: 0; transition: opacity 0.3s ease; }
-    .lbl-delta-x { font-size: 11px; font-weight: bold; fill: var(--dark); }
-    .lbl-delta-y { font-size: 11px; font-weight: bold; fill: var(--primary); }
+    .recurso-wrapper .lbl-delta { opacity: 0; transition: opacity 0.3s ease; }
+    .recurso-wrapper .lbl-delta-x { font-size: 11px; font-weight: bold; fill: var(--dark); }
+    .recurso-wrapper .lbl-delta-y { font-size: 11px; font-weight: bold; fill: var(--primary); }
 
-    .anim-show { opacity: 1 !important; }
+    .recurso-wrapper .anim-show { opacity: 1 !important; }
 
-    .trace-line {
+    .recurso-wrapper .trace-line {
         fill: none;
         stroke-width: 2;
         stroke-dasharray: 1000;
         stroke-dashoffset: 1000;
     }
     
-    .trace-line-x { stroke: var(--dark); }
-    .trace-line-y { stroke: var(--primary); }
+    .recurso-wrapper .trace-line-x { stroke: var(--dark); }
+    .recurso-wrapper .trace-line-y { stroke: var(--primary); }
 
     @keyframes drawLine {
         to { stroke-dashoffset: 0; }
@@ -180,7 +169,7 @@ import Layout from '../../../../layouts/Layout.astro';
 <script>
     const setupGraficoCovariacion = () => {
         const slideA = document.getElementById('slideA') as HTMLInputElement | null;
-        if (!slideA) return; // Previene errores si el script se ejecuta en otra página
+        if (!slideA) return; 
 
         const valA = document.getElementById('valA');
         const btnDraw = document.getElementById('btnDraw') as HTMLButtonElement;
@@ -272,7 +261,7 @@ import Layout from '../../../../layouts/Layout.astro';
         }
 
         function animarNuevoTriangulo(x1: number) {
-            btnDraw.disabled = true;
+            btnDraw.disabled = true; 
             slideA!.disabled = true;
 
             const x2 = x1 + 1;
