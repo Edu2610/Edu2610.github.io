@@ -1,34 +1,34 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
-// Nota: Si tu Layout requiere props específicos, añádelos en la etiqueta <Layout> abajo.
+// Asegúrate de que la ruta al Layout sea la correcta según la ubicación de este archivo
 ---
 
-<Layout titulo="Evaluación de Variables">
+<Layout titulo="Módulo de Tarjetas - Evaluación Dinámica">
     <div class="ds-wrapper">
         <div class="ds-grid">
             
-            <article class="ds-card">
+           <article class="ds-card">
                 <div class="ds-visual ds-bg-sky">
                     <svg class="ds-svg" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M40,75 C40,40 80,20 120,30 C160,40 180,80 160,110 C140,140 80,140 50,120 C30,105 40,90 40,75 Z" fill="#FFFFFF" opacity="0.4"/>
-                        <rect x="0" y="110" width="200" height="40" fill="#94A3B8" opacity="0.2"/>
-                        <line x1="20" y1="110" x2="180" y2="110" stroke="#1E293B" stroke-width="2" stroke-linecap="round"/>
-                        <line x1="50" y1="118" x2="40" y2="118" stroke="#1E293B" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
-                        <line x1="120" y1="125" x2="100" y2="125" stroke="#1E293B" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+                        <path d="M30,85 C30,50 70,30 110,40 C150,50 180,70 170,110 C150,130 70,130 40,115 C20,105 30,95 30,85 Z" fill="#FFFFFF" opacity="0.4"/>
+                        <rect x="0" y="115" width="200" height="35" fill="#94A3B8" opacity="0.15"/>
+                        <line x1="0" y1="115" x2="200" y2="115" stroke="#1E293B" stroke-width="1.5"/>
+                        <line x1="40" y1="125" x2="20" y2="125" stroke="#1E293B" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+                        <line x1="130" y1="130" x2="100" y2="130" stroke="#1E293B" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
                         
-                        <g transform="translate(90, 60)">
-                            <path d="M0,30 L-15,48" stroke="#1E293B" stroke-width="6" stroke-linecap="round"/>
-                            <path d="M0,15 L15,25" stroke="#475569" stroke-width="5" stroke-linecap="round"/>
-                            <rect x="-8" y="0" width="16" height="32" rx="8" fill="#1E293B"/>
-                            <circle cx="0" cy="-12" r="10" fill="#1E293B"/>
-                            <path d="M0,30 L10,50" stroke="#1E293B" stroke-width="6" stroke-linecap="round"/>
-                            <path d="M0,10 L-12,25" stroke="#1E293B" stroke-width="5" stroke-linecap="round"/>
-                        </g>
-
-                        <g transform="translate(140, 40)">
-                            <circle cx="0" cy="0" r="14" fill="#FFFFFF" stroke="#D32F2F" stroke-width="3"/>
+                        <g transform="translate(155, 35)">
+                            <circle cx="0" cy="0" r="14" fill="#FFFFFF" stroke="#D32F2F" stroke-width="2.5"/>
                             <circle cx="0" cy="0" r="2" fill="#D32F2F"/>
                             <polyline points="0,-7 0,0 5,3" fill="none" stroke="#D32F2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+
+                        <g transform="translate(85, 70)">
+                            <path d="M0,10 L12,20" stroke="#475569" stroke-width="4" stroke-linecap="round"/>
+                            <path d="M0,26 L-15,45" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/>
+                            <rect x="-6" y="0" width="12" height="28" rx="6" fill="#1E293B"/>
+                            <circle cx="0" cy="-12" r="8" fill="#1E293B"/>
+                            <path d="M0,26 L12,45" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/>
+                            <path d="M0,10 L-12,22" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/>
                         </g>
                     </svg>
                 </div>
@@ -42,10 +42,10 @@ import Layout from '../../../../layouts/Layout.astro';
                         <span class="ds-feedback"></span>
                     </div>
                     <div class="ds-vars-grid">
-                        <div class="ds-var-item" data-correct="true" data-label="Tiempo transcurrido">Tiempo transcurrido</div>
-                        <div class="ds-var-item" data-correct="true" data-label="Distancia recorrida">Distancia recorrida</div>
                         <div class="ds-var-item" data-correct="false" data-label="Color de la ropa">Color de la ropa</div>
+                        <div class="ds-var-item" data-correct="true" data-label="Tiempo transcurrido">Tiempo transcurrido</div>
                         <div class="ds-var-item" data-correct="false" data-label="Peso del caminante">Peso del caminante</div>
+                        <div class="ds-var-item" data-correct="true" data-label="Distancia recorrida">Distancia recorrida</div>
                     </div>
                 </div>
             </article>
@@ -84,10 +84,10 @@ import Layout from '../../../../layouts/Layout.astro';
                         <span class="ds-feedback"></span>
                     </div>
                     <div class="ds-vars-grid">
-                        <div class="ds-var-item" data-correct="true" data-label="Número de cajas">Número de cajas</div>
                         <div class="ds-var-item" data-correct="true" data-label="Peso total marcado">Peso total marcado</div>
                         <div class="ds-var-item" data-correct="false" data-label="Orden de apilado">Orden de apilado</div>
                         <div class="ds-var-item" data-correct="false" data-label="Tamaño balanza">Tamaño balanza</div>
+                        <div class="ds-var-item" data-correct="true" data-label="Número de cajas">Número de cajas</div>
                     </div>
                 </div>
             </article>
@@ -128,10 +128,10 @@ import Layout from '../../../../layouts/Layout.astro';
                         <span class="ds-feedback"></span>
                     </div>
                     <div class="ds-vars-grid">
-                        <div class="ds-var-item" data-correct="true" data-label="Tiempo encendida">Tiempo encendida</div>
-                        <div class="ds-var-item" data-correct="true" data-label="Altura de la vela">Altura de la vela</div>
-                        <div class="ds-var-item" data-correct="false" data-label="Color de la cera">Color de la cera</div>
                         <div class="ds-var-item" data-correct="false" data-label="Grosor de la vela">Grosor de la vela</div>
+                        <div class="ds-var-item" data-correct="true" data-label="Altura de la vela">Altura de la vela</div>
+                        <div class="ds-var-item" data-correct="true" data-label="Tiempo encendida">Tiempo encendida</div>
+                        <div class="ds-var-item" data-correct="false" data-label="Color de la cera">Color de la cera</div>
                     </div>
                 </div>
             </article>
@@ -146,12 +146,16 @@ import Layout from '../../../../layouts/Layout.astro';
 </Layout>
 
 <style>
+    /* =========================================================
+       SISTEMA DE DISEÑO (Namespaced con 'ds-')
+       ========================================================= */
     .ds-wrapper {
-        --ds-bg-app: transparent; 
+        --ds-bg-app: #F8FAFC;
         --ds-bg-card: #FFFFFF;
         --ds-color-text: #1E293B;
         --ds-color-text-muted: #64748B;
         
+        /* Colores de Interacción */
         --ds-color-hover: #D32F2F;
         --ds-bg-hover: #FEF2F2;
         --ds-color-selected: #2563EB;
@@ -165,7 +169,8 @@ import Layout from '../../../../layouts/Layout.astro';
         --ds-font: 'Inter', system-ui, sans-serif;
         
         font-family: var(--ds-font);
-        padding: 3rem 1.5rem;
+        background-color: transparent; /* Adaptado para no sobreescribir fondo general */
+        padding: 2rem 1rem;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -174,13 +179,14 @@ import Layout from '../../../../layouts/Layout.astro';
 
     .ds-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2.5rem;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
         width: 100%;
-        max-width: 1100px;
-        margin-bottom: 3rem;
+        max-width: 850px;
+        margin-bottom: 2rem;
     }
 
+    /* TARJETA */
     .ds-card {
         background: var(--ds-bg-card);
         border-radius: 20px;
@@ -197,6 +203,7 @@ import Layout from '../../../../layouts/Layout.astro';
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
 
+    /* VISOR VISUAL */
     .ds-visual {
         height: 200px;
         display: flex;
@@ -211,8 +218,15 @@ import Layout from '../../../../layouts/Layout.astro';
     .ds-bg-sand { background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); }
     .ds-bg-night { background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); }
 
-    .ds-svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+    .ds-svg {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 
+    /* CONTENIDO DE TEXTO */
     .ds-body {
         padding: 1.5rem 1.5rem 0 1.5rem;
         display: flex;
@@ -220,177 +234,321 @@ import Layout from '../../../../layouts/Layout.astro';
         flex-grow: 1;
     }
 
-    .ds-title { margin: 0 0 0.5rem 0; font-size: 1.25rem; font-weight: 700; color: var(--ds-color-text); letter-spacing: -0.01em; }
-    .ds-desc { margin: 0 0 1.5rem 0; font-size: 0.9rem; color: var(--ds-color-text-muted); line-height: 1.6; }
+    .ds-title {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--ds-color-text);
+        letter-spacing: -0.01em;
+    }
 
+    .ds-desc {
+        margin: 0 0 1.5rem 0;
+        font-size: 0.9rem;
+        color: var(--ds-color-text-muted);
+        line-height: 1.6;
+    }
+
+    /* GRID DE VARIABLES ORDENADAS */
     .ds-vars-container {
         background-color: #F8FAFC;
-        padding: 1.25rem 1.5rem;
+        padding: 1.25rem 1.25rem;
         border-top: 1px solid var(--ds-border);
         margin-top: auto;
     }
 
-    .ds-vars-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem; }
-    .ds-vars-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ds-color-text-muted); font-weight: 700; }
-    .ds-feedback { font-size: 0.75rem; font-weight: 700; display: none; }
+    .ds-vars-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 0.75rem;
+    }
 
-    .ds-vars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .ds-vars-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--ds-color-text-muted);
+        font-weight: 700;
+    }
+
+    .ds-feedback {
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: none;
+    }
+
+    .ds-vars-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
 
     .ds-var-item {
-        font-size: 0.8rem; font-weight: 600; color: var(--ds-color-text); background: var(--ds-bg-card);
-        padding: 0.6rem 0.75rem; border-radius: 8px; border: 1px solid var(--ds-border);
-        display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; cursor: pointer; user-select: none;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--ds-color-text);
+        background: var(--ds-bg-card);
+        padding: 0.6rem 0.75rem;
+        border-radius: 8px;
+        border: 1px solid var(--ds-border);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        user-select: none;
+        line-height: 1.2;
     }
 
     .ds-var-item::before {
-        content: ''; display: block; width: 8px; height: 8px; border-radius: 50%;
-        background-color: #CBD5E1; transition: background-color 0.2s;
+        content: '';
+        display: block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        background-color: #CBD5E1;
+        transition: background-color 0.2s;
     }
 
+    /* Estados de Interacción */
     .ds-var-item:not(.locked):hover {
-        border-color: var(--ds-color-hover); background-color: var(--ds-bg-hover); color: var(--ds-color-hover); transform: translateY(-2px);
+        border-color: var(--ds-color-hover);
+        background-color: var(--ds-bg-hover);
+        color: var(--ds-color-hover);
+        transform: translateY(-2px);
     }
+
     .ds-var-item:not(.locked):hover::before { background-color: var(--ds-color-hover); }
 
-    .ds-var-item.selected { border-color: var(--ds-color-selected); background-color: var(--ds-bg-selected); color: var(--ds-color-selected); }
+    .ds-var-item.selected {
+        border-color: var(--ds-color-selected);
+        background-color: var(--ds-bg-selected);
+        color: var(--ds-color-selected);
+    }
     .ds-var-item.selected::before { background-color: var(--ds-color-selected); }
 
-    .ds-var-item.correct { border-color: var(--ds-color-correct); background-color: var(--ds-bg-correct); color: var(--ds-color-correct); cursor: default; }
+    /* Estados de Validación */
+    .ds-var-item.correct {
+        border-color: var(--ds-color-correct);
+        background-color: var(--ds-bg-correct);
+        color: var(--ds-color-correct);
+        cursor: default;
+    }
     .ds-var-item.correct::before { background-color: var(--ds-color-correct); }
 
-    .ds-var-item.incorrect { border-color: var(--ds-color-error); background-color: var(--ds-bg-error); color: var(--ds-color-error); cursor: default; }
+    .ds-var-item.incorrect {
+        border-color: var(--ds-color-error);
+        background-color: var(--ds-bg-error);
+        color: var(--ds-color-error);
+        cursor: default;
+    }
     .ds-var-item.incorrect::before { background-color: var(--ds-color-error); }
 
-    .ds-var-item.missed { border-color: var(--ds-color-correct); background-color: var(--ds-bg-card); color: var(--ds-color-correct); border-style: dashed; cursor: default; }
+    .ds-var-item.missed {
+        border-color: var(--ds-color-correct);
+        background-color: var(--ds-bg-card);
+        color: var(--ds-color-correct);
+        border-style: dashed;
+        cursor: default;
+    }
     .ds-var-item.missed::before { background-color: var(--ds-color-correct); }
 
-    .ds-var-item.locked { pointer-events: none; }
-
-    .ds-controls { width: 100%; max-width: 1100px; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
-
-    .ds-btn-verify {
-        background-color: var(--ds-color-text); color: white; border: none; padding: 1rem 3rem;
-        border-radius: 12px; font-size: 1rem; font-weight: 700; font-family: var(--ds-font);
-        cursor: pointer; transition: background-color 0.2s, transform 0.2s;
+    .ds-var-item.locked {
+        pointer-events: none;
     }
 
-    .ds-btn-verify:hover:not(:disabled) { background-color: #334155; transform: translateY(-2px); }
-    .ds-btn-verify:disabled { background-color: #94A3B8; cursor: not-allowed; transform: none; }
+    /* Controles Globales */
+    .ds-controls {
+        width: 100%;
+        max-width: 850px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .ds-btn-verify {
+        background-color: var(--ds-color-text);
+        color: white;
+        border: none;
+        padding: 1rem 3rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        font-family: var(--ds-font);
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .ds-btn-verify:hover:not(:disabled) {
+        background-color: #334155;
+        transform: translateY(-2px);
+    }
+
+    .ds-btn-verify:disabled {
+        background-color: #94A3B8;
+        cursor: not-allowed;
+        transform: none;
+    }
 
     .ds-log-output {
-        width: 100%; background-color: #E2E8F0; padding: 1.5rem; border-radius: 12px;
-        font-family: 'Courier New', Courier, monospace; font-size: 0.85rem; color: #334155;
-        white-space: pre-wrap; display: none; border: 1px solid #CBD5E1;
+        width: 100%;
+        background-color: #E2E8F0;
+        padding: 1.5rem;
+        border-radius: 12px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.85rem;
+        color: #334155;
+        white-space: pre-wrap;
+        display: none;
+        border: 1px solid #CBD5E1;
     }
 </style>
 
 <script>
-    const setupCards = () => {
+    const setupTarjetas = () => {
         const cards = document.querySelectorAll('.ds-card');
         const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
-        
-        if (!btnVerify) return;
+        const logOutput = document.getElementById('log-output') as HTMLElement | null;
 
-        cards.forEach(card => {
+        if (!cards.length || !btnVerify || !logOutput) return;
+
+        // Estructura de estado: Arreglo de 3 elementos (una submatriz por tarjeta)
+        // Guardaremos los índices (0 al 3) de los items seleccionados
+        let estadoTarjetas: number[][] = [[], [], []];
+
+        // Limpiar eventos previos del botón clonándolo (protección contra Astro view transitions)
+        const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
+        btnVerify.parentNode?.replaceChild(newBtnVerify, btnVerify);
+
+        cards.forEach((card, cardIndex) => {
             const items = card.querySelectorAll('.ds-var-item');
-            items.forEach(item => {
-                const htmlItem = item as HTMLElement;
-                
-                // Remover listeners previos para evitar duplicados en la navegación de Astro (View Transitions)
-                const newClone = htmlItem.cloneNode(true) as HTMLElement;
-                if (htmlItem.parentNode) {
-                    htmlItem.parentNode.replaceChild(newClone, htmlItem);
-                }
-                
-                newClone.addEventListener('click', () => {
-                    if (newClone.classList.contains('locked')) return;
-                    if (newClone.classList.contains('selected')) {
-                        newClone.classList.remove('selected');
+            
+            items.forEach((item, itemIndex) => {
+                // Clonar item para evitar duplicidad de eventos al recargar la página
+                const newItem = item.cloneNode(true) as HTMLElement;
+                item.parentNode?.replaceChild(newItem, item);
+
+                newItem.addEventListener('click', () => {
+                    if (newItem.classList.contains('locked')) return;
+
+                    if (newItem.classList.contains('selected')) {
+                        newItem.classList.remove('selected');
+                        // Remover del estado
+                        estadoTarjetas[cardIndex] = estadoTarjetas[cardIndex].filter(i => i !== itemIndex);
                     } else {
+                        // Validar límite de 2 por tarjeta
                         const selectedCount = card.querySelectorAll('.selected').length;
-                        if (selectedCount < 2) newClone.classList.add('selected');
+                        if (selectedCount < 2) {
+                            newItem.classList.add('selected');
+                            estadoTarjetas[cardIndex].push(itemIndex);
+                        }
                     }
                 });
             });
         });
 
-        // Clonar botón para limpiar listeners
-        const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
-        if (btnVerify.parentNode) {
-            btnVerify.parentNode.replaceChild(newBtnVerify, btnVerify);
-        }
-
+        // Lógica de evaluación (1 Intento)
         newBtnVerify.addEventListener('click', () => {
             let textLog = "=== REGISTRO DE EVALUACIÓN INTERNA ===\n\n";
             let totalCards = cards.length;
             let correctCards = 0;
 
             cards.forEach((card, index) => {
-                const titleEl = card.querySelector('.ds-title');
-                const title = titleEl ? titleEl.textContent : "Tarjeta";
+                const title = card.querySelector('.ds-title')?.textContent || `Tarjeta ${index + 1}`;
                 const items = card.querySelectorAll('.ds-var-item');
                 const selected = card.querySelectorAll('.selected');
-                const feedback = card.querySelector('.ds-feedback') as HTMLElement | null;
+                const feedback = card.querySelector('.ds-feedback') as HTMLElement;
                 
                 let cardIsCorrect = true;
                 let selectedLabels: string[] = [];
 
-                items.forEach(i => i.classList.add('locked'));
+                // Bloquear interacción futura
+                items.forEach(item => item.classList.add('locked'));
 
-                if (selected.length !== 2) cardIsCorrect = false;
+                // Si no seleccionó exactamente 2, está malo por defecto
+                if (selected.length !== 2) {
+                    cardIsCorrect = false;
+                }
 
                 selected.forEach(item => {
-                    const htmlItem = item as HTMLElement;
-                    selectedLabels.push(htmlItem.getAttribute('data-label') || '');
-                    const isCorrectOption = htmlItem.getAttribute('data-correct') === 'true';
+                    selectedLabels.push(item.getAttribute('data-label') || '');
+                    const isCorrectOption = item.getAttribute('data-correct') === 'true';
                     
-                    htmlItem.classList.remove('selected');
+                    // Reemplazar clase selected por el estado final
+                    item.classList.remove('selected');
                     if (isCorrectOption) {
-                        htmlItem.classList.add('correct');
+                        item.classList.add('correct');
                     } else {
-                        htmlItem.classList.add('incorrect');
+                        item.classList.add('incorrect');
                         cardIsCorrect = false;
                     }
                 });
 
+                // Construcción del log y feedback visual
                 textLog += `[Tarjeta ${index + 1}: ${title}]\n`;
                 textLog += `- Selecciones: [${selectedLabels.join(' | ') || 'Ninguna'}]\n`;
 
-                if (feedback) {
-                    if (cardIsCorrect) {
-                        correctCards++;
+                if (cardIsCorrect) {
+                    correctCards++;
+                    if (feedback) {
                         feedback.textContent = "¡Correcto!";
                         feedback.style.color = "var(--ds-color-correct)";
-                        textLog += `- Estado: CORRECTO\n\n`;
-                    } else {
+                    }
+                    textLog += `- Estado: CORRECTO\n\n`;
+                } else {
+                    if (feedback) {
                         feedback.textContent = "Incorrecto";
                         feedback.style.color = "var(--ds-color-error)";
-                        textLog += `- Estado: INCORRECTO\n\n`;
-
-                        items.forEach(item => {
-                            const htmlItem = item as HTMLElement;
-                            if (htmlItem.getAttribute('data-correct') === 'true' && !htmlItem.classList.contains('correct')) {
-                                htmlItem.classList.add('missed');
-                            }
-                        });
                     }
-                    feedback.style.display = "block";
+                    textLog += `- Estado: INCORRECTO\n\n`;
+
+                    // Revelar las correctas que fueron omitidas
+                    items.forEach(item => {
+                        if (item.getAttribute('data-correct') === 'true' && !item.classList.contains('correct')) {
+                            item.classList.add('missed');
+                        }
+                    });
                 }
+                
+                if (feedback) feedback.style.display = "block";
             });
 
             textLog += `=== RESUMEN: ${correctCards}/${totalCards} tarjetas correctas ===`;
 
+            // Mostrar botón deshabilitado y desplegar texto plano
             newBtnVerify.disabled = true;
             newBtnVerify.textContent = "Evaluación Finalizada";
             
-            const outputElement = document.getElementById('log-output') as HTMLElement | null;
-            if (outputElement) {
-                outputElement.textContent = textLog;
-                outputElement.style.display = "block";
-            }
+            logOutput.textContent = textLog;
+            logOutput.style.display = "block";
         });
+
+        // Funciones expuestas a nivel global para el iframe de edX
+        (window as any).getGrade = () => JSON.stringify(estadoTarjetas);
+        (window as any).getState = () => JSON.stringify(estadoTarjetas);
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                estadoTarjetas = JSON.parse(stateStr);
+                estadoTarjetas.forEach((selecciones, cardIndex) => {
+                    const card = cards[cardIndex];
+                    if (!card) return;
+                    const items = card.querySelectorAll('.ds-var-item');
+                    selecciones.forEach(itemIndex => {
+                        if (items[itemIndex]) {
+                            items[itemIndex].classList.add('selected');
+                        }
+                    });
+                });
+            } catch(e) {
+                console.error("Error restaurando estado en edX", e);
+            }
+        };
     };
 
-    document.addEventListener('DOMContentLoaded', setupCards);
-    document.addEventListener('astro:page-load', setupCards);
+    document.addEventListener('DOMContentLoaded', setupTarjetas);
+    document.addEventListener('astro:page-load', setupTarjetas);
 </script>
