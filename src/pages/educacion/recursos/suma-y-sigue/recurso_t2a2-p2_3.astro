@@ -1,275 +1,303 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
-// Asegúrate de que la ruta al Layout sea la correcta
 ---
 
 <Layout titulo="Explorador Covariacional: Bidones">
-    <script is:inline src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
-
     <div class="recurso-wrapper">
         <div class="card">
-            <div class="header-actions">
-                <h3 id="mainTitle">Enfoque Covariacional</h3>
-                <button id="btnClear" class="btn-clear">Limpiar Sombras</button>
-            </div>
+            <h2 class="card-title">Análisis Continuo: Traspaso de Jugo</h2>
             
-            <div id="panelCovariation">
-                <div class="header-text">
-                    <p>Define un punto inicial (x) y un incremento positivo (Δx) para observar la variación conjunta.</p>
-                </div>
-                <div class="controls">
-                    <div class="slider-group">
-                        <label>Punto Inicial (x): <span id="valX" class="label-val">2</span></label>
-                        <input type="range" id="slideX" min="0" max="12" step="1" value="2">
-                    </div>
-                    <div class="slider-group">
-                        <label>Incremento (Δx): <span id="valDx" class="label-val">4</span></label>
-                        <input type="range" id="slideDx" min="0" max="12" step="1" value="4">
-                    </div>
-                </div>
-                <div class="info-box info-covariation">
-                    <strong>Análisis de Covariación:</strong>
-                    Para un incremento de <span class="text-blue">Δx = <span id="dxText">4</span></span>, 
-                    la variable dependiente cambia <span class="text-red">Δy = <span id="dyText">-4</span></span>.
+            <div class="controls">
+                <div class="slider-group">
+                    <label>Cantidad de jugo vertida en el bidón B (x): <span id="valX" class="label-val">4.0</span> L</label>
+                    <input type="range" id="slideX" min="0" max="12" step="0.1" value="4.0">
                 </div>
             </div>
 
-            <div id="plot"></div>
+            <div class="info-box">
+                <strong>Conservación del total:</strong>
+                <span class="math-text">x + y = <span id="txtSumX">4.0</span> + <span id="txtSumY">8.0</span> = 12</span>
+            </div>
+
+            <div class="svg-container">
+                <svg viewBox="0 0 460 370" id="plotSvg">
+                    <g id="grid"></g>
+                    
+                    <line id="baseLine" stroke="#4A4A49" stroke-width="2" stroke-dasharray="5,5" />
+                    <polygon id="dynTri" fill="rgba(232, 116, 97, 0.3)" stroke="#D33C31" stroke-width="2" />
+                    
+                    <circle id="startPoint" r="6" fill="#8B2E28" />
+                    <text id="startText" font-size="13" fill="#4A4A49" font-weight="bold" text-anchor="end"></text>
+
+                    <circle id="endPoint" r="6" fill="#8B2E28" />
+                    <text id="endText" font-size="13" fill="#4A4A49" font-weight="bold" text-anchor="middle"></text>
+                    
+                    <text id="lblDx" fill="#D33C31" font-weight="bold" font-size="14"></text>
+                    <text id="lblDy" fill="#8B2E28" font-weight="bold" font-size="14" alignment-baseline="middle"></text>
+                    
+                    <circle id="dynPt" r="7" fill="#D33C31" stroke="white" stroke-width="2" />
+                    <text id="lblPt" fill="#D33C31" font-weight="bold" font-size="14"></text>
+                    
+                    <text id="labelX" font-size="15" fill="#4A4A49" text-anchor="middle" font-weight="bold">x</text>
+                    <text id="labelY" font-size="15" fill="#4A4A49" text-anchor="middle" font-weight="bold">y</text>
+                </svg>
+            </div>
         </div>
     </div>
 </Layout>
 
 <style>
+    :root {
+        --red-main: #D33C31;
+        --terracotta: #8B2E28;
+        --red-light: #E87461;
+        --grey-dark: #4A4A49;
+        --bg-color: #F4F4F2;
+    }
+
     .recurso-wrapper {
-        font-family: 'Inter', sans-serif;
-        display: flex;
-        justify-content: center;
-        padding: 40px 20px;
+        font-family: 'Inter', system-ui, sans-serif; 
+        background: var(--bg-color); 
+        display: flex; 
+        justify-content: center; 
+        padding: 40px 20px; 
         width: 100%;
-        background-color: #f8fafc;
+        box-sizing: border-box;
     }
 
-    .card {
-        background: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        max-width: 800px;
-        width: 100%;
-    }
-
-    .header-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #e2e8f0;
-        padding-bottom: 15px;
-        margin-bottom: 20px;
-    }
-
-    #mainTitle { margin: 0; font-size: 1.5rem; color: #d32f2f; }
-
-    .header-text { margin-bottom: 15px; text-align: left; }
-    .header-text p { color: #64748b; font-size: 0.95rem; margin: 0; }
-
-    .controls {
-        display: flex;
-        gap: 30px;
-        background: #f1f5f9;
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        align-items: center;
-        justify-content: space-around;
-        min-height: 80px;
-    }
-
-    @media (max-width: 600px) {
-        .controls { flex-direction: column; gap: 15px; }
-        .header-actions { flex-direction: column; gap: 15px; align-items: flex-start; }
-    }
-
-    .slider-group {
+    .card { 
+        background: white; 
+        padding: 30px; 
+        border-radius: 12px; 
+        box-shadow: 0 8px 25px rgba(0,0,0,0.06); 
+        max-width: 750px; 
+        width: 100%; 
+        box-sizing: border-box; 
         display: flex;
         flex-direction: column;
-        gap: 8px;
-        flex-grow: 1;
+        align-items: center;
+    }
+
+    .card-title { 
+        color: var(--grey-dark); 
+        margin: 0 0 20px 0; 
+        font-size: 1.3rem; 
+        font-weight: 700;
         width: 100%;
+        text-align: left;
+        border-bottom: 2px solid #e2e8f0; 
+        padding-bottom: 15px; 
     }
 
-    .slider-group label { color: #475569; font-size: 0.95rem; }
-    .label-val { font-weight: 800; color: #1e293b; }
-    
-    input[type=range] { width: 100%; cursor: pointer; }
+    .controls { 
+        width: 100%;
+        background: var(--bg-color); 
+        padding: 20px; 
+        border-radius: 8px; 
+        margin-bottom: 15px; 
+        box-sizing: border-box;
+    }
 
-    button { cursor: pointer; padding: 10px 18px; border: none; border-radius: 6px; font-weight: bold; transition: background 0.2s; font-size: 0.95rem; }
-    .btn-clear { background: #64748b; color: white; }
-    .btn-clear:hover { background: #475569; }
+    .slider-group { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 10px; 
+        width: 100%; 
+    }
 
-    #plot { width: 100%; height: 550px; }
-
-    .info-box {
-        padding: 15px;
+    .slider-group label {
+        color: var(--grey-dark);
+        font-weight: 600;
         font-size: 1rem;
-        margin-top: 15px;
-        border-radius: 4px;
-        color: #1e293b;
+    }
+
+    .slider-group input { 
+        width: 100%; 
+        cursor: pointer; 
+        accent-color: var(--red-main);
+    }
+
+    .label-val { 
+        font-weight: 700; 
+        color: var(--red-main); 
+        font-size: 1.1rem; 
     }
     
-    .info-covariation { border-left: 4px solid #d32f2f; background: #fff1f2; }
+    .info-box { 
+        width: 100%;
+        padding: 15px 20px; 
+        border-radius: 6px; 
+        margin-bottom: 20px; 
+        box-sizing: border-box;
+        border-left: 4px solid var(--terracotta); 
+        background: rgba(232, 116, 97, 0.08); 
+        color: var(--grey-dark);
+    }
 
-    .text-blue { color: #2563eb; font-weight: 600; }
-    .text-red { color: #d32f2f; font-weight: 600; }
+    .info-box strong {
+        color: var(--terracotta);
+        margin-bottom: 5px;
+        display: block;
+        font-size: 1.05rem;
+    }
+
+    .math-text { 
+        font-family: 'Courier New', Courier, monospace; 
+        font-weight: bold; 
+        font-size: 1.1rem; 
+        color: var(--grey-dark);
+    }
+    
+    .svg-container { 
+        width: 100%; 
+        max-width: 460px; 
+        display: block; 
+        margin: 0 auto;
+    }
+
+    svg { 
+        width: 100%; 
+        height: auto; 
+        overflow: visible; 
+        font-family: 'Inter', sans-serif;
+        user-select: none;
+    }
 </style>
 
 <script>
-    declare const Plotly: any;
-
     const setupCovariacion = () => {
-        // Nodos DOM
+        const COLS = {
+            redMain: '#D33C31',
+            terracotta: '#8B2E28',
+            greyDark: '#4A4A49'
+        };
+
         const slideX = document.getElementById('slideX') as HTMLInputElement | null;
-        const slideDx = document.getElementById('slideDx') as HTMLInputElement | null;
         const valX = document.getElementById('valX') as HTMLElement | null;
-        const valDx = document.getElementById('valDx') as HTMLElement | null;
-        const dxText = document.getElementById('dxText') as HTMLElement | null;
-        const dyText = document.getElementById('dyText') as HTMLElement | null;
-        const btnClear = document.getElementById('btnClear') as HTMLButtonElement | null;
-        const plotDiv = document.getElementById('plot') as HTMLElement | null;
+        const txtSumX = document.getElementById('txtSumX') as HTMLElement | null;
+        const txtSumY = document.getElementById('txtSumY') as HTMLElement | null;
 
-        if (!slideX || !slideDx || !plotDiv) return;
+        if (!slideX || !valX || !txtSumX || !txtSumY) return;
 
-        // Estado local para edX
-        let estadoEjercicio = {
-            posX: slideX.value,
-            posDx: slideDx.value
-        };
+        let estadoEjercicio = { posX: slideX.value };
 
-        let shadowTraces: any[] = [];
+        const SVG_W = 460;
+        const SVG_H = 370;
+        const PAD = { l: 110, r: 60, t: 35, b: 45 }; 
+        const PLOT_SIZE = 290; 
+        const MAX_VAL = 12.5; 
 
-        const layoutBase = {
-            xaxis: { title: 'x', range: [0, 12.5], dtick: 1, gridcolor: '#e2e8f0', rangemode: 'nonnegative', constrain: 'domain' },
-            yaxis: { 
-                title: 'y', 
-                range: [0, 12.5], 
-                dtick: 1, 
-                gridcolor: '#e2e8f0',
-                scaleanchor: "x", 
-                scaleratio: 1,
-                rangemode: 'nonnegative'
-            },
-            showlegend: false,
-            margin: { t: 30, b: 40, l: 50, r: 20 },
-            hovermode: false
-        };
+        const mapX = (val: number) => PAD.l + (val / MAX_VAL) * PLOT_SIZE;
+        const mapY = (val: number) => PAD.t + PLOT_SIZE - (val / MAX_VAL) * PLOT_SIZE;
 
-        const traceLineBase = {
-            x: [0, 12], y: [12, 0],
-            mode: 'lines', name: 'Recta',
-            line: { color: '#94a3b8', width: 2, dash: 'dot' },
-            hoverinfo: 'skip'
-        };
-
-        function renderPlot(saveShadow = false) {
-            let x1 = parseFloat(slideX!.value);
-            let dx = parseFloat(slideDx!.value);
+        function buildGrid() {
+            let gridHtml = '';
+            const gridColor = COLS.greyDark;
             
-            // Corrección de límites
-            if (x1 + dx > 12) {
-                dx = 12 - x1;
-                slideDx!.value = dx.toString();
+            for (let i = 0; i <= 12; i++) {
+                let px = mapX(i);
+                let py = mapY(i);
+                
+                gridHtml += `<line x1="${px}" y1="${mapY(0)}" x2="${px}" y2="${mapY(MAX_VAL)}" stroke="${gridColor}" stroke-opacity="0.15" />`;
+                gridHtml += `<line x1="${mapX(0)}" y1="${py}" x2="${mapX(MAX_VAL)}" y2="${py}" stroke="${gridColor}" stroke-opacity="0.15" />`;
+                
+                gridHtml += `<text x="${px}" y="${mapY(0) + 18}" font-size="12" fill="${gridColor}" fill-opacity="0.8" text-anchor="middle">${i}</text>`;
+                gridHtml += `<text x="${mapX(0) - 10}" y="${py + 4}" font-size="12" fill="${gridColor}" fill-opacity="0.8" text-anchor="end">${i}</text>`;
             }
+            document.getElementById('grid')!.innerHTML = gridHtml;
+
+            const p0x = mapX(0), p0y = mapY(12);
+            const p12x = mapX(12), p12y = mapY(0);
             
-            let x2 = x1 + dx;
-            const y1 = 12 - x1;
-            const y2 = 12 - x2;
-            const dy = y2 - y1;
-
-            valX!.innerText = x1.toString();
-            valDx!.innerText = dx.toString();
-            dxText!.innerText = dx.toString();
-            dyText!.innerText = dy.toString();
-
-            // Guardar estado edX
-            estadoEjercicio.posX = x1.toString();
-            estadoEjercicio.posDx = dx.toString();
-
-            const currentTriangle = {
-                x: [x1, x2, x2], y: [y1, y1, y2],
-                mode: 'lines', fill: 'toself', fillcolor: 'rgba(211, 47, 47, 0.2)',
-                line: { color: '#d32f2f', width: 3 },
-                hoverinfo: 'skip'
-            };
-
-            if (saveShadow && dx > 0) {
-                shadowTraces.push({
-                    x: [x1, x2, x2], y: [y1, y1, y2],
-                    mode: 'lines', fill: 'toself', fillcolor: 'rgba(100, 116, 139, 0.2)',
-                    line: { color: '#64748b', width: 1.5 },
-                    hoverinfo: 'skip'
-                });
-            }
-
-            const points = {
-                x: [x1, x2], y: [y1, y2],
-                mode: 'markers+text', marker: { size: 10, color: '#1e293b' },
-                text: [`A(${x1}, ${y1})`, `B(${x2}, ${y2})`],
-                textposition: ['top right', 'bottom right'],
-                hoverinfo: 'skip'
-            };
-
-            const layout = { ...layoutBase, annotations: [] as any[] };
+            const baseLine = document.getElementById('baseLine')!;
+            baseLine.setAttribute('x1', p0x.toString()); baseLine.setAttribute('y1', p0y.toString());
+            baseLine.setAttribute('x2', p12x.toString()); baseLine.setAttribute('y2', p12y.toString());
             
-            if (dx > 0) {
-                layout.annotations.push(
-                    { 
-                        x: (x1 + x2) / 2, y: y1, 
-                        text: `Δx = ${dx}`, 
-                        showarrow: false, font: { color: '#2563eb', weight: 'bold' },
-                        yshift: 10, yanchor: 'bottom'
-                    },
-                    { 
-                        x: x2, y: (y1 + y2) / 2, 
-                        text: `Δy = ${dy}`, 
-                        showarrow: false, font: { color: '#d32f2f', weight: 'bold' },
-                        xshift: 10, xanchor: 'left'
-                    }
-                );
-            }
+            const startPoint = document.getElementById('startPoint')!;
+            startPoint.setAttribute('cx', p0x.toString()); startPoint.setAttribute('cy', p0y.toString());
+            
+            const startText = document.getElementById('startText')!;
+            startText.setAttribute('x', (p0x - 8).toString()); 
+            startText.setAttribute('y', (p0y - 10).toString());
+            startText.textContent = "(0, 12)";
 
-            if (typeof Plotly !== 'undefined') {
-                Plotly.react('plot', [traceLineBase, ...shadowTraces, currentTriangle, points], layout);
-            }
+            const endPoint = document.getElementById('endPoint')!;
+            endPoint.setAttribute('cx', p12x.toString()); 
+            endPoint.setAttribute('cy', p12y.toString());
+
+            const endText = document.getElementById('endText')!;
+            endText.setAttribute('x', (p12x + 30).toString()); 
+            endText.setAttribute('y', (p12y + 10).toString());
+            endText.textContent = "(12, 0)";
+
+            document.getElementById('labelX')!.setAttribute('x', (PAD.l + PLOT_SIZE / 2).toString());
+            document.getElementById('labelX')!.setAttribute('y', (SVG_H - 10).toString());
+            document.getElementById('labelY')!.setAttribute('x', (PAD.l - 45).toString());
+            document.getElementById('labelY')!.setAttribute('y', (PAD.t + PLOT_SIZE / 2).toString());
         }
 
-        // Eventos
-        slideX!.addEventListener('input', () => renderPlot(false));
-        slideDx!.addEventListener('input', () => renderPlot(false));
-        
-        slideX!.addEventListener('change', () => renderPlot(true));
-        slideDx!.addEventListener('change', () => renderPlot(true));
+        function updatePlot() {
+            let x = parseFloat(slideX!.value);
+            let y = 12 - x;
+            let dx = x;
+            let dy = y - 12;
 
-        btnClear!.addEventListener('click', () => {
-            shadowTraces = [];
-            renderPlot(false);
+            valX!.innerText = x.toFixed(1);
+            txtSumX!.innerText = x.toFixed(1);
+            txtSumY!.innerText = y.toFixed(1);
+
+            const px0 = mapX(0);
+            const py12 = mapY(12);
+            const pxx = mapX(x);
+            const pyy = mapY(y);
+
+            const dynTri = document.getElementById('dynTri')!;
+            if (x > 0) {
+                dynTri.setAttribute('points', `${px0},${py12} ${pxx},${py12} ${pxx},${pyy}`);
+                dynTri.style.display = "block";
+            } else {
+                dynTri.style.display = "none";
+            }
+
+            const lblDx = document.getElementById('lblDx')!;
+            const lblDy = document.getElementById('lblDy')!;
+            if (x > 0) {
+                lblDx.setAttribute('y', (py12 - 10).toString()); 
+                lblDx.textContent = `Δx = ${dx.toFixed(1)}`;
+                
+                if (x < 2) {
+                    lblDx.setAttribute('x', (px0 + 10).toString());
+                    lblDx.setAttribute('text-anchor', 'start');
+                } else {
+                    lblDx.setAttribute('x', mapX(x / 2).toString());
+                    lblDx.setAttribute('text-anchor', 'middle');
+                }
+
+                lblDy.setAttribute('x', (pxx + 10).toString()); 
+                lblDy.setAttribute('y', mapY(12 + dy / 2).toString());
+                lblDy.textContent = `Δy = ${dy.toFixed(1)}`;
+            } else {
+                lblDx.textContent = "";
+                lblDy.textContent = "";
+            }
+
+            document.getElementById('dynPt')!.setAttribute('cx', pxx.toString());
+            document.getElementById('dynPt')!.setAttribute('cy', pyy.toString());
+            
+            const lblPt = document.getElementById('lblPt')!;
+            lblPt.textContent = `(${x.toFixed(1)}, ${y.toFixed(1)})`;
+            lblPt.setAttribute('x', (pxx + 12).toString());
+            lblPt.setAttribute('y', (pyy - 5).toString());
+            lblPt.setAttribute('text-anchor', 'start');
+        }
+
+        slideX.addEventListener('input', () => {
+            updatePlot();
+            estadoEjercicio.posX = slideX!.value;
         });
 
-        // Inicialización robusta para evitar errores si Plotly tarda en cargar
-        const initPlot = () => {
-            if (typeof Plotly !== 'undefined') {
-                renderPlot(true);
-            } else {
-                plotDiv!.innerHTML = "<p style='text-align:center; color:#64748b; margin-top:100px;'>Cargando motor gráfico...</p>";
-                const checkPlotly = setInterval(() => {
-                    if (typeof Plotly !== 'undefined') {
-                        clearInterval(checkPlotly);
-                        plotDiv!.innerHTML = "";
-                        renderPlot(true);
-                    }
-                }, 200);
-            }
-        };
-
-        initPlot();
+        buildGrid();
+        updatePlot();
 
         // JSInput API de edX
         (window as any).getGrade = () => JSON.stringify(estadoEjercicio);
@@ -280,11 +308,9 @@ import Layout from '../../../../layouts/Layout.astro';
                 const state = JSON.parse(stateStr);
                 estadoEjercicio = state;
                 
-                if (state.posX) slideX!.value = state.posX;
-                if (state.posDx) slideDx!.value = state.posDx;
-                
-                if (typeof Plotly !== 'undefined') {
-                    renderPlot(false);
+                if (state.posX) {
+                    slideX!.value = state.posX;
+                    updatePlot();
                 }
             } catch(e) {
                 console.error("Error restaurando estado en edX", e);
