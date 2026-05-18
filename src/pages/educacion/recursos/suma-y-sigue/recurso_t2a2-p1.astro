@@ -3,545 +3,278 @@ import Layout from '../../../../layouts/Layout.astro';
 // Asegúrate de que la ruta al Layout sea la correcta según la ubicación de este archivo
 ---
 
-<Layout titulo="Módulo de Tarjetas - Evaluación Dinámica">
-    <div class="ds-wrapper">
-        <div class="ds-grid">
-            
-           <article class="ds-card">
-                <div class="ds-visual ds-bg-sky">
-                    <svg class="ds-svg" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M30,85 C30,50 70,30 110,40 C150,50 180,70 170,110 C150,130 70,130 40,115 C20,105 30,95 30,85 Z" fill="#FFFFFF" opacity="0.4"/>
-                        <rect x="0" y="115" width="200" height="35" fill="#94A3B8" opacity="0.15"/>
-                        <line x1="0" y1="115" x2="200" y2="115" stroke="#1E293B" stroke-width="1.5"/>
-                        <line x1="40" y1="125" x2="20" y2="125" stroke="#1E293B" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
-                        <line x1="130" y1="130" x2="100" y2="130" stroke="#1E293B" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
-                        
-                        <g transform="translate(155, 35)">
-                            <circle cx="0" cy="0" r="14" fill="#FFFFFF" stroke="#D32F2F" stroke-width="2.5"/>
-                            <circle cx="0" cy="0" r="2" fill="#D32F2F"/>
-                            <polyline points="0,-7 0,0 5,3" fill="none" stroke="#D32F2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </g>
+<Layout titulo="Tabla de Variación Constante">
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="header-text">
+                <h3></h3>
+            </div>
 
-                        <g transform="translate(85, 70)">
-                            <path d="M0,10 L12,20" stroke="#475569" stroke-width="4" stroke-linecap="round"/>
-                            <path d="M0,26 L-15,45" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/>
-                            <rect x="-6" y="0" width="12" height="28" rx="6" fill="#1E293B"/>
-                            <circle cx="0" cy="-12" r="8" fill="#1E293B"/>
-                            <path d="M0,26 L12,45" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/>
-                            <path d="M0,10 L-12,22" stroke="#1E293B" stroke-width="4" stroke-linecap="round"/>
-                        </g>
-                    </svg>
-                </div>
-                <div class="ds-body">
-                    <h3 class="ds-title">El caminante</h3>
-                    <p class="ds-desc">Una persona caminando por una vereda a un paso constante sin detenerse.</p>
-                </div>
-                <div class="ds-vars-container">
-                    <div class="ds-vars-header">
-                        <span class="ds-vars-label">Selecciona 2 variables</span>
-                        <span class="ds-feedback"></span>
-                    </div>
-                    <div class="ds-vars-grid">
-                        <div class="ds-var-item" data-correct="false" data-label="Color de la ropa">Color de la ropa</div>
-                        <div class="ds-var-item" data-correct="true" data-label="Tiempo transcurrido">Tiempo transcurrido</div>
-                        <div class="ds-var-item" data-correct="false" data-label="Peso del caminante">Peso del caminante</div>
-                        <div class="ds-var-item" data-correct="true" data-label="Distancia recorrida">Distancia recorrida</div>
-                    </div>
-                </div>
-            </article>
+            <div class="interactive-container">
+                
+                <svg class="svg-layer svg-top" viewBox="0 0 700 40">
+                    <defs>
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                        </marker>
+                    </defs>
+                    <path d="M 225 35 Q 260 -10 295 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 335 35 Q 370 -10 405 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 445 35 Q 480 -10 515 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 555 35 Q 590 -10 625 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                </svg>
 
-            <article class="ds-card">
-                <div class="ds-visual ds-bg-sand">
-                    <svg class="ds-svg" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M50,75 C30,30 100,10 150,40 C190,65 170,120 130,135 C90,150 60,110 50,75 Z" fill="#FFFFFF" opacity="0.5"/>
-                        
-                        <g transform="translate(100, 115)">
-                            <ellipse cx="0" cy="5" rx="45" ry="6" fill="#D97706" opacity="0.2"/>
-                            <rect x="-40" y="-12" width="80" height="12" rx="4" fill="#F8FAFC" stroke="#1E293B" stroke-width="2"/>
-                            <path d="M-10,-12 L0,-20 L10,-12 Z" fill="#1E293B"/>
-                            <rect x="-15" y="-9" width="30" height="6" rx="2" fill="#1E293B"/>
-                            <text x="0" y="-4" fill="#D32F2F" font-family="monospace" font-weight="bold" font-size="6" text-anchor="middle">85.0</text>
-                            
-                            <g transform="translate(0, -20)">
-                                <rect x="-25" y="-25" width="50" height="25" fill="#E2E8F0" stroke="#1E293B" stroke-width="2"/>
-                                <line x1="-25" y1="-25" x2="25" y2="0" stroke="#1E293B" stroke-width="1.5" opacity="0.3"/>
-                                <line x1="25" y1="-25" x2="-25" y2="0" stroke="#1E293B" stroke-width="1.5" opacity="0.3"/>
-                                
-                                <rect x="-25" y="-50" width="50" height="25" fill="#F1F5F9" stroke="#1E293B" stroke-width="2"/>
-                                <line x1="-25" y1="-50" x2="25" y2="-25" stroke="#1E293B" stroke-width="1.5" opacity="0.3"/>
-                                <line x1="25" y1="-50" x2="-25" y2="-25" stroke="#1E293B" stroke-width="1.5" opacity="0.3"/>
-                            </g>
-                        </g>
-                    </svg>
-                </div>
-                <div class="ds-body">
-                    <h3 class="ds-title">Las cajas</h3>
-                    <p class="ds-desc">Cajas de idéntico tamaño y contenido siendo apiladas sobre una balanza digital.</p>
-                </div>
-                <div class="ds-vars-container">
-                    <div class="ds-vars-header">
-                        <span class="ds-vars-label">Selecciona 2 variables</span>
-                        <span class="ds-feedback"></span>
-                    </div>
-                    <div class="ds-vars-grid">
-                        <div class="ds-var-item" data-correct="true" data-label="Peso total marcado">Peso total marcado</div>
-                        <div class="ds-var-item" data-correct="false" data-label="Orden de apilado">Orden de apilado</div>
-                        <div class="ds-var-item" data-correct="false" data-label="Tamaño balanza">Tamaño balanza</div>
-                        <div class="ds-var-item" data-correct="true" data-label="Número de cajas">Número de cajas</div>
-                    </div>
-                </div>
-            </article>
+                <input type="text" id="top1" class="jump-input input-blue" style="left: 260px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="top2" class="jump-input input-blue" style="left: 370px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="top3" class="jump-input input-blue" style="left: 480px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="top4" class="jump-input input-blue" style="left: 590px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
 
-            <article class="ds-card">
-                <div class="ds-visual ds-bg-night">
-                    <svg class="ds-svg" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="100" cy="50" r="40" fill="#FDE68A" opacity="0.15"/>
-                        <circle cx="100" cy="50" r="20" fill="#FCD34D" opacity="0.25"/>
-                        
-                        <g transform="translate(100, 120)">
-                            <ellipse cx="0" cy="2" rx="35" ry="6" fill="#000000" opacity="0.3"/>
-                            <ellipse cx="0" cy="0" rx="30" ry="8" fill="#475569" stroke="#FFFFFF" stroke-width="2" opacity="0.8"/>
-                            <ellipse cx="0" cy="-2" rx="26" ry="6" fill="#1E293B"/>
-                            
-                            <rect x="-16" y="-60" width="32" height="60" fill="#F8FAFC"/>
-                            <line x1="-16" y1="-60" x2="-16" y2="0" stroke="#94A3B8" stroke-width="2"/>
-                            <line x1="16" y1="-60" x2="16" y2="0" stroke="#94A3B8" stroke-width="2"/>
-                            <ellipse cx="0" cy="-60" rx="16" ry="5" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
-                            
-                            <path d="M0,-60 Q-2,-65 2,-68" fill="none" stroke="#1E293B" stroke-width="2"/>
-                            <path d="M2,-68 C8,-68 12,-75 2,-85 C-8,-75 -4,-68 2,-68 Z" fill="#EF4444"/>
-                            <path d="M2,-72 C5,-72 7,-76 2,-82 C-3,-76 -1,-72 2,-72 Z" fill="#FCD34D"/>
-                            
-                            <line x1="30" y1="-55" x2="40" y2="-55" stroke="#FFFFFF" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
-                            <line x1="30" y1="-35" x2="40" y2="-35" stroke="#FFFFFF" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
-                            <line x1="30" y1="-15" x2="40" y2="-15" stroke="#FFFFFF" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
-                        </g>
-                    </svg>
-                </div>
-                <div class="ds-body">
-                    <h3 class="ds-title">La vela</h3>
-                    <p class="ds-desc">Una vela encendida que se consume gradualmente con el paso del tiempo.</p>
-                </div>
-                <div class="ds-vars-container">
-                    <div class="ds-vars-header">
-                        <span class="ds-vars-label">Selecciona 2 variables</span>
-                        <span class="ds-feedback"></span>
-                    </div>
-                    <div class="ds-vars-grid">
-                        <div class="ds-var-item" data-correct="false" data-label="Grosor de la vela">Grosor de la vela</div>
-                        <div class="ds-var-item" data-correct="true" data-label="Altura de la vela">Altura de la vela</div>
-                        <div class="ds-var-item" data-correct="true" data-label="Tiempo encendida">Tiempo encendida</div>
-                        <div class="ds-var-item" data-correct="false" data-label="Color de la cera">Color de la cera</div>
-                    </div>
-                </div>
-            </article>
+                <table>
+                    <tr>
+                        <td class="col-header">Bidón B</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td class="col-header">Bidón A</td>
+                        <td>12</td>
+                        <td>11</td>
+                        <td>10</td>
+                        <td>9</td>
+                        <td>8</td>
+                    </tr>
+                </table>
 
-        </div>
+                <svg class="svg-layer svg-bottom" viewBox="0 0 700 40" style="overflow: visible;">
+                    <defs>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
+                        </marker>
+                    </defs>
+                    <path d="M 225 5 Q 260 50 295 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 335 5 Q 370 50 405 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 445 5 Q 480 50 515 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 555 5 Q 590 50 625 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                </svg>
 
-        <div class="ds-controls">
-            <button id="btn-verify" class="ds-btn-verify">Verificar Respuestas</button>
-            <pre id="log-output" class="ds-log-output"></pre>
+                <input type="text" id="bot1" class="jump-input input-red" style="left: 260px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="bot2" class="jump-input input-red" style="left: 370px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="bot3" class="jump-input input-red" style="left: 480px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <input type="text" id="bot4" class="jump-input input-red" style="left: 590px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+
+            </div>
+
+            <button id="btn-verify" class="btn-verify">Verificar respuesta</button>
+            <div id="feedback" class="feedback-text"></div>
         </div>
     </div>
 </Layout>
 
 <style>
-    /* =========================================================
-       SISTEMA DE DISEÑO (Namespaced con 'ds-')
-       ========================================================= */
-    .ds-wrapper {
-        --ds-bg-app: #F8FAFC;
-        --ds-bg-card: #FFFFFF;
-        --ds-color-text: #1E293B;
-        --ds-color-text-muted: #64748B;
-        
-        /* Colores de Interacción */
-        --ds-color-hover: #D32F2F;
-        --ds-bg-hover: #FEF2F2;
-        --ds-color-selected: #2563EB;
-        --ds-bg-selected: #EFF6FF;
-        --ds-color-correct: #10B981;
-        --ds-bg-correct: #ECFDF5;
-        --ds-color-error: #EF4444;
-        --ds-bg-error: #FEF2F2;
-        
-        --ds-border: #E2E8F0;
-        --ds-font: 'Inter', system-ui, sans-serif;
-        
-        font-family: var(--ds-font);
-        background-color: transparent; /* Adaptado para no sobreescribir fondo general */
-        padding: 2rem 1rem;
+    /* El estilo del body original se traslada a este wrapper */
+    .recurso-wrapper {
+        font-family: 'Inter', sans-serif;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-
-    .ds-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-        width: 100%;
-        max-width: 850px;
-        margin-bottom: 2rem;
-    }
-
-    /* TARJETA */
-    .ds-card {
-        background: var(--ds-bg-card);
-        border-radius: 20px;
-        border: 1px solid var(--ds-border);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
-    }
-
-    .ds-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-
-    /* VISOR VISUAL */
-    .ds-visual {
-        height: 200px;
-        display: flex;
-        align-items: center;
         justify-content: center;
-        position: relative;
-        overflow: hidden;
-        border-bottom: 1px solid var(--ds-border);
-    }
-
-    .ds-bg-sky { background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%); }
-    .ds-bg-sand { background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); }
-    .ds-bg-night { background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); }
-
-    .ds-svg {
+        padding: 40px 20px;
         width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
     }
 
-    /* CONTENIDO DE TEXTO */
-    .ds-body {
-        padding: 1.5rem 1.5rem 0 1.5rem;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    }
-
-    .ds-title {
-        margin: 0 0 0.5rem 0;
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--ds-color-text);
-        letter-spacing: -0.01em;
-    }
-
-    .ds-desc {
-        margin: 0 0 1.5rem 0;
-        font-size: 0.9rem;
-        color: var(--ds-color-text-muted);
-        line-height: 1.6;
-    }
-
-    /* GRID DE VARIABLES ORDENADAS */
-    .ds-vars-container {
-        background-color: #F8FAFC;
-        padding: 1.25rem 1.25rem;
-        border-top: 1px solid var(--ds-border);
-        margin-top: auto;
-    }
-
-    .ds-vars-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        margin-bottom: 0.75rem;
-    }
-
-    .ds-vars-label {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--ds-color-text-muted);
-        font-weight: 700;
-    }
-
-    .ds-feedback {
-        font-size: 0.75rem;
-        font-weight: 700;
-        display: none;
-    }
-
-    .ds-vars-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-    }
-
-    .ds-var-item {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: var(--ds-color-text);
-        background: var(--ds-bg-card);
-        padding: 0.6rem 0.75rem;
-        border-radius: 8px;
-        border: 1px solid var(--ds-border);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        user-select: none;
-        line-height: 1.2;
-    }
-
-    .ds-var-item::before {
-        content: '';
-        display: block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        flex-shrink: 0;
-        background-color: #CBD5E1;
-        transition: background-color 0.2s;
-    }
-
-    /* Estados de Interacción */
-    .ds-var-item:not(.locked):hover {
-        border-color: var(--ds-color-hover);
-        background-color: var(--ds-bg-hover);
-        color: var(--ds-color-hover);
-        transform: translateY(-2px);
-    }
-
-    .ds-var-item:not(.locked):hover::before { background-color: var(--ds-color-hover); }
-
-    .ds-var-item.selected {
-        border-color: var(--ds-color-selected);
-        background-color: var(--ds-bg-selected);
-        color: var(--ds-color-selected);
-    }
-    .ds-var-item.selected::before { background-color: var(--ds-color-selected); }
-
-    /* Estados de Validación */
-    .ds-var-item.correct {
-        border-color: var(--ds-color-correct);
-        background-color: var(--ds-bg-correct);
-        color: var(--ds-color-correct);
-        cursor: default;
-    }
-    .ds-var-item.correct::before { background-color: var(--ds-color-correct); }
-
-    .ds-var-item.incorrect {
-        border-color: var(--ds-color-error);
-        background-color: var(--ds-bg-error);
-        color: var(--ds-color-error);
-        cursor: default;
-    }
-    .ds-var-item.incorrect::before { background-color: var(--ds-color-error); }
-
-    .ds-var-item.missed {
-        border-color: var(--ds-color-correct);
-        background-color: var(--ds-bg-card);
-        color: var(--ds-color-correct);
-        border-style: dashed;
-        cursor: default;
-    }
-    .ds-var-item.missed::before { background-color: var(--ds-color-correct); }
-
-    .ds-var-item.locked {
-        pointer-events: none;
-    }
-
-    /* Controles Globales */
-    .ds-controls {
-        width: 100%;
-        max-width: 850px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1.5rem;
-    }
-
-    .ds-btn-verify {
-        background-color: var(--ds-color-text);
-        color: white;
-        border: none;
-        padding: 1rem 3rem;
+    .card {
+        background: white;
+        padding: 40px 20px;
         border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        max-width: 800px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-text { text-align: center; margin-bottom: 20px; }
+    .header-text h3 { color: #0f172a; margin: 0 0 5px 0; font-size: 1.25rem; }
+    .header-text p { color: #64748b; font-size: 0.9rem; margin: 0; }
+
+    .interactive-container {
+        width: 700px;
+        position: relative;
+        margin-top: 70px; 
+        margin-bottom: 70px; 
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        position: relative;
+        z-index: 1;
+    }
+
+    td {
+        border: 1px solid #475569;
+        height: 60px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .col-header {
+        width: 150px;
+        background-color: #f1f5f9;
+        font-weight: 700;
+        text-align: right;
+        padding-right: 15px;
+    }
+
+    .jump-input {
+        position: absolute;
+        width: 44px;
+        height: 28px;
+        font-family: 'Inter', sans-serif;
         font-size: 1rem;
         font-weight: 700;
-        font-family: var(--ds-font);
+        text-align: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: all 0.2s;
+        outline: none;
+        z-index: 10;
+        transform: translate(-50%, -50%); 
+    }
+
+    .jump-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    .input-blue { color: #2563eb; }
+    .input-blue:focus { border-color: #2563eb; }
+    .input-red { color: #d32f2f; }
+    .input-red:focus { border-color: #d32f2f; }
+
+    .jump-input.correct { background-color: #ecfdf5; border-color: #10b981; color: #047857; }
+    .jump-input.incorrect { background-color: #fef2f2; border-color: #ef4444; color: #b91c1c; }
+
+    .btn-verify {
+        padding: 12px 30px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #0f172a;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
         cursor: pointer;
-        transition: background-color 0.2s, transform 0.2s;
+        transition: background 0.2s, transform 0.2s;
     }
 
-    .ds-btn-verify:hover:not(:disabled) {
-        background-color: #334155;
-        transform: translateY(-2px);
+    .btn-verify:hover:not(:disabled) { background: #334155; transform: translateY(-2px); }
+    .btn-verify:disabled { background: #cbd5e1; cursor: not-allowed; color: #f8fafc; }
+
+    .feedback-text {
+        margin-top: 15px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        min-height: 20px;
     }
 
-    .ds-btn-verify:disabled {
-        background-color: #94A3B8;
-        cursor: not-allowed;
-        transform: none;
-    }
-
-    .ds-log-output {
+    .svg-layer {
+        position: absolute;
+        left: 0;
         width: 100%;
-        background-color: #E2E8F0;
-        padding: 1.5rem;
-        border-radius: 12px;
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 0.85rem;
-        color: #334155;
-        white-space: pre-wrap;
-        display: none;
-        border: 1px solid #CBD5E1;
+        pointer-events: none; 
     }
+    .svg-top { top: -40px; height: 40px; }
+    .svg-bottom { bottom: -40px; height: 40px; }
 </style>
 
 <script>
-    const setupTarjetas = () => {
-        const cards = document.querySelectorAll('.ds-card');
+    const setupTabla = () => {
+        const correctAnswers: Record<string, string> = {
+            top1: "+1", top2: "+1", top3: "+1", top4: "+1",
+            bot1: "-1", bot2: "-1", bot3: "-1", bot4: "-1"
+        };
+
+        let estadoSaltos: Record<string, string> = {
+            top1: "", top2: "", top3: "", top4: "",
+            bot1: "", bot2: "", bot3: "", bot4: ""
+        };
+
         const btnVerify = document.getElementById('btn-verify') as HTMLButtonElement | null;
-        const logOutput = document.getElementById('log-output') as HTMLElement | null;
+        const feedback = document.getElementById('feedback') as HTMLElement | null;
+        const inputIds = Object.keys(correctAnswers);
 
-        if (!cards.length || !btnVerify || !logOutput) return;
+        if (!btnVerify || !feedback) return;
 
-        // Estructura de estado: Arreglo de 3 elementos (una submatriz por tarjeta)
-        // Guardaremos los índices (0 al 3) de los items seleccionados
-        let estadoTarjetas: number[][] = [[], [], []];
+        function formatAnswer(val: string, expected: string) {
+            let clean = val.trim();
+            if (expected === "+1" && clean === "1") return "+1";
+            return clean;
+        }
 
-        // Limpiar eventos previos del botón clonándolo (protección contra Astro view transitions)
+        inputIds.forEach(id => {
+            const input = document.getElementById(id) as HTMLInputElement | null;
+            if (!input) return;
+
+            // Limpieza de eventos para View Transitions de Astro
+            const newClone = input.cloneNode(true) as HTMLInputElement;
+            input.parentNode?.replaceChild(newClone, input);
+
+            newClone.addEventListener('input', (e) => {
+                estadoSaltos[id] = (e.target as HTMLInputElement).value;
+            });
+        });
+
         const newBtnVerify = btnVerify.cloneNode(true) as HTMLButtonElement;
         btnVerify.parentNode?.replaceChild(newBtnVerify, btnVerify);
 
-        cards.forEach((card, cardIndex) => {
-            const items = card.querySelectorAll('.ds-var-item');
-            
-            items.forEach((item, itemIndex) => {
-                // Clonar item para evitar duplicidad de eventos al recargar la página
-                const newItem = item.cloneNode(true) as HTMLElement;
-                item.parentNode?.replaceChild(newItem, item);
-
-                newItem.addEventListener('click', () => {
-                    if (newItem.classList.contains('locked')) return;
-
-                    if (newItem.classList.contains('selected')) {
-                        newItem.classList.remove('selected');
-                        // Remover del estado
-                        estadoTarjetas[cardIndex] = estadoTarjetas[cardIndex].filter(i => i !== itemIndex);
-                    } else {
-                        // Validar límite de 2 por tarjeta
-                        const selectedCount = card.querySelectorAll('.selected').length;
-                        if (selectedCount < 2) {
-                            newItem.classList.add('selected');
-                            estadoTarjetas[cardIndex].push(itemIndex);
-                        }
-                    }
-                });
-            });
-        });
-
-        // Lógica de evaluación (1 Intento)
         newBtnVerify.addEventListener('click', () => {
-            let textLog = "=== REGISTRO DE EVALUACIÓN INTERNA ===\n\n";
-            let totalCards = cards.length;
-            let correctCards = 0;
+            let correctCount = 0;
 
-            cards.forEach((card, index) => {
-                const title = card.querySelector('.ds-title')?.textContent || `Tarjeta ${index + 1}`;
-                const items = card.querySelectorAll('.ds-var-item');
-                const selected = card.querySelectorAll('.selected');
-                const feedback = card.querySelector('.ds-feedback') as HTMLElement;
-                
-                let cardIsCorrect = true;
-                let selectedLabels: string[] = [];
+            inputIds.forEach(id => {
+                const input = document.getElementById(id) as HTMLInputElement | null;
+                if (!input) return;
 
-                // Bloquear interacción futura
-                items.forEach(item => item.classList.add('locked'));
+                const userVal = formatAnswer(estadoSaltos[id], correctAnswers[id]);
+                const correctVal = correctAnswers[id];
 
-                // Si no seleccionó exactamente 2, está malo por defecto
-                if (selected.length !== 2) {
-                    cardIsCorrect = false;
-                }
+                input.disabled = true;
 
-                selected.forEach(item => {
-                    selectedLabels.push(item.getAttribute('data-label') || '');
-                    const isCorrectOption = item.getAttribute('data-correct') === 'true';
-                    
-                    // Reemplazar clase selected por el estado final
-                    item.classList.remove('selected');
-                    if (isCorrectOption) {
-                        item.classList.add('correct');
-                    } else {
-                        item.classList.add('incorrect');
-                        cardIsCorrect = false;
-                    }
-                });
-
-                // Construcción del log y feedback visual
-                textLog += `[Tarjeta ${index + 1}: ${title}]\n`;
-                textLog += `- Selecciones: [${selectedLabels.join(' | ') || 'Ninguna'}]\n`;
-
-                if (cardIsCorrect) {
-                    correctCards++;
-                    if (feedback) {
-                        feedback.textContent = "¡Correcto!";
-                        feedback.style.color = "var(--ds-color-correct)";
-                    }
-                    textLog += `- Estado: CORRECTO\n\n`;
+                if (userVal === correctVal) {
+                    input.classList.add('correct');
+                    correctCount++;
                 } else {
-                    if (feedback) {
-                        feedback.textContent = "Incorrecto";
-                        feedback.style.color = "var(--ds-color-error)";
-                    }
-                    textLog += `- Estado: INCORRECTO\n\n`;
-
-                    // Revelar las correctas que fueron omitidas
-                    items.forEach(item => {
-                        if (item.getAttribute('data-correct') === 'true' && !item.classList.contains('correct')) {
-                            item.classList.add('missed');
-                        }
-                    });
+                    input.classList.add('incorrect');
+                    input.value = correctVal; 
                 }
-                
-                if (feedback) feedback.style.display = "block";
             });
 
-            textLog += `=== RESUMEN: ${correctCards}/${totalCards} tarjetas correctas ===`;
+            if (correctCount === inputIds.length) {
+                feedback.style.color = "#047857";
+                feedback.textContent = "¡Perfecto! Has identificado la variación constante en ambas variables.";
+            } else {
+                feedback.style.color = "#b91c1c";
+                feedback.textContent = `Hay errores. Recuerda incluir el signo (+ o -) para indicar la dirección del cambio.`;
+            }
 
-            // Mostrar botón deshabilitado y desplegar texto plano
             newBtnVerify.disabled = true;
-            newBtnVerify.textContent = "Evaluación Finalizada";
-            
-            logOutput.textContent = textLog;
-            logOutput.style.display = "block";
         });
 
-        // Funciones expuestas a nivel global para el iframe de edX
-        (window as any).getGrade = () => JSON.stringify(estadoTarjetas);
-        (window as any).getState = () => JSON.stringify(estadoTarjetas);
+        // Exponer funciones a nivel global (window) para que el iframe de edX pueda leerlas
+        (window as any).getGrade = () => JSON.stringify(estadoSaltos);
+        (window as any).getState = () => JSON.stringify(estadoSaltos);
         (window as any).setState = (stateStr: string) => {
             if (!stateStr) return;
             try {
-                estadoTarjetas = JSON.parse(stateStr);
-                estadoTarjetas.forEach((selecciones, cardIndex) => {
-                    const card = cards[cardIndex];
-                    if (!card) return;
-                    const items = card.querySelectorAll('.ds-var-item');
-                    selecciones.forEach(itemIndex => {
-                        if (items[itemIndex]) {
-                            items[itemIndex].classList.add('selected');
-                        }
-                    });
+                estadoSaltos = JSON.parse(stateStr);
+                inputIds.forEach(id => {
+                    if (estadoSaltos[id] !== "") {
+                        const input = document.getElementById(id) as HTMLInputElement | null;
+                        if (input) input.value = estadoSaltos[id];
+                    }
                 });
             } catch(e) {
                 console.error("Error restaurando estado en edX", e);
@@ -549,6 +282,6 @@ import Layout from '../../../../layouts/Layout.astro';
         };
     };
 
-    document.addEventListener('DOMContentLoaded', setupTarjetas);
-    document.addEventListener('astro:page-load', setupTarjetas);
+    document.addEventListener('DOMContentLoaded', setupTabla);
+    document.addEventListener('astro:page-load', setupTabla);
 </script>
