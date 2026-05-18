@@ -4,6 +4,17 @@ import Layout from '../../../../layouts/Layout.astro';
 
 <Layout titulo="Covariación No Proporcional">
     <div class="recurso-wrapper">
+        <svg width="0" height="0" style="position: absolute;">
+            <defs>
+                <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                </marker>
+                <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
+                </marker>
+            </defs>
+        </svg>
+
         <div class="card">
             <div class="header-text">
                 
@@ -11,64 +22,78 @@ import Layout from '../../../../layouts/Layout.astro';
 
             <div class="interactive-container">
                 
-                <svg class="svg-layer svg-top" viewBox="0 0 960 40">
-                    <defs>
-                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
-                        </marker>
-                    </defs>
-                    <path d="M 255 35 Q 310 -10 365 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                    <path d="M 385 35 Q 440 -10 495 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                    <path d="M 515 35 Q 570 -10 625 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                    <path d="M 645 35 Q 700 -10 755 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                    <path d="M 775 35 Q 830 -10 885 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                </svg>
-
-                <input type="text" id="top1" class="jump-input input-blue" style="left: 310px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="top2" class="jump-input input-blue" style="left: 440px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="top3" class="jump-input input-blue" style="left: 570px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="top4" class="jump-input input-blue" style="left: 700px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="top5" class="jump-input input-blue" style="left: 830px; top: -55px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <div class="jump-wrapper top" style="left: 34%;">
+                    <svg preserveAspectRatio="none" viewBox="0 0 100 40">
+                        <path d="M 5 35 Q 50 -10 95 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    </svg>
+                    <input type="text" id="top1" class="jump-input input-blue" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                </div>
+                <div class="jump-wrapper top" style="left: 46%;">
+                    <svg preserveAspectRatio="none" viewBox="0 0 100 40">
+                        <path d="M 5 35 Q 50 -10 95 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    </svg>
+                    <input type="text" id="top2" class="jump-input input-blue" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                </div>
+                <div class="jump-wrapper top" style="left: 58%;">
+                    <svg preserveAspectRatio="none" viewBox="0 0 100 40">
+                        <path d="M 5 35 Q 50 -10 95 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    </svg>
+                    <input type="text" id="top3" class="jump-input input-blue" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                </div>
+                <div class="jump-wrapper top" style="left: 70%;">
+                    <svg preserveAspectRatio="none" viewBox="0 0 100 40">
+                        <path d="M 5 35 Q 50 -10 95 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    </svg>
+                    <input type="text" id="top4" class="jump-input input-blue" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                </div>
+                <div class="jump-wrapper top" style="left: 82%;">
+                    <svg preserveAspectRatio="none" viewBox="0 0 100 40">
+                        <path d="M 5 35 Q 50 -10 95 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    </svg>
+                    <input type="text" id="top5" class="jump-input input-blue" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                </div>
 
                 <table>
                     <tr>
-                        <td class="col-header">x: Medida del lado (cm)</td>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
+                        <th class="col-header">x: Medida del lado (cm)</th>
+                        <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td>
                     </tr>
                     <tr>
-                        <td class="col-header">y: Área del cuadrado (cm²)</td>
-                        <td>1</td>
-                        <td>4</td>
-                        <td>9</td>
-                        <td>16</td>
-                        <td>25</td>
-                        <td>36</td>
+                        <th class="col-header">y: Área del cuadrado (cm²)</th>
+                        <td>1</td><td>4</td><td>9</td><td>16</td><td>25</td><td>36</td>
                     </tr>
                 </table>
 
-                <svg class="svg-layer svg-bottom" viewBox="0 0 960 40">
-                    <defs>
-                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
-                        </marker>
-                    </defs>
-                    <path d="M 255 5 Q 310 50 365 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                    <path d="M 385 5 Q 440 50 495 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                    <path d="M 515 5 Q 570 50 625 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                    <path d="M 645 5 Q 700 50 755 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                    <path d="M 775 5 Q 830 50 885 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                </svg>
-
-                <input type="text" id="bot1" class="jump-input input-red" style="left: 310px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="bot2" class="jump-input input-red" style="left: 440px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="bot3" class="jump-input input-red" style="left: 570px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="bot4" class="jump-input input-red" style="left: 700px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
-                <input type="text" id="bot5" class="jump-input input-red" style="left: 830px; bottom: -85px;" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                <div class="jump-wrapper bot" style="left: 34%;">
+                    <svg preserveAspectRatio="none" viewBox="0 0 100 40">
+                        <path d="M 5 5 Q 50 50 95 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    </svg>
+                    <input type="text" id="bot1" class="jump-input input-red" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                </div>
+                <div class="jump-wrapper bot" style="left: 46%;">
+                    <svg preserveAspectRatio="none" viewBox="0 0 100 40">
+                        <path d="M 5 5 Q 50 50 95 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    </svg>
+                    <input type="text" id="bot2" class="jump-input input-red" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                </div>
+                <div class="jump-wrapper bot" style="left: 58%;">
+                    <svg preserveAspectRatio="none" viewBox="0 0 100 40">
+                        <path d="M 5 5 Q 50 50 95 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    </svg>
+                    <input type="text" id="bot3" class="jump-input input-red" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                </div>
+                <div class="jump-wrapper bot" style="left: 70%;">
+                    <svg preserveAspectRatio="none" viewBox="0 0 100 40">
+                        <path d="M 5 5 Q 50 50 95 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    </svg>
+                    <input type="text" id="bot4" class="jump-input input-red" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                </div>
+                <div class="jump-wrapper bot" style="left: 82%;">
+                    <svg preserveAspectRatio="none" viewBox="0 0 100 40">
+                        <path d="M 5 5 Q 50 50 95 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    </svg>
+                    <input type="text" id="bot5" class="jump-input input-red" autocomplete="off" inputmode="text" pattern="[0-9+\-]*">
+                </div>
 
             </div>
 
@@ -79,6 +104,8 @@ import Layout from '../../../../layouts/Layout.astro';
 </Layout>
 
 <style>
+    * { box-sizing: border-box; }
+
     .recurso-wrapper {
         font-family: 'Inter', system-ui, sans-serif;
         background: #f8fafc;
@@ -98,7 +125,7 @@ import Layout from '../../../../layouts/Layout.astro';
         display: flex;
         flex-direction: column;
         align-items: center;
-        overflow-x: auto;
+        overflow: hidden;
     }
 
     .header-text { text-align: center; margin-bottom: 20px; }
@@ -106,36 +133,53 @@ import Layout from '../../../../layouts/Layout.astro';
     .header-text p.desc { color: #64748b; font-size: 0.95rem; margin: 0; }
 
     .interactive-container {
-        width: 960px;
+        width: 100%;
         position: relative;
-        margin-top: 70px; 
-        margin-bottom: 70px; 
+        margin-top: 55px; 
+        margin-bottom: 55px; 
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
         table-layout: fixed;
-        position: relative;
-        z-index: 1;
     }
 
-    td {
+    th, td {
         border: 1px solid #475569;
-        height: 60px;
+        height: 50px;
         text-align: center;
         vertical-align: middle;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 600;
         color: #1e293b;
+        padding: 4px;
     }
 
-    .col-header {
-        width: 180px;
+    th.col-header {
+        width: 28%;
         background-color: #f1f5f9;
         font-weight: 700;
         text-align: right;
-        padding-right: 15px;
+        padding-right: 10px;
+        font-size: 0.95rem;
+    }
+
+    td { width: 12%; }
+
+    .jump-wrapper {
+        position: absolute;
+        width: 12%;
+        height: 40px;
+    }
+
+    .jump-wrapper.top { top: -40px; }
+    .jump-wrapper.bot { bottom: -40px; }
+
+    .jump-wrapper svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
     }
 
     .jump-input {
@@ -143,7 +187,7 @@ import Layout from '../../../../layouts/Layout.astro';
         width: 44px;
         height: 28px;
         font-family: 'Inter', sans-serif;
-        font-size: 1rem;
+        font-size: 0.95rem;
         font-weight: 700;
         text-align: center;
         border: 2px solid #cbd5e1;
@@ -152,8 +196,12 @@ import Layout from '../../../../layouts/Layout.astro';
         transition: all 0.2s;
         outline: none;
         z-index: 10;
-        transform: translate(-50%, -50%); 
+        left: 50%;
+        transform: translateX(-50%);
     }
+
+    .jump-wrapper.top .jump-input { top: -20px; }
+    .jump-wrapper.bot .jump-input { bottom: -20px; }
 
     .jump-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
     .input-blue { color: #2563eb; }
@@ -189,15 +237,6 @@ import Layout from '../../../../layouts/Layout.astro';
         text-align: center;
         max-width: 600px;
     }
-
-    .svg-layer {
-        position: absolute;
-        left: 0;
-        width: 100%;
-        pointer-events: none; 
-    }
-    .svg-top { top: -40px; height: 40px; }
-    .svg-bottom { bottom: -40px; height: 40px; }
 </style>
 
 <script>
