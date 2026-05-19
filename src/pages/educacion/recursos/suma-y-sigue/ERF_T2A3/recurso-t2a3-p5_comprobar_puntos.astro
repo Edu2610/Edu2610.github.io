@@ -1,0 +1,477 @@
+---
+import Layout from '../../../../../layouts/Layout.astro';
+// Ajusta la ruta al Layout según corresponda en tu estructura de carpetas
+---
+
+<Layout titulo="Recurso Proporcionalidad Inversa y Área">
+    <div class="recurso-wrapper">
+        <div id="constant-area-resource">
+
+            <div class="left-panel">
+                <div class="header-actions">
+                    <h3 id="panelHeading">Correspondencia</h3>
+                </div>
+
+                <div class="breakdown-card">
+                    <div class="formula-block">
+                        <span class="badge-label">Regla de la relación</span>
+                        <p class="math-formula">x &sdot; y = <span class="highlight-constant">100</span></p>
+                    </div>
+
+                    <div class="breakdown-block">
+                        <span class="badge-label">Valores actuales</span>
+                        <div class="math-formula breakdown-display">
+                            [<span id="valX-breakdown" class="highlight-var">20</span>] &sdot; [<span id="valY-breakdown" class="highlight-var">5.00</span>] = <span class="highlight-constant">100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <p>El producto entre las coordenadas de cualquier punto (x, y) sobre esta curva es siempre la constante 100.</p>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="graph-container">
+                    <svg viewBox="0 0 500 530" id="graph-canvas">
+                        <defs>
+                            <g id="auto-icon">
+                                <rect x="-18" y="-7" width="36" height="14" fill="var(--red-main)" rx="3" />
+                                <rect x="-11" y="-13" width="22" height="10" fill="var(--red-main)" rx="3" />
+                                <rect x="-9" y="-11" width="8" height="7" fill="#f8fafc" rx="1" />
+                                <rect x="1" y="-11" width="8" height="7" fill="#f8fafc" rx="1" />
+                                <circle cx="-10" cy="7" r="5" fill="var(--grey-dark)" />
+                                <circle cx="-10" cy="7" r="2" fill="#64748b" />
+                                <circle cx="10" cy="7" r="5" fill="var(--grey-dark)" />
+                                <circle cx="10" cy="7" r="2" fill="#64748b" />
+                            </g>
+                        </defs>
+
+                        <g id="grid"></g>
+                        <g id="axes"></g>
+
+                        <text x="280" y="525" text-anchor="middle" class="axis-label">Velocidad (x)</text>
+                        <text x="14" y="265" transform="rotate(-90 14 265)" text-anchor="middle" class="axis-label">Tiempo (y)</text>
+
+                        <g id="ticks"></g>
+
+                        <rect id="dynamic-rect" fill="rgba(74, 74, 73, 0.06)" stroke="var(--grey-dark)" stroke-width="1.5" />
+
+                        <g id="label-group">
+                            <line id="label-connector" stroke="var(--grey-dark)" stroke-width="1" stroke-dasharray="3,3" opacity="0.5" />
+                            <g id="label-badge">
+                                <rect id="label-bg" rx="5" ry="5" fill="white" stroke="var(--grey-dark)" stroke-width="1.2" />
+                                <text id="label-value" text-anchor="middle" font-weight="700" font-size="14" fill="var(--terracotta)">100</text>
+                                <text id="label-unit" text-anchor="middle" font-weight="600" font-size="10" fill="#64748b">(distancia)</text>
+                            </g>
+                        </g>
+
+                        <path id="baseCurve" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,4" />
+
+                        <g id="capa-auto" style="cursor: grab;">
+                            <use href="#auto-icon" id="auto-icono-dyn" x="0" y="0" />
+                            <circle id="drag-target" r="22" fill="transparent" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        --red-main: #D33C31;
+        --terracotta: #8B2E28;
+        --grey-dark: #4A4A49;
+        --bg-color: #F4F4F2;
+        --white: #FFFFFF;
+        --border-color: #e2e8f0;
+
+        font-family: 'Inter', system-ui, sans-serif;
+        background-color: var(--bg-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .recurso-wrapper * {
+        box-sizing: border-box;
+    }
+
+    #constant-area-resource {
+        background-color: var(--white);
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+        width: 100%;
+        max-width: 850px;
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+        align-items: center;
+    }
+
+    .left-panel {
+        flex: 0 0 290px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        border: 1px solid var(--border-color);
+        padding: 25px 20px;
+        border-radius: 12px;
+        background-color: var(--white);
+    }
+
+    .header-actions {
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 15px;
+    }
+
+    #panelHeading {
+        margin: 0;
+        font-size: 1.1rem;
+        color: var(--grey-dark);
+        font-weight: 700;
+    }
+
+    .badge-label {
+        background-color: var(--grey-dark);
+        color: var(--white);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        display: inline-block;
+        width: max-content;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .breakdown-card {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background-color: #f8fafc;
+        padding: 25px;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+    }
+
+    .formula-block, .breakdown-block {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .math-formula {
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: 700;
+        color: var(--grey-dark);
+        font-size: 1.3rem;
+        margin: 0;
+        word-spacing: -0.15em;
+    }
+
+    .highlight-constant { color: var(--terracotta); }
+    .breakdown-display { font-size: 1.15rem; }
+    .highlight-var { color: var(--red-main); }
+
+    .info-box {
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        line-height: 1.6;
+        color: #64748b;
+        background: white;
+        border: 1px solid var(--border-color);
+    }
+
+    .info-box p { margin: 0; }
+
+    .right-panel {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .graph-container {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    svg {
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        display: block;
+    }
+
+    .grid-line { stroke: #e2e8f0; stroke-width: 1; }
+    .axis { stroke: var(--grey-dark); stroke-width: 2; }
+
+    .axis-label {
+        fill: var(--grey-dark);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .tick-label {
+        fill: #64748b;
+        font-size: 11px;
+    }
+
+    @media (max-width: 768px) {
+        #constant-area-resource {
+            flex-direction: column;
+            align-items: center;
+        }
+        .left-panel {
+            flex: none;
+            width: 100%;
+            max-width: 400px;
+        }
+    }
+</style>
+
+<script>
+    const setupRecursoArea = () => {
+        const valXBreakdown = document.getElementById('valX-breakdown');
+        const valYBreakdown = document.getElementById('valY-breakdown');
+        const baseCurve = document.getElementById('baseCurve');
+        const autoCapaDyn = document.getElementById('capa-auto');
+        const autoIconoDyn = document.getElementById('auto-icono-dyn');
+        const dragTargetOriginal = document.getElementById('drag-target');
+        const dynamicRect = document.getElementById('dynamic-rect');
+        const svgCanvas = document.getElementById('graph-canvas') as SVGSVGElement | null;
+
+        const labelConnector = document.getElementById('label-connector');
+        const labelBg = document.getElementById('label-bg');
+        const labelValue = document.getElementById('label-value');
+        const labelUnit = document.getElementById('label-unit');
+
+        if (!baseCurve || !autoCapaDyn || !svgCanvas || !dragTargetOriginal || !dynamicRect) return;
+
+        // Re-asignación tipada para que las closures internas no vean posibles null
+        const curve: HTMLElement = baseCurve;
+        const autoCapa: HTMLElement = autoCapaDyn;
+        const canvas: SVGSVGElement = svgCanvas;
+        const rect: HTMLElement = dynamicRect;
+
+        // Clonación para limpieza de eventos en Astro View Transitions
+        const dragTarget = dragTargetOriginal.cloneNode(true) as SVGCircleElement;
+        dragTargetOriginal.parentNode?.replaceChild(dragTarget, dragTargetOriginal);
+
+        const K = 100;
+        const MATH_MIN_X = 2;
+        const MATH_MAX_X = 50;
+        const MATH_AXIS_MAX = 55;
+
+        const SVG_W = 500;
+        const SVG_H = 530;
+        const PAD = { l: 55, r: 20, t: 20, b: 45 };
+        const PLOT_W = SVG_W - PAD.l - PAD.r;
+        const PLOT_H = SVG_H - PAD.t - PAD.b;
+
+        const mapX = (val: number) => PAD.l + (val / MATH_AXIS_MAX) * PLOT_W;
+        const mapY = (val: number) => PAD.t + PLOT_H - (val / MATH_AXIS_MAX) * PLOT_H;
+        const unmapX = (px: number) => ((px - PAD.l) / PLOT_W) * MATH_AXIS_MAX;
+
+        function initStaticGraph() {
+            const gridG = document.getElementById('grid');
+            const axesG = document.getElementById('axes');
+            const ticksG = document.getElementById('ticks');
+            if (!gridG || !axesG || !ticksG) return;
+
+            let gridHtml = '';
+            let axesHtml = '';
+            let ticksHtml = '';
+
+            const pMinX = mapX(0);
+            const pMaxX = mapX(50);
+            const pMinY = mapY(0);
+            const pMaxY = mapY(50);
+
+            axesHtml += `<line x1="${pMinX}" y1="${pMinY}" x2="${mapX(MATH_AXIS_MAX)}" y2="${pMinY}" class="axis" />`;
+            axesHtml += `<line x1="${pMinX}" y1="${pMinY}" x2="${pMinX}" y2="${mapY(MATH_AXIS_MAX)}" class="axis" />`;
+
+            for (let i = 0; i <= 50; i += 5) {
+                const px = mapX(i);
+                const py = mapY(i);
+
+                gridHtml += `<line x1="${px}" y1="${pMinY}" x2="${px}" y2="${pMaxY}" class="grid-line" />`;
+                gridHtml += `<line x1="${pMinX}" y1="${py}" x2="${pMaxX}" y2="${py}" class="grid-line" />`;
+
+                ticksHtml += `<line x1="${px}" y1="${pMinY}" x2="${px}" y2="${pMinY + 5}" class="axis" />`;
+                ticksHtml += `<text x="${px}" y="${pMinY + 18}" text-anchor="middle" class="tick-label">${i}</text>`;
+
+                ticksHtml += `<line x1="${pMinX}" y1="${py}" x2="${pMinX - 5}" y2="${py}" class="axis" />`;
+                ticksHtml += `<text x="${pMinX - 10}" y="${py + 4}" text-anchor="end" class="tick-label">${i}</text>`;
+            }
+
+            gridG.innerHTML = gridHtml;
+            axesG.innerHTML = axesHtml;
+            ticksG.innerHTML = ticksHtml;
+
+            let pathData = '';
+            for (let mathX = MATH_MIN_X; mathX <= MATH_MAX_X; mathX += 0.5) {
+                const pathY = K / mathX;
+                if (pathY > MATH_AXIS_MAX) continue;
+                const prefix = pathData === '' ? 'M' : 'L';
+                pathData += `${prefix} ${mapX(mathX)} ${mapY(pathY)} `;
+            }
+            curve.setAttribute('d', pathData);
+        }
+
+        let isDragging = false;
+
+        function getSVGMouseCoords(evt: MouseEvent | TouchEvent) {
+            const matrix = canvas.getScreenCTM();
+            if (!matrix) return { x: 0, y: 0 };
+
+            let clientX: number, clientY: number;
+            if ('touches' in evt && evt.touches.length > 0) {
+                clientX = evt.touches[0].clientX;
+                clientY = evt.touches[0].clientY;
+            } else {
+                clientX = (evt as MouseEvent).clientX;
+                clientY = (evt as MouseEvent).clientY;
+            }
+
+            return {
+                x: (clientX - matrix.e) / matrix.a,
+                y: (clientY - matrix.f) / matrix.d
+            };
+        }
+
+        function dragStart(evt: Event) {
+            isDragging = true;
+            evt.preventDefault();
+            autoCapa.style.cursor = 'grabbing';
+        }
+
+        function dragEnd() {
+            isDragging = false;
+            autoCapa.style.cursor = 'grab';
+        }
+
+        function dragMove(evt: MouseEvent | TouchEvent) {
+            if (!isDragging) return;
+            evt.preventDefault();
+
+            const pt = getSVGMouseCoords(evt);
+            let currentXMath = unmapX(pt.x);
+
+            if (currentXMath < MATH_MIN_X) currentXMath = MATH_MIN_X;
+            if (currentXMath > MATH_MAX_X) currentXMath = MATH_MAX_X;
+
+            const currentYMath = K / currentXMath;
+            updateVisualization(currentXMath, currentYMath);
+        }
+
+        function updateVisualization(mathX: number, mathY: number) {
+            if (valXBreakdown) valXBreakdown.innerText = xDisplayFormat(mathX);
+            if (valYBreakdown) valYBreakdown.innerText = mathY.toFixed(2);
+
+            const finalPxX = mapX(mathX);
+            const finalPxY = mapY(mathY);
+            const originPxX = mapX(0);
+            const originPxY = mapY(0);
+
+            autoIconoDyn?.setAttribute('x', finalPxX.toString());
+            autoIconoDyn?.setAttribute('y', finalPxY.toString());
+            dragTarget.setAttribute('cx', finalPxX.toString());
+            dragTarget.setAttribute('cy', finalPxY.toString());
+
+            const rectX = originPxX;
+            const rectY = finalPxY;
+            const rectW = finalPxX - originPxX;
+            const rectH = originPxY - finalPxY;
+
+            rect.setAttribute('x', rectX.toString());
+            rect.setAttribute('y', rectY.toString());
+            rect.setAttribute('width', rectW.toString());
+            rect.setAttribute('height', rectH.toString());
+
+            // --- Posicionamiento del badge ---
+            const BADGE_W = 72;
+            const BADGE_H = 36;
+            const MIN_RECT_W = BADGE_W + 16;
+            const MIN_RECT_H = BADGE_H + 12;
+
+            const fitsInside = rectW >= MIN_RECT_W && rectH >= MIN_RECT_H;
+
+            let badgeX: number, badgeY: number;
+
+            if (fitsInside) {
+                badgeX = rectX + rectW / 2;
+                badgeY = rectY + rectH / 2;
+                labelConnector?.setAttribute('opacity', '0');
+            } else {
+                const rectCX = rectX + rectW / 2;
+                const rectCY = rectY + rectH / 2;
+                const OFFSET = 45;
+
+                if (rectW < MIN_RECT_W && rectH >= MIN_RECT_H) {
+                    badgeX = finalPxX + OFFSET;
+                    badgeY = rectCY;
+                } else if (rectH < MIN_RECT_H && rectW >= MIN_RECT_W) {
+                    badgeX = rectCX;
+                    badgeY = finalPxY - OFFSET;
+                } else {
+                    badgeX = finalPxX + OFFSET * 0.7;
+                    badgeY = finalPxY - OFFSET * 0.7;
+                }
+
+                badgeX = Math.max(PAD.l + BADGE_W / 2 + 5, Math.min(SVG_W - BADGE_W / 2 - 5, badgeX));
+                badgeY = Math.max(PAD.t + BADGE_H / 2 + 5, Math.min(SVG_H - PAD.b - BADGE_H / 2 - 5, badgeY));
+
+                if (labelConnector) {
+                    labelConnector.setAttribute('x1', rectCX.toString());
+                    labelConnector.setAttribute('y1', rectCY.toString());
+                    labelConnector.setAttribute('x2', badgeX.toString());
+                    labelConnector.setAttribute('y2', badgeY.toString());
+                    labelConnector.setAttribute('opacity', '0.4');
+                }
+            }
+
+            labelBg?.setAttribute('x', (badgeX - BADGE_W / 2).toString());
+            labelBg?.setAttribute('y', (badgeY - BADGE_H / 2).toString());
+            labelBg?.setAttribute('width', BADGE_W.toString());
+            labelBg?.setAttribute('height', BADGE_H.toString());
+
+            labelValue?.setAttribute('x', badgeX.toString());
+            labelValue?.setAttribute('y', (badgeY - 5).toString());
+
+            labelUnit?.setAttribute('x', badgeX.toString());
+            labelUnit?.setAttribute('y', (badgeY + 11).toString());
+        }
+
+        function xDisplayFormat(mathX: number): string {
+            if (mathX % 1 === 0 && mathX <= 10) return mathX.toFixed(1);
+            if (mathX > 10) return mathX.toFixed(0);
+            return mathX.toFixed(1);
+        }
+
+        initStaticGraph();
+        updateVisualization(20, 5);
+
+        dragTarget.addEventListener('mousedown', dragStart);
+        dragTarget.addEventListener('touchstart', dragStart, { passive: false });
+
+        canvas.addEventListener('mousemove', dragMove);
+        canvas.addEventListener('touchmove', dragMove, { passive: false });
+
+        document.addEventListener('mouseup', dragEnd);
+        document.addEventListener('touchend', dragEnd);
+    };
+
+    document.addEventListener('DOMContentLoaded', setupRecursoArea);
+    document.addEventListener('astro:page-load', setupRecursoArea);
+</script>

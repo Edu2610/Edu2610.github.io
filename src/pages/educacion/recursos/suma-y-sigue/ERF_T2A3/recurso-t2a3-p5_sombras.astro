@@ -1,0 +1,377 @@
+---
+import Layout from '../../../../../layouts/Layout.astro';
+// Ajusta la ruta al Layout según corresponda en tu estructura de carpetas
+---
+
+<Layout titulo="Recurso Proporcionalidad Inversa">
+    <div class="recurso-wrapper">
+        <div id="inv-prop-resource">
+            
+            <div class="left-panel">
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <span class="badge-label">Valor de x (Velocidad)</span>
+                        <span id="current-x-indicator" class="slider-value-indicator">1.0</span>
+                    </div>
+                    <input type="range" id="x-slider" min="0" max="135" step="1" value="0">
+                </div>
+
+                <div class="dynamic-output-card">
+                    <div class="output-group">
+                        <span class="badge-label">Valor de y (Tiempo)</span>
+                        <p class="math-formula">
+                            y = 100 / <span id="valX-formula">1.0</span> = 
+                            <span id="valY-result" class="highlight-value">100.00</span>
+                        </p>
+                    </div>
+
+                    <div class="output-group">
+                        <span class="badge-label">Par ordenado (x, y)</span>
+                        <p class="math-formula pt-display" style="font-size: 1.2rem;">
+                            ( <span id="ptX-formula">1.0</span>, <span id="ptY-formula">100.00</span> )
+                        </p>
+                    </div>
+
+                    <div class="rounding-note">
+                        Resultados redondeados a dos decimales.
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="graph-container">
+                    <svg viewBox="0 0 450 550" id="graph-svg">
+                        <g id="grid"></g>
+                        <g id="axes"></g>
+                        
+                        <text x="250" y="540" text-anchor="middle" class="axis-label">x</text>
+                        <text x="15" y="275" transform="rotate(-90 15 275)" text-anchor="middle" class="axis-label">y</text>
+                        
+                        <g id="ticks"></g>
+                        <g id="traces-container"></g>
+                        
+                        <circle id="dynamic-point" r="7" cx="0" cy="0" />
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        --red-main: #D33C31;
+        --terracotta: #8B2E28;
+        --grey-dark: #4A4A49;
+        --bg-color: #F4F4F2;
+        --white: #FFFFFF;
+        --border-color: #e2e8f0;
+
+        font-family: 'Inter', system-ui, sans-serif;
+        background-color: var(--bg-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .recurso-wrapper * { 
+        box-sizing: border-box; 
+    }
+
+    #inv-prop-resource {
+        background-color: var(--white);
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+        width: 100%;
+        max-width: 850px;
+        display: flex;
+        flex-direction: row;
+        gap: 35px;
+        align-items: stretch;
+    }
+
+    .left-panel {
+        flex: 0 0 320px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        border: 1px solid var(--border-color);
+        padding: 30px 25px;
+        border-radius: 12px;
+        background-color: var(--white);
+    }
+
+    .slider-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .slider-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .badge-label {
+        background-color: var(--grey-dark);
+        color: var(--white);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        display: inline-block;
+        width: max-content;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .slider-value-indicator {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--red-main);
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    input[type=range] {
+        width: 100%;
+        cursor: pointer;
+        accent-color: var(--red-main);
+        margin: 0;
+    }
+
+    .dynamic-output-card {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background-color: #f8fafc;
+        padding: 25px;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+    }
+
+    .output-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .math-formula {
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: 700;
+        color: var(--terracotta);
+        font-size: 1.1rem;
+        margin: 0;
+        word-spacing: -0.15em;
+        padding-left: 5px;
+    }
+
+    .highlight-value {
+        color: var(--red-main);
+        font-size: 1.3rem;
+    }
+
+    .rounding-note {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        font-weight: 400;
+        font-style: italic;
+        text-align: center;
+    }
+
+    .right-panel {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .graph-container {
+        width: 100%;
+        max-width: 450px;
+    }
+
+    svg {
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        display: block;
+    }
+
+    .grid-line {
+        stroke: #e2e8f0;
+        stroke-width: 1;
+    }
+
+    .axis {
+        stroke: var(--grey-dark);
+        stroke-width: 2;
+    }
+
+    .axis-label {
+        fill: var(--grey-dark);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .tick-label {
+        fill: #64748b;
+        font-size: 12px;
+    }
+
+    #dynamic-point {
+        fill: var(--red-main);
+        stroke: var(--white);
+        stroke-width: 2;
+    }
+
+    .trace-point {
+        fill: var(--terracotta);
+        opacity: 0.25;
+    }
+
+    @media (max-width: 768px) {
+        #inv-prop-resource {
+            flex-direction: column;
+            align-items: center;
+        }
+        .left-panel {
+            flex: none;
+            width: 100%;
+            max-width: 400px;
+        }
+    }
+</style>
+
+<script>
+    const setupRecurso = () => {
+        const sliderOriginal = document.getElementById('x-slider') as HTMLInputElement;
+        const currentXIndicator = document.getElementById('current-x-indicator');
+        const valXFormula = document.getElementById('valX-formula');
+        const valYResult = document.getElementById('valY-result');
+        const ptXFormula = document.getElementById('ptX-formula');
+        const ptYFormula = document.getElementById('ptY-formula');
+        const tracesContainer = document.getElementById('traces-container');
+        const dynamicPoint = document.getElementById('dynamic-point');
+
+        if (!sliderOriginal || !tracesContainer || !dynamicPoint) return;
+
+        // Clonación para limpieza de eventos en Astro View Transitions
+        const slider = sliderOriginal.cloneNode(true) as HTMLInputElement;
+        sliderOriginal.parentNode?.replaceChild(slider, sliderOriginal);
+
+        const K = 100;
+        const MATH_MAX = 105;
+        const SVG_W = 450;
+        const SVG_H = 550;
+        const PAD = { l: 50, r: 20, t: 20, b: 40 };
+        const PLOT_W = SVG_W - PAD.l - PAD.r;
+        const PLOT_H = SVG_H - PAD.t - PAD.b;
+
+        const mapX = (val: number) => PAD.l + (val / MATH_MAX) * PLOT_W;
+        const mapY = (val: number) => PAD.t + PLOT_H - (val / MATH_MAX) * PLOT_H;
+
+        function initGraphStaticElements() {
+            const gridG = document.getElementById('grid');
+            const axesG = document.getElementById('axes');
+            const ticksG = document.getElementById('ticks');
+            if (!gridG || !axesG || !ticksG) return;
+
+            let gridHtml = '';
+            let axesHtml = '';
+            let ticksHtml = '';
+
+            const pMinX = mapX(0);
+            const pMaxX = mapX(MATH_MAX);
+            const pMinY = mapY(0);
+            const pMaxY = mapY(MATH_MAX);
+
+            axesHtml += `<line x1="${pMinX}" y1="${pMinY}" x2="${pMaxX}" y2="${pMinY}" class="axis" />`;
+            axesHtml += `<line x1="${pMinX}" y1="${pMinY}" x2="${pMinX}" y2="${pMaxY}" class="axis" />`;
+
+            for (let i = 0; i <= 100; i += 10) {
+                let px = mapX(i);
+                let py = mapY(i);
+
+                gridHtml += `<line x1="${px}" y1="${pMinY}" x2="${px}" y2="${pMaxY}" class="grid-line" />`;
+                gridHtml += `<line x1="${pMinX}" y1="${py}" x2="${pMaxX}" y2="${py}" class="grid-line" />`;
+
+                ticksHtml += `<line x1="${px}" y1="${pMinY}" x2="${px}" y2="${pMinY + 5}" class="axis" />`;
+                ticksHtml += `<text x="${px}" y="${pMinY + 20}" text-anchor="middle" class="tick-label">${i}</text>`;
+
+                ticksHtml += `<line x1="${pMinX}" y1="${py}" x2="${pMinX - 5}" y2="${py}" class="axis" />`;
+                ticksHtml += `<text x="${pMinX - 10}" y="${py + 4}" text-anchor="end" class="tick-label">${i}</text>`;
+            }
+            
+            gridG.innerHTML = gridHtml;
+            axesG.innerHTML = axesHtml;
+            ticksG.innerHTML = ticksHtml;
+        }
+
+        const NS = "http://www.w3.org/2000/svg";
+        let lastMappedX: number | null = null;
+        let lastMappedY: number | null = null;
+
+        function getXValue(sliderStep: string) {
+            let v = parseInt(sliderStep, 10);
+            if (v <= 45) {
+                return Number((1 + v * 0.2).toFixed(1));
+            } else {
+                return 10 + (v - 45);
+            }
+        }
+
+        function update() {
+            let x = getXValue(slider.value);
+            let y = K / x;
+
+            let xDisplay;
+            if (x > 10) {
+                xDisplay = x.toFixed(0); 
+            } else if (x % 1 === 0) {
+                xDisplay = x.toFixed(1); 
+            } else {
+                xDisplay = x.toFixed(1); 
+            }
+            
+            let yRounded = y.toFixed(2);
+
+            if (currentXIndicator) currentXIndicator.innerText = xDisplay; 
+            if (valXFormula) valXFormula.innerText = xDisplay;      
+            if (valYResult) valYResult.innerText = yRounded;       
+            if (ptXFormula) ptXFormula.innerText = xDisplay;       
+            if (ptYFormula) ptYFormula.innerText = yRounded;       
+
+            let px = mapX(x);
+            let py = mapY(y);
+
+            dynamicPoint!.setAttribute('cx', px.toString());
+            dynamicPoint!.setAttribute('cy', py.toString());
+
+            if (lastMappedX === null || Math.abs(lastMappedX - px) > 2.5 || Math.abs(lastMappedY! - py) > 2.5) {
+                let trace = document.createElementNS(NS, 'circle');
+                trace.setAttribute('cx', px.toString());
+                trace.setAttribute('cy', py.toString());
+                trace.setAttribute('r', '3.5');
+                trace.setAttribute('class', 'trace-point');
+                tracesContainer!.appendChild(trace);
+
+                lastMappedX = px;
+                lastMappedY = py;
+            }
+        }
+
+        initGraphStaticElements();
+        slider.addEventListener('input', update);
+        update();
+    };
+
+    document.addEventListener('DOMContentLoaded', setupRecurso);
+    document.addEventListener('astro:page-load', setupRecurso);
+</script>
