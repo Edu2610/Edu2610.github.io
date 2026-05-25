@@ -46,14 +46,6 @@ import Layout from '../../../../layouts/Layout.astro';
     </div>
 </Layout>
 
-<style is:global>
-    html, body {
-        background: white;
-        margin: 0;
-        padding: 0;
-    }
-</style>
-
 <style>
     :root {
         --red-main: #D33C31;
@@ -65,12 +57,11 @@ import Layout from '../../../../layouts/Layout.astro';
 
     .recurso-wrapper {
         font-family: 'Inter', system-ui, sans-serif; 
-        background: var(--bg-color); 
+        background: transparent; 
         display: flex; 
         justify-content: center; 
         padding: 40px 20px; 
         margin: 0 auto;
-        max-width: 850px;
         width: 100%;
         box-sizing: border-box;
     }
