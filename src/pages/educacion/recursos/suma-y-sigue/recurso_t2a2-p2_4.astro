@@ -151,7 +151,9 @@ import Layout from '../../../../layouts/Layout.astro';
         font-size: 0.9rem;
     }
 
-    td {
+    /* ESTILOS CORREGIDOS: Uso de :global() para el HTML inyectado por JS */
+    
+    .table-container :global(td) {
         padding: 6px 5px;
         border-bottom: 1px solid #e2e8f0;
         color: #4A4A49;
@@ -159,14 +161,36 @@ import Layout from '../../../../layouts/Layout.astro';
         transition: background-color 0.3s, color 0.3s;
     }
 
-    tr:last-child td { border-bottom: none; }
+    .table-container :global(tr:last-child td) { 
+        border-bottom: none; 
+    }
     
-    .arrow-cell { color: #D33C31; font-weight: bold; font-size: 1.2rem; width: 30px;}
-    .arrow-icon { opacity: 0; transition: opacity 0.3s; }
+    .table-container :global(.arrow-cell) { 
+        color: #D33C31; 
+        font-weight: bold; 
+        font-size: 1.2rem; 
+        width: 30px;
+    }
     
-    .row-active { background-color: rgba(232, 116, 97, 0.2); }
-    .row-active td { color: #8B2E28; font-weight: bold; }
-    .row-active .arrow-icon { opacity: 1; }
+    .table-container :global(.arrow-icon) { 
+        opacity: 0; 
+        transition: opacity 0.3s; 
+    }
+    
+    .table-container :global(.row-active) { 
+        background-color: rgba(232, 116, 97, 0.2); 
+    }
+    
+    .table-container :global(.row-active td) { 
+        color: #8B2E28; 
+        font-weight: bold; 
+    }
+    
+    .table-container :global(.row-active .arrow-icon) { 
+        opacity: 1; 
+    }
+
+    /* Fin estilos corregidos */
 
     .plot-container {
         flex: 1;
@@ -198,7 +222,6 @@ import Layout from '../../../../layouts/Layout.astro';
 
 <script>
     const setupAnimacionSVG = () => {
-        // 1. Obtener y validar todos los elementos del DOM estrictamente
         const btnAnimate = document.getElementById('btnAnimate') as HTMLButtonElement | null;
         const btnReset = document.getElementById('btnReset') as HTMLButtonElement | null;
         const tbody = document.querySelector('#dataTable tbody') as HTMLElement | null;
@@ -208,7 +231,6 @@ import Layout from '../../../../layouts/Layout.astro';
         const labelX = document.getElementById('labelX') as SVGTextElement | null;
         const labelY = document.getElementById('labelY') as SVGTextElement | null;
 
-        // Si alguno es null, abortamos la ejecución de inmediato
         if (!btnAnimate || !btnReset || !tbody || !gridSvg || !animacionesLayer || !baseLine || !labelX || !labelY) {
             return;
         }
@@ -365,8 +387,6 @@ import Layout from '../../../../layouts/Layout.astro';
 
         construirEntorno();
 
-        // Limpiar event listeners clonando los botones antes de asignar nuevos 
-        // (útil para View Transitions en Astro)
         const newBtnAnimate = btnAnimate!.cloneNode(true) as HTMLButtonElement;
         const newBtnReset = btnReset!.cloneNode(true) as HTMLButtonElement;
         
