@@ -1,11 +1,8 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
-// Asegúrate de que la ruta al Layout sea la correcta
 ---
 
 <Layout titulo="Correspondencia Secuencial: Bidones">
-    <script is:inline src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
-
     <div class="recurso-wrapper">
         <div class="card">
             <div class="header-actions">
@@ -36,7 +33,15 @@ import Layout from '../../../../layouts/Layout.astro';
                 </div>
 
                 <div class="plot-container">
-                    <div id="plot"></div>
+                    <svg viewBox="0 0 500 500" id="plotSvg">
+                        <g id="grid"></g>
+                        <line id="baseLine" stroke="#4A4A49" stroke-width="2" stroke-dasharray="5,5" />
+                        
+                        <text id="labelX" font-size="16" fill="#4A4A49" text-anchor="middle" font-weight="bold">x</text>
+                        <text id="labelY" font-size="16" fill="#4A4A49" text-anchor="middle" font-weight="bold" transform="rotate(-90)"></text>
+
+                        <g id="animacionesLayer"></g>
+                    </svg>
                 </div>
             </div>
         </div>
@@ -44,24 +49,27 @@ import Layout from '../../../../layouts/Layout.astro';
 </Layout>
 
 <style>
-    /* Estilos encapsulados para la estructura estática */
-    .recurso-wrapper { 
-        font-family: 'Inter', sans-serif; 
-        background: #F4F4F2; 
-        display: flex; 
-        justify-content: center; 
-        padding: 40px 20px; 
+    .recurso-wrapper {
+        font-family: sans-serif;
+        background: transparent; 
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        margin: 0 auto;
+        max-width: 850px;
         width: 100%;
         box-sizing: border-box;
     }
+
     .card { 
         background: white; 
         padding: 30px; 
         border-radius: 12px; 
         box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
-        max-width: 900px; 
         width: 100%; 
+        box-sizing: border-box;
     }
+
     .header-actions { 
         display: flex; 
         justify-content: space-between; 
@@ -70,11 +78,13 @@ import Layout from '../../../../layouts/Layout.astro';
         padding-bottom: 15px; 
         margin-bottom: 20px;
     }
+
     #mainTitle { 
         margin: 0; 
         font-size: 1.5rem; 
         color: #D33C31; 
     }
+
     button { 
         cursor: pointer; 
         padding: 10px 18px; 
@@ -84,6 +94,7 @@ import Layout from '../../../../layouts/Layout.astro';
         transition: background 0.2s; 
         font-size: 0.95rem; 
     }
+
     .btn-action { background: #D33C31; color: white; }
     .btn-action:hover { background: #8B2E28; }
     .btn-action:disabled { background: #E87461; cursor: not-allowed; }
@@ -104,6 +115,7 @@ import Layout from '../../../../layouts/Layout.astro';
         display: flex;
         flex-direction: column;
         border: 1px solid #e2e8f0;
+        box-sizing: border-box;
     }
     
     .table-title {
@@ -116,6 +128,7 @@ import Layout from '../../../../layouts/Layout.astro';
         padding-bottom: 8px;
         border-bottom: 1px dashed #cbd5e1;
     }
+
     .mono-eq {
         font-family: monospace;
         font-size: 1.15rem;
@@ -130,6 +143,7 @@ import Layout from '../../../../layouts/Layout.astro';
         border-radius: 4px;
         overflow: hidden;
     }
+
     th {
         background: #4A4A49;
         color: white;
@@ -137,58 +151,81 @@ import Layout from '../../../../layouts/Layout.astro';
         font-size: 0.9rem;
     }
 
-    .plot-container {
-        flex: 1;
-        min-width: 0;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 5px;
-    }
-    #plot { width: 100%; height: 500px; }
-
-    @media (max-width: 700px) {
-        .workspace { flex-direction: column; }
-        .table-container { flex: none; width: 100%; }
-        .header-actions { flex-direction: column; gap: 15px; align-items: flex-start; }
-    }
-</style>
-
-<style is:global>
-    /* Estilos globales obligatorios para los elementos generados por JavaScript */
-    #dataTable tbody td {
+    td {
         padding: 6px 5px;
         border-bottom: 1px solid #e2e8f0;
         color: #4A4A49;
         font-weight: 500;
         transition: background-color 0.3s, color 0.3s;
     }
-    #dataTable tbody tr:last-child td { border-bottom: none; }
+
+    tr:last-child td { border-bottom: none; }
     
-    #dataTable .arrow-cell { color: #D33C31; font-weight: bold; font-size: 1.2rem; width: 30px;}
-    #dataTable .arrow-icon { opacity: 0; transition: opacity 0.3s; }
+    .arrow-cell { color: #D33C31; font-weight: bold; font-size: 1.2rem; width: 30px;}
+    .arrow-icon { opacity: 0; transition: opacity 0.3s; }
     
-    #dataTable .row-active { background-color: rgba(232, 116, 97, 0.2); }
-    #dataTable .row-active td { color: #8B2E28; font-weight: bold; }
-    #dataTable .row-active .arrow-icon { opacity: 1; }
+    .row-active { background-color: rgba(232, 116, 97, 0.2); }
+    .row-active td { color: #8B2E28; font-weight: bold; }
+    .row-active .arrow-icon { opacity: 1; }
+
+    .plot-container {
+        flex: 1;
+        min-width: 0;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 10px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+    }
+
+    svg { 
+        width: 100%; 
+        height: 100%; 
+        max-height: 480px;
+        overflow: visible; 
+        user-select: none;
+    }
+
+    @media (max-width: 700px) {
+        .workspace { flex-direction: column; }
+        .table-container { flex: none; width: 100%; }
+        .plot-container { height: 400px; }
+    }
 </style>
 
 <script>
-    const setupCorrespondenciaSecuencial = () => {
+    const setupAnimacionSVG = () => {
+        // 1. Obtener y validar todos los elementos del DOM estrictamente
         const btnAnimate = document.getElementById('btnAnimate') as HTMLButtonElement | null;
         const btnReset = document.getElementById('btnReset') as HTMLButtonElement | null;
         const tbody = document.querySelector('#dataTable tbody') as HTMLElement | null;
-        const plotDiv = document.getElementById('plot') as HTMLElement | null;
+        const gridSvg = document.getElementById('grid') as SVGGElement | null;
+        const animacionesLayer = document.getElementById('animacionesLayer') as SVGGElement | null;
+        const baseLine = document.getElementById('baseLine') as SVGLineElement | null;
+        const labelX = document.getElementById('labelX') as SVGTextElement | null;
+        const labelY = document.getElementById('labelY') as SVGTextElement | null;
 
-        if (!btnAnimate || !btnReset || !tbody || !plotDiv) return;
-        
-        const puntosAAnimar = [2, 6, 10];
-        
-        let trazosCompletados: any[] = [];
-        let puntosCompletados: any[] = [];
-        let anotacionesCompletadas: any[] = [];
+        // Si alguno es null, abortamos la ejecución de inmediato
+        if (!btnAnimate || !btnReset || !tbody || !gridSvg || !animacionesLayer || !baseLine || !labelX || !labelY) {
+            return;
+        }
+
+        const SVG_SIZE = 500;
+        const PAD = { l: 60, r: 20, t: 20, b: 60 }; 
+        const PLOT_W = SVG_SIZE - PAD.l - PAD.r;
+        const PLOT_H = SVG_SIZE - PAD.t - PAD.b;
+        const MAX_VAL = 13; 
+
+        const mapX = (val: number) => PAD.l + (val / MAX_VAL) * PLOT_W;
+        const mapY = (val: number) => PAD.t + PLOT_H - (val / MAX_VAL) * PLOT_H;
+
         let animacionEnCurso = false;
+        const puntosAAnimar = [2, 6, 10];
 
-        function construirTabla() {
+        function construirEntorno() {
             tbody!.innerHTML = '';
             for (let x = 1; x <= 12; x++) {
                 const y = 12 - x;
@@ -201,106 +238,98 @@ import Layout from '../../../../layouts/Layout.astro';
                 `;
                 tbody!.appendChild(tr);
             }
+
+            let gridHtml = '';
+            const gridColor = '#4A4A49';
+            
+            for (let i = 0; i <= MAX_VAL; i++) {
+                let px = mapX(i);
+                let py = mapY(i);
+                
+                gridHtml += `<line x1="${px}" y1="${mapY(0)}" x2="${px}" y2="${mapY(MAX_VAL)}" stroke="${gridColor}" stroke-opacity="0.15" />`;
+                gridHtml += `<line x1="${mapX(0)}" y1="${py}" x2="${mapX(MAX_VAL)}" y2="${py}" stroke="${gridColor}" stroke-opacity="0.15" />`;
+                
+                if (i % 2 === 0) {
+                    gridHtml += `<text x="${px}" y="${mapY(0) + 20}" font-size="12" fill="${gridColor}" fill-opacity="0.8" text-anchor="middle">${i}</text>`;
+                    gridHtml += `<text x="${mapX(0) - 10}" y="${py + 4}" font-size="12" fill="${gridColor}" fill-opacity="0.8" text-anchor="end">${i}</text>`;
+                }
+            }
+            gridSvg!.innerHTML = gridHtml;
+
+            baseLine!.setAttribute('x1', mapX(0).toString());
+            baseLine!.setAttribute('y1', mapY(12).toString());
+            baseLine!.setAttribute('x2', mapX(12).toString());
+            baseLine!.setAttribute('y2', mapY(0).toString());
+
+            labelX!.setAttribute('x', (PAD.l + PLOT_W / 2).toString());
+            labelX!.setAttribute('y', (SVG_SIZE - 10).toString());
+            
+            labelY!.setAttribute('x', (-(PAD.t + PLOT_H / 2)).toString()); 
+            labelY!.setAttribute('y', "20");
+            labelY!.textContent = 'y';
         }
-
-        const layoutBase = {
-            xaxis: { title: 'x', range: [0, 12.5], dtick: 1, gridcolor: '#e2e8f0', rangemode: 'nonnegative', constrain: 'domain' },
-            yaxis: { 
-                title: 'y', 
-                range: [0, 12.5], 
-                dtick: 1, 
-                gridcolor: '#e2e8f0',
-                scaleanchor: "x", 
-                scaleratio: 1,
-                rangemode: 'nonnegative'
-            },
-            showlegend: false,
-            margin: { t: 20, b: 40, l: 50, r: 20 },
-            hovermode: false
-        };
-
-        const traceLineBase = {
-            x: [0, 12], y: [12, 0],
-            mode: 'lines',
-            line: { color: '#4A4A49', width: 1.5, dash: 'dot' },
-            hoverinfo: 'skip'
-        };
 
         const esperar = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-        function renderizarGraficoPlano(trazosExtra: any[] = [], layoutExtra: any = {}) {
-            const layoutFinal = { ...layoutBase, annotations: [...anotacionesCompletadas, ...(layoutExtra.annotations || [])] };
-            const trazosFinales = [traceLineBase, ...trazosCompletados, ...puntosCompletados, ...trazosExtra];
-            
-            if (typeof (window as any).Plotly !== 'undefined') {
-                (window as any).Plotly.react('plot', trazosFinales, layoutFinal);
-            }
-        }
-
         function trazarLineaAnimada(xTarget: number, yTarget: number) {
             return new Promise<void>(resolve => {
-                let currentX = xTarget;
-                let currentY = 0;
-                let pathX = [xTarget];
-                let pathY = [0];
+                const pxTarget = mapX(xTarget);
+                const pyTarget = mapY(yTarget);
+                const p0x = mapX(xTarget);
+                const p0y = mapY(0);
+                const pEndx = mapX(0);
                 
-                const speed = 0.5; 
-                let phase = 1;
+                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+                const marker = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                
+                path.setAttribute("fill", "none");
+                path.setAttribute("stroke", "#D33C31");
+                path.setAttribute("stroke-width", "2.5");
+                path.setAttribute("stroke-dasharray", "5,5");
+                
+                marker.setAttribute("r", "5");
+                marker.setAttribute("fill", "#8B2E28");
+                marker.style.opacity = "0";
 
-                function step() {
-                    let frameCompleto = false;
+                g.appendChild(path);
+                g.appendChild(marker);
+                animacionesLayer!.appendChild(g);
 
-                    if (phase === 1) {
-                        currentY += speed;
-                        if (currentY >= yTarget) {
-                            currentY = yTarget;
-                            phase = 2;
-                        }
-                        pathX.push(xTarget);
-                        pathY.push(currentY);
-                    } else if (phase === 2) {
-                        currentX -= speed;
-                        if (currentX <= 0) {
-                            currentX = 0;
-                            frameCompleto = true;
-                        }
-                        pathX.push(currentX);
-                        pathY.push(yTarget);
-                    }
+                let start: number | null = null;
+                const duration = 800; 
 
-                    const traceAnimado = {
-                        x: pathX, y: pathY,
-                        mode: 'lines',
-                        line: { color: '#D33C31', width: 2.5, dash: 'dash' },
-                        hoverinfo: 'skip'
-                    };
-
-                    const puntoAnimado = {
-                        x: [xTarget], y: [yTarget],
-                        mode: 'markers',
-                        marker: { size: 10, color: '#8B2E28' },
-                        hoverinfo: 'none'
-                    };
-
-                    renderizarGraficoPlano([traceAnimado, puntoAnimado]);
-
-                    if (!frameCompleto) {
-                        requestAnimationFrame(step);
+                function animar(timestamp: number) {
+                    if (!start) start = timestamp;
+                    const progress = Math.min((timestamp - start) / (duration * 2), 1);
+                    
+                    if (progress < 0.5) {
+                        const p = progress * 2;
+                        const currentY = p0y + (pyTarget - p0y) * p;
+                        path.setAttribute("points", `${p0x},${p0y} ${p0x},${currentY}`);
+                        requestAnimationFrame(animar);
                     } else {
-                        trazosCompletados.push(traceAnimado);
-                        puntosCompletados.push(puntoAnimado);
+                        const p = (progress - 0.5) * 2;
+                        const currentX = p0x + (pEndx - p0x) * p;
+                        path.setAttribute("points", `${p0x},${p0y} ${p0x},${pyTarget} ${currentX},${pyTarget}`);
                         
-                        anotacionesCompletadas.push({
-                            x: 0, y: yTarget, ax: xTarget, ay: yTarget,
-                            xref: 'x', yref: 'y', axref: 'x', ayref: 'y',
-                            showarrow: true, arrowhead: 2, arrowcolor: '#D33C31', arrowwidth: 2.5
-                        });
-                        
-                        renderizarGraficoPlano();
-                        resolve();
+                        if (progress < 1) {
+                            requestAnimationFrame(animar);
+                        } else {
+                            marker.setAttribute("cx", pxTarget.toString());
+                            marker.setAttribute("cy", pyTarget.toString());
+                            marker.style.opacity = "1";
+                            
+                            const arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                            arrow.setAttribute("points", `${pEndx},${pyTarget} ${pEndx+10},${pyTarget-5} ${pEndx+10},${pyTarget+5}`);
+                            arrow.setAttribute("fill", "#D33C31");
+                            g.appendChild(arrow);
+
+                            resolve();
+                        }
                     }
                 }
-                requestAnimationFrame(step);
+                requestAnimationFrame(animar);
             });
         }
 
@@ -316,9 +345,9 @@ import Layout from '../../../../layouts/Layout.astro';
                 const fila = document.getElementById(`row-${x}`);
                 if (fila) fila.classList.add('row-active');
                 
-                await esperar(600);
+                await esperar(400);
                 await trazarLineaAnimada(x, y);
-                await esperar(800);
+                await esperar(600);
             }
             
             animacionEnCurso = false;
@@ -330,37 +359,24 @@ import Layout from '../../../../layouts/Layout.astro';
             const filas = document.querySelectorAll('#dataTable tbody tr');
             filas.forEach(f => f.classList.remove('row-active'));
 
-            trazosCompletados = [];
-            puntosCompletados = [];
-            anotacionesCompletadas = [];
-            
-            renderizarGraficoPlano();
+            animacionesLayer!.innerHTML = '';
             btnAnimate!.disabled = false;
         }
 
-        construirTabla();
+        construirEntorno();
 
-        const initPlot = () => {
-            if (typeof (window as any).Plotly !== 'undefined') {
-                (window as any).Plotly.newPlot('plot', [traceLineBase], layoutBase, {responsive: true});
-            } else {
-                plotDiv.innerHTML = "<p style='text-align:center; color:#4A4A49; margin-top:100px;'>Cargando motor gráfico...</p>";
-                const checkPlotly = setInterval(() => {
-                    if (typeof (window as any).Plotly !== 'undefined') {
-                        clearInterval(checkPlotly);
-                        plotDiv.innerHTML = "";
-                        (window as any).Plotly.newPlot('plot', [traceLineBase], layoutBase, {responsive: true});
-                    }
-                }, 200);
-            }
-        };
-
-        initPlot();
-
-        btnAnimate.addEventListener('click', ejecutarAnimacion);
-        btnReset.addEventListener('click', resetearEntorno);
+        // Limpiar event listeners clonando los botones antes de asignar nuevos 
+        // (útil para View Transitions en Astro)
+        const newBtnAnimate = btnAnimate!.cloneNode(true) as HTMLButtonElement;
+        const newBtnReset = btnReset!.cloneNode(true) as HTMLButtonElement;
+        
+        btnAnimate!.replaceWith(newBtnAnimate);
+        btnReset!.replaceWith(newBtnReset);
+        
+        newBtnAnimate.addEventListener('click', ejecutarAnimacion);
+        newBtnReset.addEventListener('click', resetearEntorno);
     };
 
-    document.addEventListener('DOMContentLoaded', setupCorrespondenciaSecuencial);
-    document.addEventListener('astro:page-load', setupCorrespondenciaSecuencial);
+    document.addEventListener('DOMContentLoaded', setupAnimacionSVG);
+    document.addEventListener('astro:page-load', setupAnimacionSVG);
 </script>
