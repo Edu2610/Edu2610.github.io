@@ -6,31 +6,34 @@ import Layout from '../../../../../layouts/Layout.astro';
 <Layout titulo="Covariación Inversa">
     <div class="recurso-wrapper">
         <div class="card">
-            <div class="header-text">
-                <p class="title">Variación: Velocidad vs Tiempo</p>
-                <p class="desc">Encuentra el factor por el que se multiplica o divide desde la <strong>columna base (10 km/h)</strong>.</p>
-            </div>
-
             <div class="interactive-container">
                 
-                <svg class="svg-layer svg-top" viewBox="0 0 800 160">
+                <svg class="svg-layer svg-top" viewBox="0 0 700 160">
                     <defs>
                         <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
                             <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
                         </marker>
                     </defs>
-                    <path d="M 242 155 Q 304 80 366 155" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                    <path d="M 242 155 Q 366 10 490 155" fill="none" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow-blue)" />
-                    <path d="M 242 155 Q 428 -60 614 155" fill="none" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow-blue)" />
-                    <path d="M 242 155 Q 490 -130 738 155" fill="none" stroke="#2563eb" stroke-width="5" marker-end="url(#arrow-blue)" />
+                    <path d="M 214 155 Q 268 80 322 155" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 214 155 Q 322 10 430 155" fill="none" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow-blue)" />
+                    <path d="M 214 155 Q 376 -60 538 155" fill="none" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow-blue)" />
+                    <path d="M 214 155 Q 430 -130 646 155" fill="none" stroke="#2563eb" stroke-width="5" marker-end="url(#arrow-blue)" />
                 </svg>
 
-                <input type="text" id="top1" class="jump-input input-blue" style="left: 304px; top: -38px;" autocomplete="off">
-                <input type="text" id="top2" class="jump-input input-blue" style="left: 366px; top: -73px;" autocomplete="off">
-                <input type="text" id="top3" class="jump-input input-blue" style="left: 428px; top: -108px;" autocomplete="off">
-                <input type="text" id="top4" class="jump-input input-blue" style="left: 490px; top: -143px;" autocomplete="off">
+                <input type="text" id="top1" class="jump-input input-blue" style="left: 268px; top: -38px;" placeholder="· " autocomplete="off">
+                <input type="text" id="top2" class="jump-input input-blue" style="left: 322px; top: -73px;" placeholder="· " autocomplete="off">
+                <input type="text" id="top3" class="jump-input input-blue" style="left: 376px; top: -108px;" placeholder="· " autocomplete="off">
+                <input type="text" id="top4" class="jump-input input-blue" style="left: 430px; top: -143px;" placeholder="· " autocomplete="off">
 
                 <table>
+                    <colgroup>
+                        <col style="width: 160px;">
+                        <col style="width: 108px;">
+                        <col style="width: 108px;">
+                        <col style="width: 108px;">
+                        <col style="width: 108px;">
+                        <col style="width: 108px;">
+                    </colgroup>
                     <tr>
                         <td class="col-header">Velocidad (km/h)</td>
                         <td>10</td>
@@ -49,22 +52,22 @@ import Layout from '../../../../../layouts/Layout.astro';
                     </tr>
                 </table>
 
-                <svg class="svg-layer svg-bottom" viewBox="0 0 800 160">
+                <svg class="svg-layer svg-bottom" viewBox="0 0 700 160">
                     <defs>
                         <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
                             <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
                         </marker>
                     </defs>
-                    <path d="M 242 5 Q 304 80 366 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                    <path d="M 242 5 Q 366 150 490 5" fill="none" stroke="#d32f2f" stroke-width="3" marker-end="url(#arrow-red)" />
-                    <path d="M 242 5 Q 428 220 614 5" fill="none" stroke="#d32f2f" stroke-width="4" marker-end="url(#arrow-red)" />
-                    <path d="M 242 5 Q 490 290 738 5" fill="none" stroke="#d32f2f" stroke-width="5" marker-end="url(#arrow-red)" />
+                    <path d="M 214 5 Q 268 80 322 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 214 5 Q 322 150 430 5" fill="none" stroke="#d32f2f" stroke-width="3" marker-end="url(#arrow-red)" />
+                    <path d="M 214 5 Q 376 220 538 5" fill="none" stroke="#d32f2f" stroke-width="4" marker-end="url(#arrow-red)" />
+                    <path d="M 214 5 Q 430 290 646 5" fill="none" stroke="#d32f2f" stroke-width="5" marker-end="url(#arrow-red)" />
                 </svg>
 
-                <input type="text" id="bot1" class="jump-input input-red" style="left: 304px; bottom: -38px;" autocomplete="off">
-                <input type="text" id="bot2" class="jump-input input-red" style="left: 366px; bottom: -73px;" autocomplete="off">
-                <input type="text" id="bot3" class="jump-input input-red" style="left: 428px; bottom: -108px;" autocomplete="off">
-                <input type="text" id="bot4" class="jump-input input-red" style="left: 490px; bottom: -143px;" autocomplete="off">
+                <input type="text" id="bot1" class="jump-input input-red" style="left: 268px; bottom: -73px;" placeholder="÷ " autocomplete="off">
+                <input type="text" id="bot2" class="jump-input input-red" style="left: 322px; bottom: -108px;" placeholder="÷ " autocomplete="off">
+                <input type="text" id="bot3" class="jump-input input-red" style="left: 376px; bottom: -143px;" placeholder="÷ " autocomplete="off">
+                <input type="text" id="bot4" class="jump-input input-red" style="left: 430px; bottom: -178px;" placeholder="÷ " autocomplete="off">
 
             </div>
 
@@ -89,30 +92,27 @@ import Layout from '../../../../../layouts/Layout.astro';
         padding: 40px 20px;
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        max-width: 900px;
+        max-width: 750px;
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    .header-text { text-align: center; margin-bottom: 20px; }
-    .header-text p.title { color: #0f172a; margin: 0 0 5px 0; font-size: 1.25rem; font-weight: 700; }
-    .header-text p.desc { color: #64748b; font-size: 0.95rem; margin: 0; }
-
     .interactive-container {
-        width: 800px;
+        width: 700px;
         position: relative;
         margin-top: 140px; 
         margin-bottom: 180px; 
     }
 
     table {
-        width: 100%;
+        width: 700px;
         border-collapse: collapse;
         table-layout: fixed;
         position: relative;
         z-index: 1;
+        margin: 0;
     }
 
     td {
@@ -120,13 +120,13 @@ import Layout from '../../../../../layouts/Layout.astro';
         height: 60px;
         text-align: center;
         vertical-align: middle;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 600;
         color: #1e293b;
+        box-sizing: border-box;
     }
 
     .col-header {
-        width: 180px;
         background-color: #f1f5f9;
         font-weight: 700;
         text-align: right;
@@ -150,9 +150,12 @@ import Layout from '../../../../../layouts/Layout.astro';
         transform: translate(-50%, -50%); 
     }
 
+    .jump-input::placeholder { color: #94a3b8; opacity: 0.6; }
     .jump-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    
     .input-blue { color: #2563eb; }
     .input-blue:focus { border-color: #2563eb; }
+    
     .input-red { color: #d32f2f; }
     .input-red:focus { border-color: #d32f2f; }
 
@@ -170,6 +173,8 @@ import Layout from '../../../../../layouts/Layout.astro';
         font-weight: 700;
         cursor: pointer;
         transition: background 0.2s, transform 0.2s;
+        position: relative;
+        z-index: 20;
     }
 
     .btn-verify:hover:not(:disabled) { background: #334155; transform: translateY(-2px); }
@@ -192,6 +197,7 @@ import Layout from '../../../../../layouts/Layout.astro';
         pointer-events: none; 
         overflow: visible;
     }
+    
     .svg-top { top: -160px; height: 160px; }
     .svg-bottom { bottom: -160px; height: 160px; }
 </style>
@@ -199,7 +205,7 @@ import Layout from '../../../../../layouts/Layout.astro';
 <script>
     const setupVariacionAuto = () => {
         const correctAnswers: Record<string, string> = {
-            top1: "x 2", top2: "x 4", top3: "x 8", top4: "x 16",
+            top1: "· 2", top2: "· 4", top3: "· 8", top4: "· 16",
             bot1: "÷ 2", bot2: "÷ 4", bot3: "÷ 8", bot4: "÷ 16"
         };
 
@@ -215,30 +221,6 @@ import Layout from '../../../../../layouts/Layout.astro';
 
         if (!btnVerify || !feedback) return;
 
-        // Validador indulgente
-        function formatAnswer(val: string, expected: string) {
-            let clean = val.toLowerCase().replace(/\s+/g, '').replace(',', '.');
-            
-            const validMult = ['x', '*', '·'];
-            const validDiv = ['÷', '/', ':'];
-
-            if (expected.startsWith('x')) {
-                const num = expected.substring(2);
-                for (let m of validMult) {
-                    if (clean === m + num || clean === num + m) return expected;
-                }
-            }
-            
-            if (expected.startsWith('÷')) {
-                const num = expected.substring(2);
-                for (let d of validDiv) {
-                    if (clean === d + num || clean === num + d) return expected;
-                }
-            }
-            
-            return val.trim();
-        }
-
         inputIds.forEach(id => {
             const input = document.getElementById(id) as HTMLInputElement | null;
             if (!input) return;
@@ -247,7 +229,19 @@ import Layout from '../../../../../layouts/Layout.astro';
             input.parentNode?.replaceChild(newClone, input);
 
             newClone.addEventListener('input', (e) => {
-                estadoSaltos[id] = (e.target as HTMLInputElement).value;
+                const target = e.target as HTMLInputElement;
+                const isTop = id.startsWith('top');
+                const prefix = isTop ? '· ' : '÷ ';
+                
+                let rawNumbers = target.value.replace(/[^0-9,.]/g, '');
+                
+                if (rawNumbers.length > 0) {
+                    target.value = prefix + rawNumbers;
+                } else {
+                    target.value = ''; 
+                }
+                
+                estadoSaltos[id] = target.value;
             });
         });
 
@@ -261,14 +255,13 @@ import Layout from '../../../../../layouts/Layout.astro';
                 const input = document.getElementById(id) as HTMLInputElement | null;
                 if (!input) return;
 
-                const userVal = formatAnswer(estadoSaltos[id], correctAnswers[id]);
+                const userVal = estadoSaltos[id].trim();
                 const correctVal = correctAnswers[id];
 
                 input.disabled = true;
 
                 if (userVal === correctVal) {
                     input.classList.add('correct');
-                    input.value = correctVal; 
                     correctCount++;
                 } else {
                     input.classList.add('incorrect');
@@ -281,7 +274,7 @@ import Layout from '../../../../../layouts/Layout.astro';
                 feedback.innerHTML = "¡Excelente! Has demostrado que <strong>si multiplicamos</strong> la velocidad (x) por un factor, el tiempo (y) <strong>se divide por ese mismo factor</strong>. A esto se le conoce como covariación inversamente proporcional.";
             } else {
                 feedback.style.color = "#b91c1c";
-                feedback.innerHTML = "Hay errores. Recuerda que los saltos se cuentan <strong>desde la columna base (10)</strong> hasta el valor de la casilla actual. Ej: de 10 a 80 el factor es x 8.";
+                feedback.innerHTML = "Hay errores. Recuerda que los saltos se cuentan <strong>desde la columna base (10)</strong> hasta el valor de la casilla actual. Ej: de 10 a 80 el factor es · 8.";
             }
 
             newBtnVerify.disabled = true;

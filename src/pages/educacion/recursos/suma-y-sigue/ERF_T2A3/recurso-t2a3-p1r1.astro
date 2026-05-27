@@ -12,24 +12,32 @@ import Layout from '../../../../../layouts/Layout.astro';
 
             <div class="interactive-container">
                 
-                <svg class="svg-layer svg-top" viewBox="0 0 700 40">
+                <svg class="svg-layer svg-top" viewBox="0 0 700 80">
                     <defs>
                         <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
                             <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
                         </marker>
                     </defs>
-                    <path d="M 225 35 Q 260 -10 295 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                    <path d="M 335 35 Q 370 -10 405 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                    <path d="M 445 35 Q 480 -10 515 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
-                    <path d="M 555 35 Q 590 -10 625 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 225 75 Q 260 -40 295 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 335 75 Q 370 -40 405 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 445 75 Q 480 -40 515 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                    <path d="M 555 75 Q 590 -40 625 75" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
                 </svg>
 
-                <input type="text" id="top1" class="jump-input input-blue" style="left: 260px; top: -55px;" placeholder="· " autocomplete="off">
-                <input type="text" id="top2" class="jump-input input-blue" style="left: 370px; top: -55px;" placeholder="· " autocomplete="off">
-                <input type="text" id="top3" class="jump-input input-blue" style="left: 480px; top: -55px;" placeholder="· " autocomplete="off">
-                <input type="text" id="top4" class="jump-input input-blue" style="left: 590px; top: -55px;" placeholder="· " autocomplete="off">
+                <input type="text" id="top1" class="jump-input input-blue" style="left: 260px; top: -35px;" placeholder="· " autocomplete="off">
+                <input type="text" id="top2" class="jump-input input-blue" style="left: 370px; top: -35px;" placeholder="· " autocomplete="off">
+                <input type="text" id="top3" class="jump-input input-blue" style="left: 480px; top: -35px;" placeholder="· " autocomplete="off">
+                <input type="text" id="top4" class="jump-input input-blue" style="left: 590px; top: -35px;" placeholder="· " autocomplete="off">
 
                 <table>
+                    <colgroup>
+                        <col style="width: 150px;">
+                        <col style="width: 110px;">
+                        <col style="width: 110px;">
+                        <col style="width: 110px;">
+                        <col style="width: 110px;">
+                        <col style="width: 110px;">
+                    </colgroup>
                     <tr>
                         <td class="col-header">x (km/h)</td>
                         <td>10</td>
@@ -48,22 +56,22 @@ import Layout from '../../../../../layouts/Layout.astro';
                     </tr>
                 </table>
 
-                <svg class="svg-layer svg-bottom" viewBox="0 0 700 40">
+                <svg class="svg-layer svg-bottom" viewBox="0 0 700 80">
                     <defs>
                         <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
                             <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
                         </marker>
                     </defs>
-                    <path d="M 225 5 Q 260 50 295 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                    <path d="M 335 5 Q 370 50 405 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                    <path d="M 445 5 Q 480 50 515 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
-                    <path d="M 555 5 Q 590 50 625 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 225 5 Q 260 120 295 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 335 5 Q 370 120 405 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 445 5 Q 480 120 515 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                    <path d="M 555 5 Q 590 120 625 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
                 </svg>
 
-                <input type="text" id="bot1" class="jump-input input-red" style="left: 260px; bottom: -85px;" placeholder="÷ " autocomplete="off">
-                <input type="text" id="bot2" class="jump-input input-red" style="left: 370px; bottom: -85px;" placeholder="÷ " autocomplete="off">
-                <input type="text" id="bot3" class="jump-input input-red" style="left: 480px; bottom: -85px;" placeholder="÷ " autocomplete="off">
-                <input type="text" id="bot4" class="jump-input input-red" style="left: 590px; bottom: -85px;" placeholder="÷ " autocomplete="off">
+                <input type="text" id="bot1" class="jump-input input-red" style="left: 260px; bottom: -35px;" placeholder="÷ " autocomplete="off">
+                <input type="text" id="bot2" class="jump-input input-red" style="left: 370px; bottom: -35px;" placeholder="÷ " autocomplete="off">
+                <input type="text" id="bot3" class="jump-input input-red" style="left: 480px; bottom: -35px;" placeholder="÷ " autocomplete="off">
+                <input type="text" id="bot4" class="jump-input input-red" style="left: 590px; bottom: -35px;" placeholder="÷ " autocomplete="off">
 
             </div>
 
@@ -80,7 +88,7 @@ import Layout from '../../../../../layouts/Layout.astro';
         display: flex;
         justify-content: center;
         padding: 40px 20px;
-        width: 800px;
+        width: 100%;
     }
 
     .card {
@@ -101,16 +109,17 @@ import Layout from '../../../../../layouts/Layout.astro';
     .interactive-container {
         width: 700px;
         position: relative;
-        margin-top: 50px; 
-        margin-bottom: 50px; 
+        margin-top: 100px; 
+        margin-bottom: 110px; 
     }
 
     table {
-        width: 100%;
+        width: 700px; 
         border-collapse: collapse;
         table-layout: fixed;
         position: relative;
         z-index: 1;
+        margin: 0;
     }
 
     td {
@@ -121,14 +130,12 @@ import Layout from '../../../../../layouts/Layout.astro';
         font-size: 1.2rem;
         font-weight: 600;
         color: #1e293b;
+        box-sizing: border-box; 
     }
 
     .col-header {
-        width: 150px;
         background-color: #f1f5f9;
         font-weight: 700;
-        text-align: center;
-        padding: 0 10px;
     }
 
     .jump-input {
@@ -148,14 +155,12 @@ import Layout from '../../../../../layouts/Layout.astro';
         transform: translate(-50%, -50%); 
     }
 
-    .jump-input::placeholder {
-        color: #94a3b8;
-        opacity: 0.6;
-    }
-
+    .jump-input::placeholder { color: #94a3b8; opacity: 0.6; }
     .jump-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    
     .input-blue { color: #2563eb; }
     .input-blue:focus { border-color: #2563eb; }
+    
     .input-red { color: #d32f2f; }
     .input-red:focus { border-color: #d32f2f; }
 
@@ -173,6 +178,8 @@ import Layout from '../../../../../layouts/Layout.astro';
         font-weight: 700;
         cursor: pointer;
         transition: background 0.2s, transform 0.2s;
+        position: relative;
+        z-index: 20;
     }
 
     .btn-verify:hover:not(:disabled) { background: #334155; transform: translateY(-2px); }
@@ -194,8 +201,8 @@ import Layout from '../../../../../layouts/Layout.astro';
         width: 100%;
         pointer-events: none; 
     }
-    .svg-top { top: -40px; height: 40px; }
-    .svg-bottom { bottom: -40px; height: 40px; }
+    .svg-top { top: -80px; height: 80px; }
+    .svg-bottom { bottom: -80px; height: 80px; }
 </style>
 
 <script>
