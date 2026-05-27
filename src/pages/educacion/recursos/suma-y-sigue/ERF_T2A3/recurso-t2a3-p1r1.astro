@@ -7,7 +7,7 @@ import Layout from '../../../../../layouts/Layout.astro';
     <div class="recurso-wrapper">
         <div class="card">
             <div class="header-text">
-                <p class="desc">Encuentra el factor de multiplicación o división entre columnas consecutivas (ej: <strong>x 2</strong>, <strong>÷ 2</strong>).</p>
+                <p class="desc">Encuentra el factor de multiplicación o división entre columnas consecutivas (ej: <strong>· 2</strong>, <strong>÷ 2</strong>).</p>
             </div>
 
             <div class="interactive-container">
@@ -24,10 +24,10 @@ import Layout from '../../../../../layouts/Layout.astro';
                     <path d="M 555 35 Q 590 -10 625 35" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
                 </svg>
 
-                <input type="text" id="top1" class="jump-input input-blue" style="left: 260px; top: -55px;" autocomplete="off">
-                <input type="text" id="top2" class="jump-input input-blue" style="left: 370px; top: -55px;" autocomplete="off">
-                <input type="text" id="top3" class="jump-input input-blue" style="left: 480px; top: -55px;" autocomplete="off">
-                <input type="text" id="top4" class="jump-input input-blue" style="left: 590px; top: -55px;" autocomplete="off">
+                <input type="text" id="top1" class="jump-input input-blue" style="left: 260px; top: -55px;" placeholder="· " autocomplete="off">
+                <input type="text" id="top2" class="jump-input input-blue" style="left: 370px; top: -55px;" placeholder="· " autocomplete="off">
+                <input type="text" id="top3" class="jump-input input-blue" style="left: 480px; top: -55px;" placeholder="· " autocomplete="off">
+                <input type="text" id="top4" class="jump-input input-blue" style="left: 590px; top: -55px;" placeholder="· " autocomplete="off">
 
                 <table>
                     <tr>
@@ -60,10 +60,10 @@ import Layout from '../../../../../layouts/Layout.astro';
                     <path d="M 555 5 Q 590 50 625 5" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
                 </svg>
 
-                <input type="text" id="bot1" class="jump-input input-red" style="left: 260px; bottom: -85px;" autocomplete="off">
-                <input type="text" id="bot2" class="jump-input input-red" style="left: 370px; bottom: -85px;" autocomplete="off">
-                <input type="text" id="bot3" class="jump-input input-red" style="left: 480px; bottom: -85px;" autocomplete="off">
-                <input type="text" id="bot4" class="jump-input input-red" style="left: 590px; bottom: -85px;" autocomplete="off">
+                <input type="text" id="bot1" class="jump-input input-red" style="left: 260px; bottom: -85px;" placeholder="÷ " autocomplete="off">
+                <input type="text" id="bot2" class="jump-input input-red" style="left: 370px; bottom: -85px;" placeholder="÷ " autocomplete="off">
+                <input type="text" id="bot3" class="jump-input input-red" style="left: 480px; bottom: -85px;" placeholder="÷ " autocomplete="off">
+                <input type="text" id="bot4" class="jump-input input-red" style="left: 590px; bottom: -85px;" placeholder="÷ " autocomplete="off">
 
             </div>
 
@@ -148,6 +148,11 @@ import Layout from '../../../../../layouts/Layout.astro';
         transform: translate(-50%, -50%); 
     }
 
+    .jump-input::placeholder {
+        color: #94a3b8;
+        opacity: 0.6;
+    }
+
     .jump-input:focus { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
     .input-blue { color: #2563eb; }
     .input-blue:focus { border-color: #2563eb; }
@@ -196,7 +201,7 @@ import Layout from '../../../../../layouts/Layout.astro';
 <script>
     const setupCovariacionInversa = () => {
         const correctAnswers: Record<string, string> = {
-            top1: "x 2", top2: "x 2", top3: "x 2", top4: "x 2",
+            top1: "· 2", top2: "· 2", top3: "· 2", top4: "· 2",
             bot1: "÷ 2", bot2: "÷ 2", bot3: "÷ 2", bot4: "÷ 2"
         };
 
@@ -212,15 +217,6 @@ import Layout from '../../../../../layouts/Layout.astro';
 
         if (!btnVerify || !feedback) return;
 
-        function formatAnswer(val: string) {
-            let clean = val.toLowerCase().replace(/\s+/g, '').replace(',', '.');
-            
-            if (['x2', '*2', '·2'].includes(clean)) return 'x 2';
-            if (['/2', '÷2', ':2'].includes(clean)) return '÷ 2';
-            
-            return val.trim();
-        }
-
         inputIds.forEach(id => {
             const input = document.getElementById(id) as HTMLInputElement | null;
             if (!input) return;
@@ -229,7 +225,19 @@ import Layout from '../../../../../layouts/Layout.astro';
             input.parentNode?.replaceChild(newClone, input);
 
             newClone.addEventListener('input', (e) => {
-                estadoSaltos[id] = (e.target as HTMLInputElement).value;
+                const target = e.target as HTMLInputElement;
+                const isTop = id.startsWith('top');
+                const prefix = isTop ? '· ' : '÷ ';
+                
+                let rawNumbers = target.value.replace(/[^0-9,.]/g, '');
+                
+                if (rawNumbers.length > 0) {
+                    target.value = prefix + rawNumbers;
+                } else {
+                    target.value = '';
+                }
+                
+                estadoSaltos[id] = target.value;
             });
         });
 
@@ -243,14 +251,13 @@ import Layout from '../../../../../layouts/Layout.astro';
                 const input = document.getElementById(id) as HTMLInputElement | null;
                 if (!input) return;
 
-                const userVal = formatAnswer(estadoSaltos[id]);
+                const userVal = estadoSaltos[id].trim();
                 const correctVal = correctAnswers[id];
 
                 input.disabled = true;
 
                 if (userVal === correctVal) {
                     input.classList.add('correct');
-                    input.value = correctVal; 
                     correctCount++;
                 } else {
                     input.classList.add('incorrect');
@@ -263,7 +270,7 @@ import Layout from '../../../../../layouts/Layout.astro';
                 feedback.innerHTML = "¡Excelente! Has identificado la relación. Cuando la variable <strong>x</strong> se multiplica por un factor, la variable <strong>y</strong> se divide por ese mismo factor. Esto es lo que llamamos <strong>proporcionalidad inversa</strong>.";
             } else {
                 feedback.style.color = "#b91c1c";
-                feedback.textContent = "Hay errores. Revisa qué factor multiplicativo (x) o divisor (÷) conecta exactamente el valor de una celda con la siguiente.";
+                feedback.textContent = "Hay errores. Revisa qué factor multiplicativo (·) o divisor (÷) conecta exactamente el valor de una celda con la siguiente.";
             }
 
             newBtnVerify.disabled = true;
