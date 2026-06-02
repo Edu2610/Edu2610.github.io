@@ -7,39 +7,41 @@ import Layout from '../../../../layouts/Layout.astro';
     <div class="recurso-wrapper">
         <div class="card">
             <div class="header">
-                <h3>Covariación Constante: Tasa de Llenado</h3>
+                <h3>Covariación Constante</h3>
                 <p>Selecciona un instante inicial y traza el triángulo para observar el cambio en el próximo minuto.</p>
             </div>
             
-            <div class="controls">
-                <div class="slider-group">
-                    <label>Punto de inicio: <span id="valA" class="label-val">0</span> minutos</label>
-                    <input type="range" id="slideA" min="0" max="4" step="1" value="0">
+            <div class="main-row">
+                <div class="controls-col">
+                    <div class="slider-group">
+                        <label>Punto de inicio: <span id="valA" class="label-val">0</span> minutos</label>
+                        <input type="range" id="slideA" min="0" max="4" step="1" value="0">
+                    </div>
+                    <div class="btn-group">
+                        <button id="btnDraw" class="btn-primary">Trazar (Δx = 1)</button>
+                        <button id="btnClear" class="btn-secondary">Limpiar Gráfico</button>
+                    </div>
                 </div>
-                <div class="btn-group">
-                    <button id="btnDraw" class="btn-primary">Trazar (Δx = 1)</button>
-                    <button id="btnClear" class="btn-secondary">Limpiar Gráfico</button>
-                </div>
-            </div>
 
-            <div class="panel-visor">
-                <svg id="lienzo" viewBox="0 0 450 430" preserveAspectRatio="xMidYMid meet">
-                    <g id="capa-grilla"></g>
-                    <line id="eje-x" class="eje" />
-                    <line id="eje-y" class="eje" />
-                    <text id="lbl-o" text-anchor="end" class="eje-num">0</text>
-                    <text id="lbl-ejex" text-anchor="end" class="eje-label">Tiempo (min) →</text>
-                    <text id="lbl-ejey" text-anchor="start" class="eje-label">Líquido (L) ↑</text>
-                    
-                    <line id="recta-principal" class="recta-func" />
-                    
-                    <g id="capa-trace"></g>
-                    <g id="capa-triangulos"></g>
-                    
-                    <line id="guia-x" class="guia-preview" />
-                    <line id="guia-y" class="guia-preview" />
-                    <circle id="punto-preview" class="punto-preview" r="5" />
-                </svg>
+                <div class="panel-visor">
+                    <svg id="lienzo" viewBox="0 0 450 430" preserveAspectRatio="xMidYMid meet">
+                        <g id="capa-grilla"></g>
+                        <line id="eje-x" class="eje" />
+                        <line id="eje-y" class="eje" />
+                        <text id="lbl-o" text-anchor="end" class="eje-num">0</text>
+                        <text id="lbl-ejex" text-anchor="end" class="eje-label">Tiempo (min) →</text>
+                        <text id="lbl-ejey" text-anchor="start" class="eje-label">Líquido (L) ↑</text>
+                        
+                        <line id="recta-principal" class="recta-func" />
+                        
+                        <g id="capa-trace"></g>
+                        <g id="capa-triangulos"></g>
+                        
+                        <line id="guia-x" class="guia-preview" />
+                        <line id="guia-y" class="guia-preview" />
+                        <circle id="punto-preview" class="punto-preview" r="5" />
+                    </svg>
+                </div>
             </div>
         </div>
     </div>
@@ -62,77 +64,88 @@ import Layout from '../../../../layouts/Layout.astro';
         background-color: var(--bg);
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         padding: 40px 20px;
         width: 100%;
+        min-height: 100vh;
     }
 
     .recurso-wrapper .card { 
         background: white; 
-        padding: 20px 25px; 
+        padding: 12px 18px 14px 18px; 
         border-radius: 12px; 
         box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
-        max-width: 700px; /* Reducido para mayor densidad */
+        max-width: 810px;
         width: 100%; 
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
     }
     
-    .recurso-wrapper .header { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-    .recurso-wrapper .header h3 { color: var(--primary); margin: 0; font-size: 1.3rem; }
-    .recurso-wrapper .header p { font-size: 0.9rem; color: var(--dark); margin: 5px 0 0 0; }
+    .recurso-wrapper .header { border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .recurso-wrapper .header h3 { color: var(--primary); margin: 0; font-size: 1.1rem; }
+    .recurso-wrapper .header p { font-size: 0.85rem; color: var(--dark); margin: 3px 0 0 0; }
     
-    /* Layout en fila para no malgastar espacio vertical */
-    .recurso-wrapper .controls { 
-        display: flex; 
-        flex-direction: row; 
-        align-items: flex-end;
-        gap: 20px; 
-        background: #f8fafc; 
-        padding: 15px; 
-        border-radius: 8px; 
+    .recurso-wrapper .main-row {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .recurso-wrapper .controls-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 12px;
+        flex: 0 0 280px;
+        background: #f8fafc;
+        padding: 12px;
+        border-radius: 8px;
         border: 1px solid var(--border);
     }
     
-    .recurso-wrapper .slider-group { display: flex; flex-direction: column; gap: 8px; flex: 1; margin-bottom: 6px; }
-    .recurso-wrapper .slider-group label { color: #475569; font-size: 0.95rem; }
-    .recurso-wrapper .label-val { font-weight: bold; color: var(--dark); font-size: 1.05rem; }
+    .recurso-wrapper .slider-group { display: flex; flex-direction: column; gap: 6px; }
+    .recurso-wrapper .slider-group label { color: var(--dark); font-size: 0.95rem; }
+    .recurso-wrapper .label-val { font-weight: bold; color: var(--dark); font-size: 0.95rem; }
     
     /* Hacks de compatibilidad cross-browser para el slider */
     .recurso-wrapper input[type="range"] { 
         -webkit-appearance: none; width: 100%; height: 6px; background: #cbd5e1; border-radius: 3px; outline: none; cursor: pointer;
     }
     .recurso-wrapper input[type="range"]::-webkit-slider-thumb { 
-        -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.3); 
+        -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3); 
     }
     .recurso-wrapper input[type="range"]::-moz-range-thumb {
-        width: 20px; height: 20px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.3); border: none;
+        width: 18px; height: 18px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3); border: none;
     }
 
-    .recurso-wrapper .btn-group { display: flex; gap: 10px; flex: 1; }
+    .recurso-wrapper .btn-group { display: flex; flex-direction: column; gap: 8px; }
     
     /* Adaptabilidad en móviles */
     @media (max-width: 600px) {
-        .recurso-wrapper .controls { flex-direction: column; align-items: stretch; }
-        .recurso-wrapper .btn-group { flex-direction: column; }
+        .recurso-wrapper .main-row { flex-direction: column; align-items: stretch; }
+        .recurso-wrapper .controls-col { flex: 1 auto; }
+        .recurso-wrapper .btn-group { flex-direction: row; }
     }
 
     .recurso-wrapper button { 
-        cursor: pointer; padding: 10px 14px; border: none; border-radius: 6px; font-weight: bold; transition: all 0.2s; font-size: 0.9rem; flex: 1;
+        cursor: pointer; padding: 9px 12px; border: none; border-radius: 6px; font-weight: bold; transition: all 0.2s; font-size: 0.85rem; flex: 1;
     }
     .recurso-wrapper .btn-primary { background: var(--primary); color: white; }
-    .recurso-wrapper .btn-primary:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-1px); }
+    .recurso-wrapper .btn-primary:hover:not(:disabled) { background: #b9332a; transform: translateY(-1px); }
     .recurso-wrapper .btn-secondary { background: #cbd5e1; color: #475569; }
     .recurso-wrapper .btn-secondary:hover:not(:disabled) { background: #94a3b8; color: white; }
     .recurso-wrapper button:disabled { background: var(--border); color: #94a3b8; cursor: not-allowed; transform: none; }
 
     .recurso-wrapper .panel-visor {
         background: white; border: 1px solid var(--border); border-radius: 8px;
-        display: flex; justify-content: center; align-items: center; padding: 15px;
+        display: flex; justify-content: center; align-items: center; padding: 8px;
+        flex: 1;
+        min-width: 0;
     }
 
-    .recurso-wrapper svg { width: 100%; max-width: 420px; height: auto; overflow: visible; }
+    .recurso-wrapper svg { width: 100%; max-width: 388px; height: auto; overflow: visible; display: block; }
     
     .recurso-wrapper .grilla { stroke: #e2e8f0; stroke-width: 1; }
     .recurso-wrapper .eje { stroke: var(--dark); stroke-width: 2; stroke-linecap: square; }
