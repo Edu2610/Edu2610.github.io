@@ -7,27 +7,23 @@ import Layout from '../../../../layouts/Layout.astro';
     <div class="recurso-wrapper">
         <div class="card">
             <div class="header">
-                <h3></h3>
+                <h3>Covariación Constante: Tasa de Llenado</h3>
                 <p>Selecciona un instante inicial y traza el triángulo para observar el cambio en el próximo minuto.</p>
             </div>
             
             <div class="controls">
-                <div class="control-row">
-                    <div class="slider-group">
-                        <label>Punto de inicio en el tiempo: <span id="valA" class="label-val">0</span> minutos</label>
-                        <input type="range" id="slideA" min="0" max="14" step="1" value="0">
-                    </div>
+                <div class="slider-group">
+                    <label>Punto de inicio: <span id="valA" class="label-val">0</span> minutos</label>
+                    <input type="range" id="slideA" min="0" max="4" step="1" value="0">
                 </div>
-                <div class="control-row">
-                    <div class="btn-group">
-                        <button id="btnDraw" class="btn-primary">Trazar Triángulo (Δx = 1)</button>
-                        <button id="btnClear" class="btn-secondary">Limpiar Gráfico</button>
-                    </div>
+                <div class="btn-group">
+                    <button id="btnDraw" class="btn-primary">Trazar (Δx = 1)</button>
+                    <button id="btnClear" class="btn-secondary">Limpiar Gráfico</button>
                 </div>
             </div>
 
             <div class="panel-visor">
-                <svg id="lienzo" viewBox="0 0 520 380" preserveAspectRatio="xMidYMid meet">
+                <svg id="lienzo" viewBox="0 0 450 430" preserveAspectRatio="xMidYMid meet">
                     <g id="capa-grilla"></g>
                     <line id="eje-x" class="eje" />
                     <line id="eje-y" class="eje" />
@@ -39,7 +35,10 @@ import Layout from '../../../../layouts/Layout.astro';
                     
                     <g id="capa-trace"></g>
                     <g id="capa-triangulos"></g>
-                    <circle id="punto-preview" class="punto-preview" r="6" />
+                    
+                    <line id="guia-x" class="guia-preview" />
+                    <line id="guia-y" class="guia-preview" />
+                    <circle id="punto-preview" class="punto-preview" r="5" />
                 </svg>
             </div>
         </div>
@@ -47,6 +46,11 @@ import Layout from '../../../../layouts/Layout.astro';
 </Layout>
 
 <style is:global>
+    /* Reset local para evitar que estilos del proyecto rompan el componente */
+    .recurso-wrapper, .recurso-wrapper * {
+        box-sizing: border-box;
+    }
+
     .recurso-wrapper {
         --primary: #D33C31;
         --primary-dark: #8B2E28;
@@ -61,15 +65,14 @@ import Layout from '../../../../layouts/Layout.astro';
         align-items: center;
         padding: 40px 20px;
         width: 100%;
-        box-sizing: border-box;
     }
 
     .recurso-wrapper .card { 
         background: white; 
-        padding: 25px; 
+        padding: 20px 25px; 
         border-radius: 12px; 
         box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
-        max-width: 750px; 
+        max-width: 700px; /* Reducido para mayor densidad */
         width: 100%; 
         display: flex;
         flex-direction: column;
@@ -77,43 +80,46 @@ import Layout from '../../../../layouts/Layout.astro';
     }
     
     .recurso-wrapper .header { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-    .recurso-wrapper .header h3 { color: var(--primary); margin: 0; font-size: 1.4rem; }
-    .recurso-wrapper .header p { font-size: 0.95rem; color: var(--dark); margin: 5px 0 0 0; }
+    .recurso-wrapper .header h3 { color: var(--primary); margin: 0; font-size: 1.3rem; }
+    .recurso-wrapper .header p { font-size: 0.9rem; color: var(--dark); margin: 5px 0 0 0; }
     
+    /* Layout en fila para no malgastar espacio vertical */
     .recurso-wrapper .controls { 
         display: flex; 
-        flex-direction: column; 
-        gap: 15px; 
+        flex-direction: row; 
+        align-items: flex-end;
+        gap: 20px; 
         background: #f8fafc; 
-        padding: 20px; 
+        padding: 15px; 
         border-radius: 8px; 
         border: 1px solid var(--border);
     }
     
-    .recurso-wrapper .control-row { display: flex; gap: 20px; align-items: center; justify-content: space-between; width: 100%; }
-    
-    @media (max-width: 600px) {
-        .recurso-wrapper .control-row { flex-direction: column; align-items: stretch; }
-    }
-
-    .recurso-wrapper .slider-group { display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
+    .recurso-wrapper .slider-group { display: flex; flex-direction: column; gap: 8px; flex: 1; margin-bottom: 6px; }
     .recurso-wrapper .slider-group label { color: #475569; font-size: 0.95rem; }
-    .recurso-wrapper .label-val { font-weight: bold; color: var(--dark); font-size: 1.1rem; }
+    .recurso-wrapper .label-val { font-weight: bold; color: var(--dark); font-size: 1.05rem; }
     
+    /* Hacks de compatibilidad cross-browser para el slider */
     .recurso-wrapper input[type="range"] { 
-        -webkit-appearance: none; width: 100%; height: 8px; background: #cbd5e1; border-radius: 4px; outline: none; cursor: pointer;
+        -webkit-appearance: none; width: 100%; height: 6px; background: #cbd5e1; border-radius: 3px; outline: none; cursor: pointer;
     }
     .recurso-wrapper input[type="range"]::-webkit-slider-thumb { 
-        -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.3); 
+        -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.3); 
+    }
+    .recurso-wrapper input[type="range"]::-moz-range-thumb {
+        width: 20px; height: 20px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.3); border: none;
     }
 
-    .recurso-wrapper .btn-group { display: flex; gap: 10px; width: 100%; }
+    .recurso-wrapper .btn-group { display: flex; gap: 10px; flex: 1; }
+    
+    /* Adaptabilidad en móviles */
     @media (max-width: 600px) {
+        .recurso-wrapper .controls { flex-direction: column; align-items: stretch; }
         .recurso-wrapper .btn-group { flex-direction: column; }
     }
 
     .recurso-wrapper button { 
-        cursor: pointer; padding: 12px 16px; border: none; border-radius: 6px; font-weight: bold; transition: all 0.2s; font-size: 0.95rem; flex: 1;
+        cursor: pointer; padding: 10px 14px; border: none; border-radius: 6px; font-weight: bold; transition: all 0.2s; font-size: 0.9rem; flex: 1;
     }
     .recurso-wrapper .btn-primary { background: var(--primary); color: white; }
     .recurso-wrapper .btn-primary:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-1px); }
@@ -126,28 +132,29 @@ import Layout from '../../../../layouts/Layout.astro';
         display: flex; justify-content: center; align-items: center; padding: 15px;
     }
 
-    .recurso-wrapper svg { width: 100%; max-width: 550px; height: auto; overflow: visible; }
+    .recurso-wrapper svg { width: 100%; max-width: 420px; height: auto; overflow: visible; }
     
-    .recurso-wrapper .grilla { stroke: var(--border); stroke-width: 1; }
+    .recurso-wrapper .grilla { stroke: #e2e8f0; stroke-width: 1; }
     .recurso-wrapper .eje { stroke: var(--dark); stroke-width: 2; stroke-linecap: square; }
-    .recurso-wrapper .eje-num { font-size: 11px; fill: var(--dark); font-weight: 500; }
-    .recurso-wrapper .eje-label { font-size: 12px; font-weight: bold; fill: var(--dark); }
-    .recurso-wrapper .recta-func { stroke: var(--dark); stroke-width: 2.5; }
+    .recurso-wrapper .eje-num { font-size: 12px; fill: var(--dark); font-weight: 500; }
+    .recurso-wrapper .eje-label { font-size: 13px; font-weight: bold; fill: var(--dark); }
+    .recurso-wrapper .recta-func { stroke: var(--dark); stroke-width: 2; }
     
-    /* Animaciones SVG (Afectarán correctamente a los inyectados por JS) */
     .recurso-wrapper .triangulo-fill { 
         fill: rgba(211, 60, 49, 0.12); 
         stroke: var(--primary-dark); 
-        stroke-width: 2;
+        stroke-width: 1.5;
         opacity: 0;
         transition: opacity 0.3s ease;
     }
     .recurso-wrapper .punto-tri { fill: var(--dark); opacity: 0; transition: opacity 0.2s ease; }
-    .recurso-wrapper .punto-preview { fill: white; stroke: var(--primary); stroke-width: 3; }
+    
+    .recurso-wrapper .punto-preview { fill: white; stroke: var(--primary); stroke-width: 2.5; transition: all 0.1s; }
+    .recurso-wrapper .guia-preview { stroke: var(--primary); stroke-width: 1.5; stroke-dasharray: 4 4; opacity: 0.4; transition: all 0.1s; }
     
     .recurso-wrapper .lbl-delta { opacity: 0; transition: opacity 0.3s ease; }
-    .recurso-wrapper .lbl-delta-x { font-size: 11px; font-weight: bold; fill: var(--dark); }
-    .recurso-wrapper .lbl-delta-y { font-size: 11px; font-weight: bold; fill: var(--primary); }
+    .recurso-wrapper .lbl-delta-x { font-size: 12px; font-weight: bold; fill: var(--dark); }
+    .recurso-wrapper .lbl-delta-y { font-size: 12px; font-weight: bold; fill: var(--primary); }
 
     .recurso-wrapper .anim-show { opacity: 1 !important; }
 
@@ -172,20 +179,23 @@ import Layout from '../../../../layouts/Layout.astro';
         if (!slideA) return; 
 
         const valA = document.getElementById('valA');
-        const btnDraw = document.getElementById('btnDraw') as HTMLButtonElement;
-        const btnClear = document.getElementById('btnClear') as HTMLButtonElement;
+        const btnDraw = document.getElementById('btnDraw') as HTMLButtonElement | null;
+        const btnClear = document.getElementById('btnClear') as HTMLButtonElement | null;
         const capaTrace = document.getElementById('capa-trace');
         const capaTriangulos = document.getElementById('capa-triangulos');
         const puntoPreview = document.getElementById('punto-preview');
+        const guiaX = document.getElementById('guia-x');
+        const guiaY = document.getElementById('guia-y');
 
         const k_fill = 2/3; 
-        const xMax = 15;
-        const yMax = 10;
-        const unitSize = 28; 
+        const xMax = 5;
+        const yMax = 5;
+        const unitSize = 70; 
+        
         const cW = xMax * unitSize; 
         const cH = yMax * unitSize; 
-        const mX = 35;
-        const mY = 25;
+        const mX = 40;
+        const mY = 30;
         const baseLine = mY + cH;
 
         const mapX = (x: number) => mX + (x * unitSize);
@@ -196,40 +206,41 @@ import Layout from '../../../../layouts/Layout.astro';
         function inicializarPlano() {
             document.getElementById('eje-x')?.setAttribute('x1', mX.toString());
             document.getElementById('eje-x')?.setAttribute('y1', baseLine.toString());
-            document.getElementById('eje-x')?.setAttribute('x2', (mX + cW + 15).toString());
+            document.getElementById('eje-x')?.setAttribute('x2', (mX + cW + 40).toString());
             document.getElementById('eje-x')?.setAttribute('y2', baseLine.toString());
 
             document.getElementById('eje-y')?.setAttribute('x1', mX.toString());
             document.getElementById('eje-y')?.setAttribute('y1', baseLine.toString());
             document.getElementById('eje-y')?.setAttribute('x2', mX.toString());
-            document.getElementById('eje-y')?.setAttribute('y2', (mY - 10).toString());
+            document.getElementById('eje-y')?.setAttribute('y2', (mY - 20).toString());
 
-            document.getElementById('lbl-o')?.setAttribute('x', (mX - 6).toString());
-            document.getElementById('lbl-o')?.setAttribute('y', (baseLine + 12).toString());
-            document.getElementById('lbl-ejex')?.setAttribute('x', (mX + cW + 15).toString());
-            document.getElementById('lbl-ejex')?.setAttribute('y', (baseLine + 30).toString());
+            document.getElementById('lbl-o')?.setAttribute('x', (mX - 10).toString());
+            document.getElementById('lbl-o')?.setAttribute('y', (baseLine + 16).toString());
+            document.getElementById('lbl-ejex')?.setAttribute('x', (mX + cW + 40).toString());
+            document.getElementById('lbl-ejex')?.setAttribute('y', (baseLine + 35).toString());
             document.getElementById('lbl-ejey')?.setAttribute('x', mX.toString());
-            document.getElementById('lbl-ejey')?.setAttribute('y', (mY - 15).toString());
+            document.getElementById('lbl-ejey')?.setAttribute('y', (mY - 25).toString());
 
             const grilla = document.getElementById('capa-grilla');
             if (grilla) {
-                grilla.innerHTML = '';
+                let htmlGrilla = '';
                 for(let i = 1; i <= xMax; i++) {
                     let px = mapX(i);
-                    grilla.innerHTML += `<line x1="${px}" y1="${baseLine}" x2="${px}" y2="${mY}" class="grilla" />`;
-                    grilla.innerHTML += `<text x="${px}" y="${baseLine + 12}" text-anchor="middle" class="eje-num">${i}</text>`;
+                    htmlGrilla += `<line x1="${px}" y1="${baseLine}" x2="${px}" y2="${mY}" class="grilla" />`;
+                    htmlGrilla += `<text x="${px}" y="${baseLine + 18}" text-anchor="middle" class="eje-num">${i}</text>`;
                 }
                 for(let j = 1; j <= yMax; j++) {
                     let py = mapY(j);
-                    grilla.innerHTML += `<line x1="${mX}" y1="${py}" x2="${mX + cW}" y2="${py}" class="grilla" />`;
-                    grilla.innerHTML += `<text x="${mX - 6}" y="${py + 3}" text-anchor="end" class="eje-num">${j}</text>`;
+                    htmlGrilla += `<line x1="${mX}" y1="${py}" x2="${mX + cW}" y2="${py}" class="grilla" />`;
+                    htmlGrilla += `<text x="${mX - 10}" y="${py + 4}" text-anchor="end" class="eje-num">${j}</text>`;
                 }
+                grilla.innerHTML = htmlGrilla;
             }
 
             document.getElementById('recta-principal')?.setAttribute('x1', mapX(0).toString());
             document.getElementById('recta-principal')?.setAttribute('y1', mapY(0).toString());
-            document.getElementById('recta-principal')?.setAttribute('x2', mapX(15).toString());
-            document.getElementById('recta-principal')?.setAttribute('y2', mapY(10).toString());
+            document.getElementById('recta-principal')?.setAttribute('x2', mapX(xMax).toString());
+            document.getElementById('recta-principal')?.setAttribute('y2', mapY(xMax * k_fill).toString());
         }
 
         function crearTrianguloConsolidado(x1: number) {
@@ -240,28 +251,33 @@ import Layout from '../../../../layouts/Layout.astro';
             const px1 = mapX(x1), px2 = mapX(x2);
             const py1 = mapY(y1), py2 = mapY(y2);
 
-            const colisionDerecha = drawnTriangles.has(x2);
-            const anchorY = colisionDerecha ? 'end' : 'start';
-            const offsetX = colisionDerecha ? -6 : 6;
-            const bgX = colisionDerecha ? px2 - 42 : px2 + offsetX;
+            const dxTextX = px1 + 35; 
+            const dxRectX = dxTextX - 18;
+            const dxRectY = py1 + 4;
+            const dxTextY = dxRectY + 12;
+
+            const dyTextX = px2 + 6;
+            const dyTextY = py1 - 8; 
+            const dyRectX = dyTextX - 2;
+            const dyRectY = dyTextY - 12;
 
             return `
                 <polygon points="${px1},${py1} ${px2},${py1} ${px2},${py2}" class="triangulo-fill anim-show" />
-                <circle cx="${px1}" cy="${py1}" r="4" class="punto-tri anim-show" />
-                <circle cx="${px2}" cy="${py2}" r="4" class="punto-tri anim-show" />
+                <circle cx="${px1}" cy="${py1}" r="3" class="punto-tri anim-show" />
+                <circle cx="${px2}" cy="${py2}" r="3" class="punto-tri anim-show" />
                 <g class="lbl-delta anim-show">
-                    <rect x="${(px1+px2)/2 - 16}" y="${py1 + 4}" width="32" height="14" fill="rgba(255,255,255,0.8)" rx="2"/>
-                    <text x="${(px1+px2)/2}" y="${py1 + 15}" text-anchor="middle" class="lbl-delta-x">Δx=1</text>
+                    <rect x="${dxRectX}" y="${dxRectY}" width="36" height="16" fill="rgba(255,255,255,0.85)" rx="2"/>
+                    <text x="${dxTextX}" y="${dxTextY}" text-anchor="middle" class="lbl-delta-x">Δx=1</text>
                 </g>
                 <g class="lbl-delta anim-show">
-                    <rect x="${bgX}" y="${(py1+py2)/2 - 7}" width="38" height="14" fill="rgba(255,255,255,0.8)" rx="2"/>
-                    <text x="${px2 + offsetX}" y="${(py1+py2)/2 + 3}" text-anchor="${anchorY}" class="lbl-delta-y">Δy=2/3</text>
+                    <rect x="${dyRectX}" y="${dyRectY}" width="46" height="16" fill="rgba(255,255,255,0.85)" rx="2"/>
+                    <text x="${dyTextX}" y="${dyTextY}" text-anchor="start" class="lbl-delta-y">Δy=2/3</text>
                 </g>
             `;
         }
 
         function animarNuevoTriangulo(x1: number) {
-            btnDraw.disabled = true; 
+            if (btnDraw) btnDraw.disabled = true; 
             slideA!.disabled = true;
 
             const x2 = x1 + 1;
@@ -271,14 +287,15 @@ import Layout from '../../../../layouts/Layout.astro';
             const px1 = mapX(x1), px2 = mapX(x2);
             const py1 = mapY(y1), py2 = mapY(y2);
 
-            if(capaTrace) capaTrace.innerHTML = ''; 
+            if (guiaX) guiaX.style.opacity = '0';
+            if (guiaY) guiaY.style.opacity = '0';
 
             if(capaTrace) {
                 capaTrace.innerHTML = `
                     <line id="trace-x" x1="${px1}" y1="${py1}" x2="${px2}" y2="${py1}" class="trace-line trace-line-x" />
                     <line id="trace-y" x1="${px2}" y1="${py1}" x2="${px2}" y2="${py2}" class="trace-line trace-line-y" />
-                    <circle cx="${px1}" cy="${py1}" r="4" class="punto-tri" id="p1-trace"/>
-                    <circle cx="${px2}" cy="${py2}" r="4" class="punto-tri" id="p2-trace"/>
+                    <circle cx="${px1}" cy="${py1}" r="3" class="punto-tri" id="p1-trace"/>
+                    <circle cx="${px2}" cy="${py2}" r="3" class="punto-tri" id="p2-trace"/>
                 `;
             }
 
@@ -301,29 +318,44 @@ import Layout from '../../../../layouts/Layout.astro';
 
             p1?.classList.add('anim-show');
 
-            setTimeout(() => { if(tX) tX.style.animation = 'drawLine 0.5s ease-out forwards'; }, 100);
-            setTimeout(() => { if(tY) tY.style.animation = 'drawLine 0.4s ease-out forwards'; }, 600); 
-            setTimeout(() => { p2?.classList.add('anim-show'); }, 1000);
+            setTimeout(() => { if(tX) tX.style.animation = 'drawLine 0.4s ease-out forwards'; }, 100);
+            setTimeout(() => { if(tY) tY.style.animation = 'drawLine 0.3s ease-out forwards'; }, 500); 
+            setTimeout(() => { p2?.classList.add('anim-show'); }, 800);
 
             setTimeout(() => {
                 drawnTriangles.add(x1); 
                 if(capaTrace) capaTrace.innerHTML = ''; 
                 if(capaTriangulos) capaTriangulos.innerHTML += crearTrianguloConsolidado(x1); 
                 
-                btnDraw.disabled = false;
+                if (btnDraw) btnDraw.disabled = false;
                 slideA!.disabled = false;
+                if (guiaX) guiaX.style.opacity = '0.4';
+                if (guiaY) guiaY.style.opacity = '0.4';
                 actualizarUI(); 
-            }, 1300);
+            }, 1100);
         }
 
         function actualizarUI() {
             const x = parseInt(slideA!.value);
+            const py = mapY(x * k_fill);
+            const px = mapX(x);
+
             if(valA) valA.innerText = x.toString();
             
-            puntoPreview?.setAttribute('cx', mapX(x).toString());
-            puntoPreview?.setAttribute('cy', mapY(x * k_fill).toString());
+            puntoPreview?.setAttribute('cx', px.toString());
+            puntoPreview?.setAttribute('cy', py.toString());
 
-            if(btnDraw) btnDraw.disabled = drawnTriangles.has(x);
+            guiaX?.setAttribute('x1', px.toString());
+            guiaX?.setAttribute('y1', py.toString());
+            guiaX?.setAttribute('x2', px.toString());
+            guiaX?.setAttribute('y2', baseLine.toString());
+
+            guiaY?.setAttribute('x1', px.toString());
+            guiaY?.setAttribute('y1', py.toString());
+            guiaY?.setAttribute('x2', mX.toString());
+            guiaY?.setAttribute('y2', py.toString());
+
+            if (btnDraw) btnDraw.disabled = drawnTriangles.has(x);
         }
 
         slideA?.addEventListener('input', actualizarUI);
