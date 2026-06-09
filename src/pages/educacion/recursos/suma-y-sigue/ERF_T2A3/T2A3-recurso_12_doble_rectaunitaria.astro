@@ -1,0 +1,441 @@
+---
+import Layout from '../../../../../layouts/Layout.astro';
+// Ajusta la ruta al Layout según corresponda en tu estructura de carpetas
+---
+
+<Layout titulo="Recurso Proporcionalidad Inversa">
+    <div class="recurso-wrapper" id="recurso-doble-recta-constante">
+        <div class="card">
+            <div id="svg-container">
+                <svg width="100%" height="100%" viewBox="-60 0 960 480">
+                    <defs>
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                        </marker>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
+                        </marker>
+                        <marker id="arrow-orange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b" />
+                        </marker>
+                    </defs>
+
+                    <line x1="80" y1="230" x2="820" y2="230" stroke="#94a3b8" stroke-width="3" />
+                    <line x1="80" y1="330" x2="820" y2="330" stroke="#94a3b8" stroke-width="3" />
+                    
+                    <text x="75" y="235" font-weight="bold" fill="#1e293b" text-anchor="end">Velocidad (x)</text>
+                    <text x="75" y="335" font-weight="bold" fill="#1e293b" text-anchor="end">Tiempo (y)</text>
+
+                    <line x1="450" y1="220" x2="450" y2="340" stroke="#1e293b" stroke-width="2" stroke-dasharray="4" />
+                    <circle cx="450" cy="230" r="6" fill="#1e293b" />
+                    <circle cx="450" cy="330" r="6" fill="#1e293b" />
+                    <text x="450" y="205" text-anchor="middle" font-weight="bold" font-size="16">25</text>
+                    <text x="450" y="365" text-anchor="middle" font-weight="bold" font-size="16">4</text>
+
+                    <g id="step1-group">
+                        <line x1="150" y1="220" x2="150" y2="340" stroke="#059669" stroke-width="2" stroke-dasharray="4" />
+                        <circle cx="150" cy="230" r="6" fill="#059669" />
+                        <circle cx="150" cy="330" r="6" fill="#059669" />
+
+                        <text x="150" y="205" text-anchor="middle" font-weight="bold" fill="#059669" font-size="16">1</text>
+
+                        <foreignObject x="125" y="350" width="50" height="30">
+                            <input type="text" id="val-y-left" class="input-box green-border" autocomplete="off" placeholder="?">
+                        </foreignObject>
+                        <foreignObject x="180" y="350" width="45" height="30" id="corr-val-y-left" class="hidden">
+                            <div class="correction-box">100</div>
+                        </foreignObject>
+
+                        <g id="highlight-left" class="hidden">
+                            <circle cx="150" cy="365" r="28" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="6"/>
+                            <path d="M 150 435 L 150 398" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-orange)" />
+                            <text x="150" y="455" text-anchor="middle" font-weight="bold" fill="#f59e0b" font-size="14">Valor unitario de y</text>
+                        </g>
+
+                        <path d="M 420 200 Q 285 110 170 200" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                        <foreignObject x="270" y="115" width="50" height="30">
+                            <input type="text" id="op-x-left" placeholder=": ?" class="input-box blue-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="325" y="115" width="40" height="30" id="corr-op-x-left" class="hidden">
+                            <div class="correction-box">25</div>
+                        </foreignObject>
+
+                        <path d="M 420 360 Q 285 450 170 360" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                        <foreignObject x="270" y="405" width="50" height="30">
+                            <input type="text" id="op-y-left" placeholder="× ?" class="input-box red-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="325" y="405" width="40" height="30" id="corr-op-y-left" class="hidden">
+                            <div class="correction-box">25</div>
+                        </foreignObject>
+                    </g>
+
+                    <g id="step2-group" class="hidden">
+                        <line x1="750" y1="220" x2="750" y2="340" stroke="#9333ea" stroke-width="2" stroke-dasharray="4" />
+                        <circle cx="750" cy="230" r="6" fill="#9333ea" />
+                        <circle cx="750" cy="330" r="6" fill="#9333ea" />
+
+                        <text x="750" y="365" text-anchor="middle" font-weight="bold" fill="#9333ea" font-size="16">1</text>
+
+                        <foreignObject x="725" y="185" width="50" height="30">
+                            <input type="text" id="val-x-right" class="input-box purple-border" autocomplete="off" placeholder="?">
+                        </foreignObject>
+                        <foreignObject x="780" y="185" width="45" height="30" id="corr-val-x-right" class="hidden">
+                            <div class="correction-box">100</div>
+                        </foreignObject>
+
+                        <g id="highlight-right" class="hidden">
+                            <circle cx="750" cy="200" r="28" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="6"/>
+                            <path d="M 750 130 L 750 167" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-orange)" />
+                            <text x="750" y="115" text-anchor="middle" font-weight="bold" fill="#f59e0b" font-size="14">Valor unitario de x</text>
+                        </g>
+
+                        <path d="M 480 200 Q 615 110 730 200" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                        <foreignObject x="580" y="115" width="50" height="30">
+                            <input type="text" id="op-x-right" placeholder="× ?" class="input-box blue-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="635" y="115" width="40" height="30" id="corr-op-x-right" class="hidden">
+                            <div class="correction-box">4</div>
+                        </foreignObject>
+
+                        <path d="M 480 360 Q 615 450 730 360" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                        <foreignObject x="580" y="405" width="50" height="30">
+                            <input type="text" id="op-y-right" placeholder=": ?" class="input-box red-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="635" y="405" width="40" height="30" id="corr-op-y-right" class="hidden">
+                            <div class="correction-box">4</div>
+                        </foreignObject>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="controls">
+                <button id="btnVerify" class="btn-verify">Comprobar paso</button>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper { 
+        font-family: 'Inter', system-ui, sans-serif; 
+        background: #f8fafc; 
+        display: flex; 
+        justify-content: center; 
+        padding: 40px 20px; 
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .card { 
+        background: white; 
+        padding: 20px; 
+        border-radius: 12px; 
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+        width: 850px; 
+        max-width: 100%; 
+        box-sizing: border-box;
+    }
+
+    #svg-container { width: 100%; height: 480px; position: relative; }
+    text { font-family: sans-serif; }
+    
+    .controls { 
+        display: flex; 
+        justify-content: center; 
+        margin-top: 15px; 
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    button { 
+        padding: 10px 28px; 
+        border: none; 
+        border-radius: 6px; 
+        font-weight: bold; 
+        font-size: 15px;
+        cursor: pointer; 
+        transition: background 0.2s, transform 0.1s; 
+        color: white; 
+    }
+    
+    .btn-verify { background: #2563eb; }
+    .btn-verify:hover:not(:disabled) { background: #1d4ed8; }
+    .btn-verify:active:not(:disabled) { transform: translateY(1px); }
+    .btn-verify:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
+    
+    .hidden { opacity: 0; pointer-events: none; display: none; }
+    .visible { opacity: 1; transition: opacity 0.5s ease-in; display: block; }
+    .visible-svg { opacity: 1; transition: opacity 0.5s ease-in; }
+    
+    .input-box {
+        width: 100%; height: 100%;
+        text-align: center;
+        font-weight: bold; font-size: 14px;
+        border: 2px solid; border-radius: 4px;
+        box-sizing: border-box;
+        outline: none;
+        background: white;
+        transition: all 0.3s;
+    }
+
+    .blue-border { border-color: #2563eb; color: #2563eb; }
+    .red-border { border-color: #d32f2f; color: #d32f2f; }
+    .green-border { border-color: #059669; color: #059669; }
+    .purple-border { border-color: #9333ea; color: #9333ea; }
+    
+    .input-box:focus { box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+    .input-box.correct { background-color: #dcfce7; border-color: #059669 !important; color: #059669; }
+    .input-box.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; text-decoration: line-through; opacity: 0.7; }
+    
+    .correction-box { 
+        background: #dcfce7; 
+        color: #059669; 
+        border: 2px dashed #059669; 
+        border-radius: 4px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-weight: bold; 
+        font-size: 14px; 
+        width: 100%; 
+        height: 100%; 
+        box-sizing: border-box; 
+    }
+
+    .input-box:disabled { cursor: default; }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    .error { border-color: #ef4444 !important; animation: shake 0.3s; }
+</style>
+
+<script>
+    const setupDobleRectaConstante = () => {
+        const container = document.getElementById('recurso-doble-recta-constante');
+        // Guardia vital para Astro View Transitions
+        if (!container || container.dataset.initialized === 'true') return;
+        container.dataset.initialized = 'true';
+
+        const btnVerify = document.getElementById('btnVerify') as HTMLButtonElement | null;
+        if (!btnVerify) return;
+
+        const inputIds = [
+            'op-x-left', 'op-y-left', 'val-y-left',
+            'op-x-right', 'op-y-right', 'val-x-right'
+        ];
+        
+        // Tipado explícito requerido por TypeScript
+        const inputs: Record<string, HTMLInputElement> = {};
+        const stateObj: Record<string, string> = {};
+        const statusObj: Record<string, string> = {};
+
+        inputIds.forEach(id => {
+            const el = document.getElementById(id) as HTMLInputElement | null;
+            if (el) {
+                inputs[id] = el;
+                el.dataset.prev = ""; 
+                stateObj[id] = "";
+                statusObj[id] = "";
+            }
+        });
+
+        let currentStep = 1;
+
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', (e: Event) => {
+                const el = e.target as HTMLInputElement;
+                const val = el.value;
+                
+                const regex = /^$|^\d*([.,]\d*)?$|^\d+\/\d*$/;
+                
+                if (!regex.test(val)) {
+                    el.value = el.dataset.prev || ""; 
+                    return;
+                }
+                
+                el.dataset.prev = el.value;
+                el.classList.remove('incorrect', 'correct', 'error'); 
+                stateObj[el.id] = el.value.trim();
+            });
+        });
+
+        function parseMath(val: string): number {
+            if (!val) return NaN;
+            let s = val.trim().replace(',', '.');
+            if (s.includes('/')) {
+                const parts = s.split('/');
+                if (parts.length === 2 && parts[1] !== '' && Number(parts[1]) !== 0) {
+                    return Number(parts[0]) / Number(parts[1]);
+                }
+                return NaN;
+            }
+            return Number(s);
+        }
+
+        function isValidInput(val: string): boolean {
+            if (!val || val.trim() === '') return false;
+            if (val.includes('/') && val.endsWith('/')) return false; 
+            const num = parseMath(val);
+            if (isNaN(num) || num <= 0) return false;
+            return true;
+        }
+
+        function showError(element: HTMLInputElement) {
+            element.classList.add('error');
+            setTimeout(() => element.classList.remove('error'), 300);
+        }
+
+        function checkAnswer(val: string, expectedValue: number): boolean {
+            const num = parseMath(val);
+            if (isNaN(num)) return false;
+            return Math.abs(num - expectedValue) <= 0.015;
+        }
+
+        function toggleVisibility(id: string, show: boolean) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (show) {
+                el.classList.remove('hidden');
+                el.classList.add(el.tagName === 'g' ? 'visible-svg' : 'visible');
+            } else {
+                el.classList.remove('visible', 'visible-svg');
+                el.classList.add('hidden');
+            }
+        }
+
+        function aplicarEstadoVisual() {
+            if (currentStep >= 2) {
+                ['op-x-left', 'op-y-left', 'val-y-left'].forEach(id => {
+                    if (!inputs[id]) return;
+                    inputs[id].disabled = true;
+                    inputs[id].value = stateObj[id];
+                    
+                    inputs[id].classList.remove('correct', 'incorrect');
+                    if (statusObj[id] === 'correct') {
+                        inputs[id].classList.add('correct');
+                        toggleVisibility(`corr-${id}`, false);
+                    } else if (statusObj[id] === 'incorrect') {
+                        inputs[id].classList.add('incorrect');
+                        toggleVisibility(`corr-${id}`, true);
+                    }
+                });
+                
+                toggleVisibility('step2-group', true);
+                if (statusObj['val-y-left'] === 'correct') {
+                    toggleVisibility('highlight-left', true);
+                }
+            } else {
+                ['op-x-left', 'op-y-left', 'val-y-left'].forEach(id => {
+                    if (!inputs[id]) return;
+                    inputs[id].disabled = false;
+                    inputs[id].classList.remove('correct', 'incorrect');
+                    toggleVisibility(`corr-${id}`, false);
+                });
+                toggleVisibility('step2-group', false);
+                toggleVisibility('highlight-left', false);
+            }
+
+            if (currentStep === 3) {
+                ['op-x-right', 'op-y-right', 'val-x-right'].forEach(id => {
+                    if (!inputs[id]) return;
+                    inputs[id].disabled = true;
+                    inputs[id].value = stateObj[id];
+
+                    inputs[id].classList.remove('correct', 'incorrect');
+                    if (statusObj[id] === 'correct') {
+                        inputs[id].classList.add('correct');
+                        toggleVisibility(`corr-${id}`, false);
+                    } else if (statusObj[id] === 'incorrect') {
+                        inputs[id].classList.add('incorrect');
+                        toggleVisibility(`corr-${id}`, true);
+                    }
+                });
+                
+                if (statusObj['val-x-right'] === 'correct') {
+                    toggleVisibility('highlight-right', true);
+                }
+                
+                // Validación estricta para TS
+                if (btnVerify) btnVerify.disabled = true;
+            } else if (currentStep === 2) {
+                ['op-x-right', 'op-y-right', 'val-x-right'].forEach(id => {
+                    if (!inputs[id]) return;
+                    inputs[id].disabled = false;
+                    inputs[id].classList.remove('correct', 'incorrect');
+                    toggleVisibility(`corr-${id}`, false);
+                });
+                
+                toggleVisibility('highlight-right', false);
+                
+                // Validación estricta para TS
+                if (btnVerify) btnVerify.disabled = false;
+            }
+        }
+
+        btnVerify.addEventListener('click', () => {
+            if (currentStep === 1) {
+                const ids = ['op-x-left', 'op-y-left', 'val-y-left'];
+                let allValid = true;
+
+                ids.forEach(id => {
+                    if (!isValidInput(stateObj[id])) {
+                        showError(inputs[id]);
+                        allValid = false;
+                    }
+                });
+
+                if (allValid) {
+                    statusObj['op-x-left'] = checkAnswer(stateObj['op-x-left'], 25) ? 'correct' : 'incorrect';
+                    statusObj['op-y-left'] = checkAnswer(stateObj['op-y-left'], 25) ? 'correct' : 'incorrect';
+                    statusObj['val-y-left'] = checkAnswer(stateObj['val-y-left'], 100) ? 'correct' : 'incorrect';
+                    
+                    currentStep = 2;
+                    aplicarEstadoVisual();
+                }
+                
+            } else if (currentStep === 2) {
+                const ids = ['op-x-right', 'op-y-right', 'val-x-right'];
+                let allValid = true;
+
+                ids.forEach(id => {
+                    if (!isValidInput(stateObj[id])) {
+                        showError(inputs[id]);
+                        allValid = false;
+                    }
+                });
+
+                if (allValid) {
+                    statusObj['op-x-right'] = checkAnswer(stateObj['op-x-right'], 4) ? 'correct' : 'incorrect';
+                    statusObj['op-y-right'] = checkAnswer(stateObj['op-y-right'], 4) ? 'correct' : 'incorrect';
+                    statusObj['val-x-right'] = checkAnswer(stateObj['val-x-right'], 100) ? 'correct' : 'incorrect';
+                    
+                    currentStep = 3;
+                    aplicarEstadoVisual();
+                }
+            }
+        });
+
+        const fullState = () => ({ stateObj, statusObj, currentStep });
+
+        (window as any).getGrade = () => JSON.stringify(fullState());
+        (window as any).getState = () => JSON.stringify(fullState());
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                const parsed = JSON.parse(stateStr);
+                Object.assign(stateObj, parsed.stateObj || {});
+                Object.assign(statusObj, parsed.statusObj || {});
+                currentStep = parsed.currentStep || 1;
+                aplicarEstadoVisual();
+            } catch(e) {
+                console.error("Error restaurando estado", e);
+            }
+        };
+    };
+
+    document.addEventListener('DOMContentLoaded', setupDobleRectaConstante);
+    document.addEventListener('astro:page-load', setupDobleRectaConstante);
+</script>
