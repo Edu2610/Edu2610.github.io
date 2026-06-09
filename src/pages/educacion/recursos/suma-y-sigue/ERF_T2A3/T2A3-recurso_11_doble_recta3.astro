@@ -1,0 +1,489 @@
+---
+import Layout from '../../../../../layouts/Layout.astro';
+// Ajusta la ruta al Layout según corresponda en tu estructura de carpetas
+---
+
+<Layout titulo="Recurso Proporcionalidad Inversa">
+    <div class="recurso-wrapper" id="recurso-doble-recta-12-5">
+        <div class="card">
+            <div id="svg-container">
+                <svg width="100%" height="100%" viewBox="-60 0 960 600">
+                    <defs>
+                        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                        </marker>
+                        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d32f2f" />
+                        </marker>
+                    </defs>
+
+                    <line x1="80" y1="260" x2="760" y2="260" stroke="#94a3b8" stroke-width="3" />
+                    <line x1="80" y1="360" x2="760" y2="360" stroke="#94a3b8" stroke-width="3" />
+                    
+                    <text x="75" y="265" font-weight="bold" fill="#1e293b" text-anchor="end">Velocidad (x)</text>
+                    <text x="75" y="365" font-weight="bold" fill="#1e293b" text-anchor="end">Tiempo (y)</text>
+
+                    <line x1="650" y1="250" x2="650" y2="370" stroke="#1e293b" stroke-width="2" stroke-dasharray="4" />
+                    <circle cx="650" cy="260" r="6" fill="#1e293b" />
+                    <circle cx="650" cy="360" r="6" fill="#1e293b" />
+                    <text x="650" y="235" text-anchor="middle" font-weight="bold" font-size="16">25</text>
+                    <text x="650" y="395" text-anchor="middle" font-weight="bold" font-size="16">4</text>
+
+                    <g id="step1-group">
+                        <line x1="150" y1="250" x2="150" y2="370" stroke="#059669" stroke-width="2" stroke-dasharray="4" />
+                        <circle cx="150" cy="260" r="6" fill="#059669" />
+                        <circle cx="150" cy="360" r="6" fill="#059669" />
+
+                        <foreignObject x="125" y="205" width="50" height="30">
+                            <input type="text" id="unit-x" class="input-box green-border" autocomplete="off" placeholder="?">
+                        </foreignObject>
+                        <foreignObject x="180" y="205" width="40" height="30" id="corr-unit-x" class="hidden">
+                            <div class="correction-box">1</div>
+                        </foreignObject>
+
+                        <foreignObject x="125" y="385" width="50" height="30">
+                            <input type="text" id="unit-y" class="input-box green-border" autocomplete="off" placeholder="?">
+                        </foreignObject>
+                        <foreignObject x="180" y="385" width="45" height="30" id="corr-unit-y" class="hidden">
+                            <div class="correction-box">100</div>
+                        </foreignObject>
+
+                        <path d="M 630 200 Q 400 0 170 200" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                        <foreignObject x="450" y="90" width="50" height="30">
+                            <input type="text" id="op1-x" placeholder=": ?" class="input-box blue-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="505" y="90" width="40" height="30" id="corr-op1-x" class="hidden">
+                            <div class="correction-box">25</div>
+                        </foreignObject>
+
+                        <path d="M 630 420 Q 400 620 170 420" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                        <foreignObject x="450" y="490" width="50" height="30">
+                            <input type="text" id="op1-y" placeholder="× ?" class="input-box red-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="505" y="490" width="40" height="30" id="corr-op1-y" class="hidden">
+                            <div class="correction-box">25</div>
+                        </foreignObject>
+                    </g>
+
+                    <g id="step2-group" class="hidden">
+                        <line x1="400" y1="250" x2="400" y2="370" stroke="#9333ea" stroke-width="2" stroke-dasharray="4" />
+                        <circle cx="400" cy="260" r="6" fill="#9333ea" />
+                        <circle cx="400" cy="360" r="6" fill="#9333ea" />
+
+                        <foreignObject x="375" y="205" width="50" height="30">
+                            <input type="text" id="final-x" class="input-box purple-border" autocomplete="off" placeholder="?">
+                        </foreignObject>
+                        <foreignObject x="430" y="205" width="50" height="30" id="corr-final-x" class="hidden">
+                            <div class="correction-box">12.5</div>
+                        </foreignObject>
+                        
+                        <foreignObject x="375" y="375" width="50" height="58">
+                            <div class="fraction-container">
+                                <input type="text" id="final-y-num" class="input-box fraction-modifier purple-border" autocomplete="off" placeholder="?">
+                                <div id="final-y-line" class="fraction-line purple-bg"></div>
+                                <input type="text" id="final-y-den" class="input-box fraction-modifier purple-border" autocomplete="off" placeholder="?">
+                            </div>
+                        </foreignObject>
+                        <foreignObject x="430" y="375" width="50" height="58" id="corr-final-fraction" class="hidden">
+                            <div class="correction-box" style="flex-direction: column; gap: 2px; padding: 4px; font-size: 13px;">
+                                <div>100</div>
+                                <div style="width: 100%; height: 2px; background: #059669; flex-shrink: 0;"></div>
+                                <div>12.5</div>
+                            </div>
+                        </foreignObject>
+
+                        <path d="M 170 220 Q 285 120 380 220" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+                        <foreignObject x="250" y="140" width="50" height="30">
+                            <input type="text" id="op2-x" placeholder="× ?" class="input-box blue-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="305" y="140" width="50" height="30" id="corr-op2-x" class="hidden">
+                            <div class="correction-box">12.5</div>
+                        </foreignObject>
+
+                        <path d="M 170 400 Q 285 500 380 400" fill="none" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrow-red)" />
+                        <foreignObject x="250" y="440" width="50" height="30">
+                            <input type="text" id="op2-y" placeholder=": ?" class="input-box red-border" autocomplete="off">
+                        </foreignObject>
+                        <foreignObject x="305" y="440" width="50" height="30" id="corr-op2-y" class="hidden">
+                            <div class="correction-box">12.5</div>
+                        </foreignObject>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="controls">
+                <button id="btnVerify" class="btn-verify">Comprobar paso</button>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper { 
+        font-family: 'Inter', system-ui, sans-serif; 
+        background: #f8fafc; 
+        display: flex; 
+        justify-content: center; 
+        padding: 40px 20px; 
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .card { 
+        background: white; 
+        padding: 20px; 
+        border-radius: 12px; 
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+        width: 850px; 
+        max-width: 100%; 
+        box-sizing: border-box;
+    }
+
+    #svg-container { width: 100%; height: 500px; position: relative; }
+    text { font-family: sans-serif; }
+    
+    .controls { 
+        display: flex; 
+        justify-content: center; 
+        margin-top: 15px; 
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    button { 
+        padding: 10px 28px; 
+        border: none; 
+        border-radius: 6px; 
+        font-weight: bold; 
+        font-size: 15px;
+        cursor: pointer; 
+        transition: background 0.2s, transform 0.1s; 
+        color: white; 
+    }
+    
+    .btn-verify { background: #2563eb; }
+    .btn-verify:hover:not(:disabled) { background: #1d4ed8; }
+    .btn-verify:active:not(:disabled) { transform: translateY(1px); }
+    .btn-verify:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
+    
+    .hidden { opacity: 0; pointer-events: none; }
+    .visible { opacity: 1; transition: opacity 0.5s ease-in; }
+    
+    .input-box {
+        width: 100%; height: 100%;
+        text-align: center;
+        font-weight: bold; font-size: 14px;
+        border: 2px solid; border-radius: 4px;
+        box-sizing: border-box;
+        outline: none;
+        background: white;
+        transition: all 0.3s;
+    }
+
+    .fraction-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        gap: 2px;
+    }
+    
+    .fraction-modifier {
+        height: 24px !important;
+        font-size: 13px !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+    }
+    
+    .fraction-line {
+        width: 90%;
+        height: 2px;
+        border-radius: 1px;
+        flex-shrink: 0;
+        transition: background-color 0.3s;
+    }
+
+    .blue-border { border-color: #2563eb; color: #2563eb; }
+    .red-border { border-color: #d32f2f; color: #d32f2f; }
+    .green-border { border-color: #059669; color: #059669; }
+    .purple-border { border-color: #9333ea; color: #9333ea; }
+    
+    .purple-bg { background-color: #9333ea !important; }
+    .green-bg { background-color: #059669 !important; }
+    .red-bg { background-color: #ef4444 !important; }
+    
+    .input-box:focus { box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+    .input-box.correct { background-color: #dcfce7; border-color: #059669 !important; color: #059669; }
+    .input-box.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; text-decoration: line-through; opacity: 0.7; }
+    
+    .correction-box { 
+        background: #dcfce7; 
+        color: #059669; 
+        border: 2px dashed #059669; 
+        border-radius: 4px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-weight: bold; 
+        font-size: 14px; 
+        width: 100%; 
+        height: 100%; 
+        box-sizing: border-box; 
+    }
+
+    .input-box:disabled { cursor: default; }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    .error { border-color: #ef4444 !important; animation: shake 0.3s; }
+</style>
+
+<script>
+    const setupDobleRecta125 = () => {
+        const container = document.getElementById('recurso-doble-recta-12-5');
+        // Guardia vital para Astro View Transitions
+        if (!container || container.dataset.initialized === 'true') return;
+        container.dataset.initialized = 'true';
+
+        const btnVerify = document.getElementById('btnVerify') as HTMLButtonElement | null;
+        if (!btnVerify) return;
+
+        const inputIds = [
+            'op1-x', 'op1-y', 'unit-x', 'unit-y', 
+            'op2-x', 'op2-y', 'final-x', 'final-y-num', 'final-y-den'
+        ];
+        
+        // Tipado explícito para evitar ts(7053) en Astro
+        const inputs: Record<string, HTMLInputElement> = {};
+        const stateObj: Record<string, string> = {};
+        const statusObj: Record<string, string> = {};
+
+        inputIds.forEach(id => {
+            const el = document.getElementById(id) as HTMLInputElement | null;
+            if (el) {
+                inputs[id] = el;
+                el.dataset.prev = ""; 
+                stateObj[id] = "";
+                statusObj[id] = "";
+            }
+        });
+
+        let currentStep = 1;
+
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', (e: Event) => {
+                const el = e.target as HTMLInputElement;
+                const val = el.value;
+                
+                const regex = /^$|^\d*([.,]\d*)?$|^\d+\/\d*$/;
+                
+                if (!regex.test(val)) {
+                    el.value = el.dataset.prev || ""; 
+                    return;
+                }
+                
+                el.dataset.prev = el.value;
+                el.classList.remove('incorrect', 'correct', 'error'); 
+                stateObj[el.id] = el.value.trim();
+            });
+        });
+
+        function parseMath(val: string): number {
+            if (!val) return NaN;
+            let s = val.trim().replace(',', '.');
+            if (s.includes('/')) {
+                const parts = s.split('/');
+                if (parts.length === 2 && parts[1] !== '' && Number(parts[1]) !== 0) {
+                    return Number(parts[0]) / Number(parts[1]);
+                }
+                return NaN;
+            }
+            return Number(s);
+        }
+
+        function isValidInput(val: string): boolean {
+            if (!val || val.trim() === '') return false;
+            if (val.includes('/') && val.endsWith('/')) return false; 
+            const num = parseMath(val);
+            if (isNaN(num) || num <= 0) return false;
+            return true;
+        }
+
+        function showError(element: HTMLInputElement) {
+            element.classList.add('error');
+            setTimeout(() => element.classList.remove('error'), 300);
+        }
+
+        function checkAnswer(val: string, expectedValue: number): boolean {
+            const num = parseMath(val);
+            if (isNaN(num)) return false;
+            return Math.abs(num - expectedValue) <= 0.015;
+        }
+
+        function aplicarEstadoVisual() {
+            const step2Group = document.getElementById('step2-group');
+            if (!step2Group) return;
+
+            if (currentStep >= 2) {
+                ['op1-x', 'op1-y', 'unit-x', 'unit-y'].forEach(id => {
+                    if (!inputs[id]) return;
+                    inputs[id].disabled = true;
+                    inputs[id].value = stateObj[id];
+                    const corr = document.getElementById(`corr-${id}`);
+                    
+                    inputs[id].classList.remove('correct', 'incorrect');
+                    if (statusObj[id] === 'correct') {
+                        inputs[id].classList.add('correct');
+                        if(corr) corr.classList.replace('visible', 'hidden');
+                    } else if (statusObj[id] === 'incorrect') {
+                        inputs[id].classList.add('incorrect');
+                        if(corr) corr.classList.replace('hidden', 'visible');
+                    }
+                });
+                
+                step2Group.classList.replace('hidden', 'visible');
+            } else {
+                ['op1-x', 'op1-y', 'unit-x', 'unit-y'].forEach(id => {
+                    if (!inputs[id]) return;
+                    inputs[id].disabled = false;
+                    inputs[id].classList.remove('correct', 'incorrect');
+                    const corr = document.getElementById(`corr-${id}`);
+                    if(corr) corr.classList.replace('visible', 'hidden');
+                });
+                step2Group.classList.replace('visible', 'hidden');
+            }
+
+            if (currentStep === 3) {
+                ['op2-x', 'op2-y', 'final-x', 'final-y-num', 'final-y-den'].forEach(id => {
+                    if (!inputs[id]) return;
+                    inputs[id].disabled = true;
+                    inputs[id].value = stateObj[id];
+                    const corr = document.getElementById(`corr-${id}`);
+
+                    inputs[id].classList.remove('correct', 'incorrect');
+                    if (statusObj[id] === 'correct') {
+                        inputs[id].classList.add('correct');
+                        if(corr) corr.classList.replace('visible', 'hidden');
+                    } else if (statusObj[id] === 'incorrect') {
+                        inputs[id].classList.add('incorrect');
+                        if(corr) corr.classList.replace('hidden', 'visible');
+                    }
+                });
+                
+                const corrFraction = document.getElementById('corr-final-fraction');
+                if (corrFraction) {
+                    if (statusObj['final-y-num'] === 'incorrect' || statusObj['final-y-den'] === 'incorrect') {
+                        corrFraction.classList.replace('hidden', 'visible');
+                    } else {
+                        corrFraction.classList.replace('visible', 'hidden');
+                    }
+                }
+
+                const fractionLine = document.getElementById('final-y-line');
+                if (fractionLine) {
+                    fractionLine.classList.remove('purple-bg', 'green-bg', 'red-bg');
+                    if (statusObj['final-y-num'] === 'correct' && statusObj['final-y-den'] === 'correct') {
+                        fractionLine.classList.add('green-bg');
+                    } else if (statusObj['final-y-num'] === 'incorrect' || statusObj['final-y-den'] === 'incorrect') {
+                        fractionLine.classList.add('red-bg');
+                    } else {
+                        fractionLine.classList.add('purple-bg');
+                    }
+                }
+
+                if (btnVerify) btnVerify.disabled = true;
+            } else {
+                ['op2-x', 'op2-y', 'final-x', 'final-y-num', 'final-y-den'].forEach(id => {
+                    if (!inputs[id]) return;
+                    inputs[id].disabled = false;
+                    inputs[id].classList.remove('correct', 'incorrect');
+                    const corr = document.getElementById(`corr-${id}`);
+                    if(corr) corr.classList.replace('visible', 'hidden');
+                });
+                
+                const corrFraction = document.getElementById('corr-final-fraction');
+                if (corrFraction) corrFraction.classList.replace('visible', 'hidden');
+
+                const fractionLine = document.getElementById('final-y-line');
+                if (fractionLine) {
+                    fractionLine.classList.remove('green-bg', 'red-bg');
+                    fractionLine.classList.add('purple-bg');
+                }
+
+                if (currentStep === 2 && btnVerify) btnVerify.disabled = false;
+            }
+        }
+
+        btnVerify.addEventListener('click', () => {
+            if (currentStep === 1) {
+                const ids = ['op1-x', 'op1-y', 'unit-x', 'unit-y'];
+                let allValid = true;
+
+                ids.forEach(id => {
+                    if (!isValidInput(stateObj[id])) {
+                        showError(inputs[id]);
+                        allValid = false;
+                    }
+                });
+
+                if (allValid) {
+                    statusObj['op1-x'] = checkAnswer(stateObj['op1-x'], 25) ? 'correct' : 'incorrect';
+                    statusObj['op1-y'] = checkAnswer(stateObj['op1-y'], 25) ? 'correct' : 'incorrect';
+                    statusObj['unit-x'] = checkAnswer(stateObj['unit-x'], 1) ? 'correct' : 'incorrect';
+                    statusObj['unit-y'] = checkAnswer(stateObj['unit-y'], 100) ? 'correct' : 'incorrect';
+                    
+                    currentStep = 2;
+                    aplicarEstadoVisual();
+                }
+                
+            } else if (currentStep === 2) {
+                const ids = ['op2-x', 'op2-y', 'final-x', 'final-y-num', 'final-y-den'];
+                let allValid = true;
+
+                ids.forEach(id => {
+                    if (!isValidInput(stateObj[id])) {
+                        showError(inputs[id]);
+                        allValid = false;
+                    }
+                });
+
+                if (allValid) {
+                    statusObj['op2-x'] = checkAnswer(stateObj['op2-x'], 12.5) ? 'correct' : 'incorrect';
+                    statusObj['op2-y'] = checkAnswer(stateObj['op2-y'], 12.5) ? 'correct' : 'incorrect';
+                    statusObj['final-x'] = checkAnswer(stateObj['final-x'], 12.5) ? 'correct' : 'incorrect';
+                    
+                    statusObj['final-y-num'] = checkAnswer(stateObj['final-y-num'], 100) ? 'correct' : 'incorrect';
+                    statusObj['final-y-den'] = checkAnswer(stateObj['final-y-den'], 12.5) ? 'correct' : 'incorrect';
+                    
+                    currentStep = 3;
+                    aplicarEstadoVisual();
+                }
+            }
+        });
+
+        const fullState = () => ({ stateObj, statusObj, currentStep });
+
+        (window as any).getGrade = () => JSON.stringify(fullState());
+        (window as any).getState = () => JSON.stringify(fullState());
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                const parsed = JSON.parse(stateStr);
+                Object.assign(stateObj, parsed.stateObj || {});
+                Object.assign(statusObj, parsed.statusObj || {});
+                currentStep = parsed.currentStep || 1;
+                aplicarEstadoVisual();
+            } catch(e) {
+                console.error("Error restaurando estado", e);
+            }
+        };
+    };
+
+    document.addEventListener('DOMContentLoaded', setupDobleRecta125);
+    document.addEventListener('astro:page-load', setupDobleRecta125);
+</script>
