@@ -78,41 +78,6 @@ import Layout from '../../../../../layouts/Layout.astro';
         cursor: crosshair;
     }
 
-    .grid-line { stroke: #d1d5db; stroke-width: 1; }
-    .axis-line { stroke: #4A4A49; stroke-width: 2; }
-    .axis-label { fill: #4A4A49; font-size: 16px; font-weight: 700; font-style: italic; }
-    .tick-label { fill: #4A4A49; font-size: 13px; font-weight: 700; }
-
-    .plotted-point {
-        fill: #D33C31;
-        stroke: #FFFFFF;
-        stroke-width: 2;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .plotted-point:hover {
-        r: 9;
-        opacity: 0.6;
-        fill: #8B2E28;
-    }
-
-    .plotted-point.correct {
-        fill: #10b981;
-        pointer-events: none; 
-    }
-
-    .plotted-point.incorrect {
-        fill: #8B2E28;
-    }
-
-    #hover-shadow {
-        fill: #E87461;
-        opacity: 0.5;
-        pointer-events: none; 
-        transition: opacity 0.1s;
-    }
-
     .btn-verify {
         padding: 12px 30px;
         margin-top: 10px;
@@ -149,6 +114,44 @@ import Layout from '../../../../../layouts/Layout.astro';
     }
 </style>
 
+<style is:global>
+    /* Estilos globales requeridos para elementos SVG inyectados dinámicamente por JS */
+    .grid-line { stroke: #d1d5db; stroke-width: 1; }
+    .axis-line { stroke: #4A4A49; stroke-width: 2; }
+    .axis-label { fill: #4A4A49; font-size: 16px; font-weight: 700; font-style: italic; }
+    .tick-label { fill: #4A4A49; font-size: 13px; font-weight: 700; }
+
+    .plotted-point {
+        fill: #D33C31;
+        stroke: #FFFFFF;
+        stroke-width: 2;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .plotted-point:hover {
+        r: 9;
+        opacity: 0.6;
+        fill: #8B2E28;
+    }
+
+    .plotted-point.correct {
+        fill: #10b981;
+        pointer-events: none; 
+    }
+
+    .plotted-point.incorrect {
+        fill: #8B2E28;
+    }
+
+    #hover-shadow {
+        fill: #E87461;
+        opacity: 0.5;
+        pointer-events: none; 
+        transition: opacity 0.1s;
+    }
+</style>
+
 <script>
     const setupCartesianPlane = () => {
         const svgElement = document.getElementById('cartesian-plane');
@@ -168,6 +171,7 @@ import Layout from '../../../../../layouts/Layout.astro';
         const activeSvg = document.querySelector<SVGSVGElement>('#cartesian-plane')!;
         const pointsLayer = document.querySelector<SVGGElement>('#points-layer')!;
         const hoverShadow = document.querySelector<SVGCircleElement>('#hover-shadow')!;
+        
         const SVG_W = 600;
         const SVG_H = 500;
         const PAD = { l: 45, r: 25, t: 25, b: 45 };
