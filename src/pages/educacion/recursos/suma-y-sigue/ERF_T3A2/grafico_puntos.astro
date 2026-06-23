@@ -12,6 +12,43 @@ import Layout from '../../../../../layouts/Layout.astro';
 
             <div class="graph-wrapper">
                 <svg viewBox="0 0 600 500" id="cartesian-plane">
+                    <style>
+                        /* Estilos encapsulados nativamente en el SVG */
+                        .grid-line { stroke: #d1d5db; stroke-width: 1; }
+                        .axis-line { stroke: #4A4A49; stroke-width: 2; }
+                        .axis-label { fill: #4A4A49; font-size: 16px; font-weight: 700; font-style: italic; }
+                        .tick-label { fill: #4A4A49; font-size: 13px; font-weight: 700; }
+                    
+                        .plotted-point {
+                            fill: #D33C31;
+                            stroke: #FFFFFF;
+                            stroke-width: 2;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                        }
+                    
+                        .plotted-point:hover {
+                            r: 9;
+                            opacity: 0.6;
+                            fill: #8B2E28;
+                        }
+                    
+                        .plotted-point.correct {
+                            fill: #10b981;
+                            pointer-events: none; 
+                        }
+                    
+                        .plotted-point.incorrect {
+                            fill: #8B2E28;
+                        }
+                    
+                        #hover-shadow {
+                            fill: #E87461;
+                            opacity: 0.5;
+                            pointer-events: none; 
+                            transition: opacity 0.1s;
+                        }
+                    </style>
                     <g id="grid"></g>
                     <g id="axes"></g>
                     <g id="labels"></g>
@@ -27,6 +64,7 @@ import Layout from '../../../../../layouts/Layout.astro';
 </Layout>
 
 <style>
+    /* Estilos del contenedor y UI exterior */
     .recurso-wrapper {
         font-family: 'Inter', system-ui, sans-serif;
         background-color: #f8fafc;
@@ -114,44 +152,6 @@ import Layout from '../../../../../layouts/Layout.astro';
     }
 </style>
 
-<style is:global>
-    /* Estilos globales requeridos para elementos SVG inyectados dinámicamente por JS */
-    .grid-line { stroke: #d1d5db; stroke-width: 1; }
-    .axis-line { stroke: #4A4A49; stroke-width: 2; }
-    .axis-label { fill: #4A4A49; font-size: 16px; font-weight: 700; font-style: italic; }
-    .tick-label { fill: #4A4A49; font-size: 13px; font-weight: 700; }
-
-    .plotted-point {
-        fill: #D33C31;
-        stroke: #FFFFFF;
-        stroke-width: 2;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .plotted-point:hover {
-        r: 9;
-        opacity: 0.6;
-        fill: #8B2E28;
-    }
-
-    .plotted-point.correct {
-        fill: #10b981;
-        pointer-events: none; 
-    }
-
-    .plotted-point.incorrect {
-        fill: #8B2E28;
-    }
-
-    #hover-shadow {
-        fill: #E87461;
-        opacity: 0.5;
-        pointer-events: none; 
-        transition: opacity 0.1s;
-    }
-</style>
-
 <script>
     const setupCartesianPlane = () => {
         const svgElement = document.getElementById('cartesian-plane');
@@ -160,14 +160,13 @@ import Layout from '../../../../../layouts/Layout.astro';
 
         if (!svgElement || !btnVerifyElement || !feedback) return;
 
-        // Limpieza de listeners residuales de Astro reemplazando nodos
+        // Limpieza de listeners
         const newBtnVerify = btnVerifyElement.cloneNode(true) as HTMLButtonElement;
         btnVerifyElement.parentNode?.replaceChild(newBtnVerify, btnVerifyElement);
 
         const newSvg = svgElement.cloneNode(true) as SVGSVGElement;
         svgElement.parentNode?.replaceChild(newSvg, svgElement);
 
-        // Referencias limpias post-reemplazo
         const activeSvg = document.querySelector<SVGSVGElement>('#cartesian-plane')!;
         const pointsLayer = document.querySelector<SVGGElement>('#points-layer')!;
         const hoverShadow = document.querySelector<SVGCircleElement>('#hover-shadow')!;
