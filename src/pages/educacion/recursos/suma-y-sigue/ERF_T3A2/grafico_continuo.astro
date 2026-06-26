@@ -1,0 +1,506 @@
+---
+import Layout from '../../../../../layouts/Layout.astro';
+---
+
+<Layout titulo="Gráfico de Función - Puntos Decimales">
+    <div class="recurso-wrapper">
+        <div class="card">
+            <div class="header-text">
+                <p class="desc">Grafica en el plano cartesiano los puntos correspondientes a la relación de la función.</p>
+            </div>
+
+            <div class="graph-wrapper">
+                <svg viewBox="0 0 600 520" id="cartesian-plane">
+                    <defs>
+                        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#4A4A49" />
+                        </marker>
+                    </defs>
+                    <style>
+                        .grid-line { stroke: #e5e7eb; stroke-width: 1; }
+                        .axis-line { stroke: #4A4A49; stroke-width: 2; }
+                        .axis-label { fill: #4A4A49; font-size: 16px; font-weight: 700; font-style: italic; }
+                        .tick-label { fill: #4A4A49; font-size: 13px; font-weight: 700; }
+
+                        .static-point {
+                            fill: #4A4A49;
+                            stroke: #F4F4F2;
+                            stroke-width: 2;
+                        }
+
+                        .plotted-point {
+                            fill: #D33C31;
+                            stroke: #FFFFFF;
+                            stroke-width: 2;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                        }
+
+                        .plotted-point:hover {
+                            r: 9;
+                            opacity: 0.6;
+                            fill: #8B2E28;
+                        }
+
+                        .plotted-point.correct {
+                            fill: #10b981;
+                            pointer-events: none;
+                        }
+
+                        .plotted-point.incorrect {
+                            fill: #8B2E28;
+                        }
+
+                        #hover-shadow {
+                            fill: #E87461;
+                            opacity: 0.5;
+                            pointer-events: none;
+                            transition: opacity 0.1s;
+                        }
+
+                        .function-line {
+                            stroke: #10b981;
+                            stroke-width: 3;
+                            opacity: 0.8;
+                            stroke-dasharray: 1000;
+                            stroke-dashoffset: 1000;
+                            animation: drawLine 1.2s ease forwards;
+                        }
+
+                        @keyframes drawLine {
+                            to { stroke-dashoffset: 0; }
+                        }
+
+                        .point-label {
+                            font-size: 12px;
+                            font-family: 'Inter', monospace;
+                            font-weight: 700;
+                            fill: #4A4A49;
+                            opacity: 0;
+                            transition: opacity 0.5s ease;
+                            pointer-events: none;
+                        }
+                    </style>
+                    <g id="grid"></g>
+                    <g id="axes"></g>
+                    <g id="labels"></g>
+                    <g id="static-layer"></g>
+                    <g id="line-layer"></g>
+                    <g id="points-layer"></g>
+                    <circle id="hover-shadow" r="7" display="none"></circle>
+                </svg>
+            </div>
+
+            <button id="btn-verify" class="btn-verify" disabled>Verificar</button>
+            <div id="feedback" class="feedback-text"></div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .recurso-wrapper {
+        font-family: 'Inter', system-ui, sans-serif;
+        background-color: #f8fafc;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .card {
+        background: white;
+        padding: 40px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        max-width: 850px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        box-sizing: border-box;
+    }
+
+    .header-text {
+        text-align: center;
+    }
+
+    .header-text p.desc {
+        color: #475569;
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    .graph-wrapper {
+        width: 100%;
+        max-width: 600px;
+        position: relative;
+        background: #FFFFFF;
+        border: 2px solid #4A4A49;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    svg {
+        width: 100%;
+        height: auto;
+        display: block;
+        cursor: crosshair;
+    }
+
+    .btn-verify {
+        padding: 12px 30px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #D33C31;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-verify:hover:not(:disabled) {
+        background: #8B2E28;
+        transform: translateY(-2px);
+    }
+
+    .btn-verify:disabled {
+        background: #cbd5e1;
+        cursor: not-allowed;
+        color: #f8fafc;
+        transform: none;
+    }
+
+    .feedback-text {
+        margin-top: 5px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        min-height: 20px;
+        text-align: center;
+        max-width: 650px;
+        line-height: 1.5;
+    }
+</style>
+
+<script>
+    const setupCartesianPlane = () => {
+        const svgElement = document.getElementById('cartesian-plane');
+        const btnVerifyElement = document.getElementById('btn-verify') as HTMLButtonElement | null;
+        const feedback = document.getElementById('feedback');
+
+        if (!svgElement || !btnVerifyElement || !feedback) return;
+
+        // Limpieza de listeners clonando nodos
+        const newBtnVerify = btnVerifyElement.cloneNode(true) as HTMLButtonElement;
+        btnVerifyElement.parentNode?.replaceChild(newBtnVerify, btnVerifyElement);
+
+        const newSvg = svgElement.cloneNode(true) as SVGSVGElement;
+        svgElement.parentNode?.replaceChild(newSvg, svgElement);
+
+        const activeSvg = document.querySelector<SVGSVGElement>('#cartesian-plane')!;
+        const pointsLayer = document.querySelector<SVGGElement>('#points-layer')!;
+        const lineLayer = document.querySelector<SVGGElement>('#line-layer')!;
+        const staticLayer = document.querySelector<SVGGElement>('#static-layer')!;
+        const hoverShadow = document.querySelector<SVGCircleElement>('#hover-shadow')!;
+
+        const SVG_W = 600;
+        const SVG_H = 520;
+        const PAD = { l: 50, r: 30, t: 30, b: 50 };
+        const PLOT_W = SVG_W - PAD.l - PAD.r;
+        const PLOT_H = SVG_H - PAD.t - PAD.b;
+
+        const X_MAX = 6;
+        const Y_MAX = 34;
+
+        // Eje X: saltos de 0.5. Eje Y: enteros.
+        const setA = Array.from({ length: (X_MAX * 2) + 1 }, (_, i) => i * 0.5);
+        const setB = Array.from({ length: Y_MAX + 1 }, (_, i) => i);
+
+        const scaleX = PLOT_W / X_MAX;
+        const scaleY = PLOT_H / Y_MAX;
+
+        const mapX = (x: number) => PAD.l + x * scaleX;
+        const mapY = (y: number) => PAD.t + PLOT_H - y * scaleY;
+
+        // Puntos base ya graficados
+        const staticPoints = [
+            {x: 0, y: 20}, {x: 1, y: 22}, {x: 2, y: 24},
+            {x: 3, y: 26}, {x: 4, y: 28}, {x: 5, y: 30}
+        ];
+
+        // Puntos que el estudiante DEBE ubicar
+        const expectedPoints = [
+            {x: 1.5, y: 23}, {x: 2.5, y: 25},
+            {x: 3.5, y: 27}, {x: 4.5, y: 29}
+        ];
+
+        let stateObj = { points: [] as {x: number, y: number}[] };
+        let statusObj = { graded: false };
+        let lastHoverCoords: {x: number, y: number} | null = null;
+
+        function drawGridAndStatic() {
+            const grid = document.querySelector<SVGGElement>('#grid')!;
+            const axes = document.querySelector<SVGGElement>('#axes')!;
+            const labels = document.querySelector<SVGGElement>('#labels')!;
+
+            let gridHtml = '';
+            let axesHtml = '';
+            let labelsHtml = '';
+            let staticHtml = '';
+
+            const yAxisX = mapX(0);
+            const xAxisY = mapY(0);
+
+            axesHtml += `<line x1="${mapX(0)}" y1="${xAxisY}" x2="${mapX(X_MAX) + 15}" y2="${xAxisY}" class="axis-line" marker-end="url(#arrow)" />`;
+            axesHtml += `<line x1="${yAxisX}" y1="${mapY(0)}" x2="${yAxisX}" y2="${mapY(Y_MAX) - 15}" class="axis-line" marker-end="url(#arrow)" />`;
+
+            for (let x = 0; x <= X_MAX; x++) {
+                const px = mapX(x);
+                if (x > 0) {
+                    gridHtml += `<line x1="${px}" y1="${mapY(0)}" x2="${px}" y2="${mapY(Y_MAX)}" class="grid-line" />`;
+                }
+                labelsHtml += `<line x1="${px}" y1="${xAxisY}" x2="${px}" y2="${xAxisY + 5}" class="axis-line" />`;
+                labelsHtml += `<text x="${px}" y="${xAxisY + 22}" text-anchor="middle" class="tick-label">${x}</text>`;
+            }
+
+            for (let y = 0; y <= Y_MAX; y += 2) {
+                const py = mapY(y);
+                if (y > 0) {
+                    gridHtml += `<line x1="${mapX(0)}" y1="${py}" x2="${mapX(X_MAX)}" y2="${py}" class="grid-line" />`;
+                }
+                labelsHtml += `<line x1="${yAxisX - 5}" y1="${py}" x2="${yAxisX}" y2="${py}" class="axis-line" />`;
+                if (y % 4 === 0) {
+                    labelsHtml += `<text x="${yAxisX - 10}" y="${py + 4}" text-anchor="end" class="tick-label">${y}</text>`;
+                }
+            }
+
+            labelsHtml += `<text x="${mapX(X_MAX) + 25}" y="${xAxisY + 5}" text-anchor="end" class="axis-label">x</text>`;
+            labelsHtml += `<text x="${yAxisX - 15}" y="${mapY(Y_MAX) - 20}" text-anchor="start" class="axis-label">y</text>`;
+
+            // Puntos base estáticos con etiquetas
+            staticPoints.forEach(p => {
+                staticHtml += `<circle cx="${mapX(p.x)}" cy="${mapY(p.y)}" r="5" class="static-point"></circle>`;
+                staticHtml += `<text x="${mapX(p.x) + 10}" y="${mapY(p.y) + 15}" class="point-label" style="opacity: 1;">(${p.x}; ${p.y})</text>`;
+            });
+
+            grid.innerHTML = gridHtml;
+            axes.innerHTML = axesHtml;
+            labels.innerHTML = labelsHtml;
+            staticLayer.innerHTML = staticHtml;
+        }
+
+        function getMouseCoords(e: MouseEvent) {
+            const rect = activeSvg.getBoundingClientRect();
+            const viewBoxRatioX = SVG_W / rect.width;
+            const viewBoxRatioY = SVG_H / rect.height;
+
+            const svgX = (e.clientX - rect.left) * viewBoxRatioX;
+            const svgY = (e.clientY - rect.top) * viewBoxRatioY;
+
+            // Saltos de 0.5 en X, enteros en Y
+            const mathX = Math.round(((svgX - PAD.l) / scaleX) * 2) / 2;
+            const mathY = Math.round((PAD.t + PLOT_H - svgY) / scaleY);
+
+            return { x: mathX, y: mathY };
+        }
+
+        function handleHoverShadow() {
+            if (statusObj.graded || !lastHoverCoords) {
+                hoverShadow.style.display = 'none';
+                return;
+            }
+
+            const { x, y } = lastHoverCoords;
+
+            if (!setA.includes(x) || !setB.includes(y)) {
+                hoverShadow.style.display = 'none';
+                return;
+            }
+
+            const isStatic = staticPoints.some(p => p.x === x && p.y === y);
+            if (isStatic) {
+                hoverShadow.style.display = 'none';
+                return;
+            }
+
+            const exists = stateObj.points.some(p => p.x === x && p.y === y);
+            if (exists || stateObj.points.length >= expectedPoints.length) {
+                hoverShadow.style.display = 'none';
+                return;
+            }
+
+            hoverShadow.setAttribute('cx', String(mapX(x)));
+            hoverShadow.setAttribute('cy', String(mapY(y)));
+            hoverShadow.style.display = 'block';
+        }
+
+        function addPoint(x: number, y: number) {
+            if (statusObj.graded) return;
+            if (!setA.includes(x) || !setB.includes(y)) return;
+
+            const isStatic = staticPoints.some(p => p.x === x && p.y === y);
+            if (isStatic) return;
+
+            const exists = stateObj.points.some(p => p.x === x && p.y === y);
+            if (!exists && stateObj.points.length < expectedPoints.length) {
+                stateObj.points.push({ x, y });
+                updateState();
+            }
+        }
+
+        function removePoint(x: number, y: number) {
+            if (statusObj.graded) return;
+            const index = stateObj.points.findIndex(p => p.x === x && p.y === y);
+            if (index !== -1) {
+                stateObj.points.splice(index, 1);
+                updateState();
+            }
+        }
+
+        function updateState() {
+            const circles = pointsLayer.querySelectorAll('.plotted-point');
+            circles.forEach(c => c.classList.remove('incorrect'));
+            renderPoints();
+            handleHoverShadow();
+            newBtnVerify.disabled = stateObj.points.length === 0;
+        }
+
+        function renderPoints() {
+            pointsLayer.innerHTML = '';
+            stateObj.points.forEach(p => {
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+                circle.setAttribute('cx', String(mapX(p.x)));
+                circle.setAttribute('cy', String(mapY(p.y)));
+                circle.setAttribute('r', '7');
+                circle.setAttribute('class', 'plotted-point');
+                circle.setAttribute('data-x', String(p.x));
+                circle.setAttribute('data-y', String(p.y));
+
+                circle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    removePoint(p.x, p.y);
+                });
+                pointsLayer.appendChild(circle);
+            });
+        }
+
+        function applyValidationState() {
+            const circles = pointsLayer.querySelectorAll('.plotted-point');
+            let allCorrect = true;
+
+            circles.forEach(circle => {
+                const x = Number(circle.getAttribute('data-x'));
+                const y = Number(circle.getAttribute('data-y'));
+                const isExpected = expectedPoints.some(ep => ep.x === x && ep.y === y);
+
+                circle.classList.remove('correct', 'incorrect');
+                if (isExpected) {
+                    circle.classList.add('correct');
+                } else {
+                    circle.classList.add('incorrect');
+                    allCorrect = false;
+                }
+            });
+
+            if (stateObj.points.length !== expectedPoints.length) {
+                allCorrect = false;
+            }
+
+            if (allCorrect) {
+                statusObj.graded = true;
+                newBtnVerify.disabled = true;
+                hoverShadow.style.display = 'none';
+
+                lineLayer.innerHTML = '';
+
+                // Línea continua animada sobre todos los puntos
+                const line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+                line.setAttribute('x1', String(mapX(0)));
+                line.setAttribute('y1', String(mapY(20)));
+                line.setAttribute('x2', String(mapX(5.5)));
+                line.setAttribute('y2', String(mapY(20 + 2 * 5.5)));
+                line.setAttribute('class', 'function-line');
+                lineLayer.appendChild(line);
+
+                // Etiquetas de los puntos decimales validados
+                stateObj.points.forEach(p => {
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+                    const labelX = p.x.toString().replace('.', ',');
+                    const labelY = p.y.toString().replace('.', ',');
+
+                    text.setAttribute('x', String(mapX(p.x) - 12));
+                    text.setAttribute('y', String(mapY(p.y) - 12));
+                    text.setAttribute('text-anchor', 'end');
+                    text.setAttribute('class', 'point-label');
+                    text.textContent = `(${labelX}; ${labelY})`;
+
+                    pointsLayer.appendChild(text);
+                    void (text as SVGTextElement).getBoundingClientRect(); // Force reflow
+                    text.style.opacity = '1';
+                });
+
+                feedback!.style.color = "#047857";
+                feedback!.innerHTML = "¡Excelente! Has graficado correctamente todos los puntos de la función.";
+            } else {
+                feedback!.style.color = "#b91c1c";
+                feedback!.textContent = "Hay puntos incorrectos o te faltan puntos por graficar. Corrige los puntos marcados.";
+            }
+        }
+
+        activeSvg.addEventListener('mousemove', (e) => {
+            lastHoverCoords = getMouseCoords(e as MouseEvent);
+            handleHoverShadow();
+        });
+
+        activeSvg.addEventListener('mouseleave', () => {
+            lastHoverCoords = null;
+            hoverShadow.style.display = 'none';
+        });
+
+        activeSvg.addEventListener('click', (e) => {
+            const coords = getMouseCoords(e as MouseEvent);
+            addPoint(coords.x, coords.y);
+        });
+
+        newBtnVerify.addEventListener('click', () => {
+            if (stateObj.points.length === 0) return;
+            applyValidationState();
+        });
+
+        drawGridAndStatic();
+
+        // Integración edX (JSInput API)
+        const fullState = () => ({ stateObj, statusObj });
+
+        (window as any).getGrade = () => {
+            const isPerfect = stateObj.points.length === expectedPoints.length &&
+                              stateObj.points.every(p => expectedPoints.some(ep => ep.x === p.x && ep.y === p.y));
+            return JSON.stringify(fullState());
+        };
+
+        (window as any).getState = () => JSON.stringify(fullState());
+
+        (window as any).setState = (stateStr: string) => {
+            if (!stateStr) return;
+            try {
+                const parsed = JSON.parse(stateStr);
+                Object.assign(stateObj, parsed.stateObj || { points: [] });
+                Object.assign(statusObj, parsed.statusObj || { graded: false });
+                updateState();
+                if (statusObj.graded) {
+                    applyValidationState();
+                }
+            } catch(e) {
+                console.error("Error al restaurar estado", e);
+            }
+        };
+    };
+
+    document.addEventListener('DOMContentLoaded', setupCartesianPlane);
+    document.addEventListener('astro:page-load', setupCartesianPlane);
+</script>
