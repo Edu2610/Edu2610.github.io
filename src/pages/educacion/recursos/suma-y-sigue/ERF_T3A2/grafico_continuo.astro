@@ -18,9 +18,22 @@ import Layout from '../../../../../layouts/Layout.astro';
                     </defs>
                     <style>
                         .grid-line { stroke: #e5e7eb; stroke-width: 1; }
+                        .grid-line-secondary {
+                            stroke: #e5e7eb;
+                            stroke-width: 1;
+                            stroke-dasharray: 2, 3;
+                            opacity: 0.7;
+                        }
                         .axis-line { stroke: #4A4A49; stroke-width: 2; }
+                        .tick-mark-secondary { stroke: #4A4A49; stroke-width: 1.2; }
                         .axis-label { fill: #4A4A49; font-size: 16px; font-weight: 700; font-style: italic; }
                         .tick-label { fill: #4A4A49; font-size: 13px; font-weight: 700; }
+                        .tick-label-secondary {
+                            fill: #4A4A49;
+                            font-size: 11px;
+                            font-weight: 700;
+                            opacity: 0.7;
+                        }
 
                         .static-point {
                             fill: #4A4A49;
@@ -188,6 +201,8 @@ import Layout from '../../../../../layouts/Layout.astro';
 </style>
 
 <script>
+    type Point = { x: number; y: number };
+
     const setupCartesianPlane = () => {
         const svgElement = document.getElementById('cartesian-plane');
         const btnVerifyElement = document.getElementById('btn-verify') as HTMLButtonElement | null;
@@ -195,7 +210,7 @@ import Layout from '../../../../../layouts/Layout.astro';
 
         if (!svgElement || !btnVerifyElement || !feedback) return;
 
-        // Limpieza de listeners clonando nodos
+        // Limpieza de listeners clonando nodos (necesario para astro:page-load)
         const newBtnVerify = btnVerifyElement.cloneNode(true) as HTMLButtonElement;
         btnVerifyElement.parentNode?.replaceChild(newBtnVerify, btnVerifyElement);
 
@@ -203,9 +218,9 @@ import Layout from '../../../../../layouts/Layout.astro';
         svgElement.parentNode?.replaceChild(newSvg, svgElement);
 
         const activeSvg = document.querySelector<SVGSVGElement>('#cartesian-plane')!;
+        const staticLayer = document.querySelector<SVGGElement>('#static-layer')!;
         const pointsLayer = document.querySelector<SVGGElement>('#points-layer')!;
         const lineLayer = document.querySelector<SVGGElement>('#line-layer')!;
-        const staticLayer = document.querySelector<SVGGElement>('#static-layer')!;
         const hoverShadow = document.querySelector<SVGCircleElement>('#hover-shadow')!;
 
         const SVG_W = 600;
@@ -217,7 +232,7 @@ import Layout from '../../../../../layouts/Layout.astro';
         const X_MAX = 6;
         const Y_MAX = 34;
 
-        // Eje X: saltos de 0.5. Eje Y: enteros.
+        // Eje X admite saltos de 0.5. Eje Y admite cualquier entero.
         const setA = Array.from({ length: (X_MAX * 2) + 1 }, (_, i) => i * 0.5);
         const setB = Array.from({ length: Y_MAX + 1 }, (_, i) => i);
 
@@ -228,20 +243,24 @@ import Layout from '../../../../../layouts/Layout.astro';
         const mapY = (y: number) => PAD.t + PLOT_H - y * scaleY;
 
         // Puntos base ya graficados
-        const staticPoints = [
+        const staticPoints: Point[] = [
             {x: 0, y: 20}, {x: 1, y: 22}, {x: 2, y: 24},
             {x: 3, y: 26}, {x: 4, y: 28}, {x: 5, y: 30}
         ];
 
         // Puntos que el estudiante DEBE ubicar
-        const expectedPoints = [
+        const expectedPoints: Point[] = [
             {x: 1.5, y: 23}, {x: 2.5, y: 25},
             {x: 3.5, y: 27}, {x: 4.5, y: 29}
         ];
 
-        let stateObj = { points: [] as {x: number, y: number}[] };
+        // Valores destacados de la actividad (para mostrarlos en los ejes)
+        const xSecondaryTicks = [1.5, 2.5, 3.5, 4.5];
+        const ySecondaryTicks = [23, 25, 27, 29];
+
+        let stateObj = { points: [] as Point[] };
         let statusObj = { graded: false };
-        let lastHoverCoords: {x: number, y: number} | null = null;
+        let lastHoverCoords: Point | null = null;
 
         function drawGridAndStatic() {
             const grid = document.querySelector<SVGGElement>('#grid')!;
@@ -259,6 +278,7 @@ import Layout from '../../../../../layouts/Layout.astro';
             axesHtml += `<line x1="${mapX(0)}" y1="${xAxisY}" x2="${mapX(X_MAX) + 15}" y2="${xAxisY}" class="axis-line" marker-end="url(#arrow)" />`;
             axesHtml += `<line x1="${yAxisX}" y1="${mapY(0)}" x2="${yAxisX}" y2="${mapY(Y_MAX) - 15}" class="axis-line" marker-end="url(#arrow)" />`;
 
+            // EJE X — gridlines y ticks de enteros (principales)
             for (let x = 0; x <= X_MAX; x++) {
                 const px = mapX(x);
                 if (x > 0) {
@@ -268,16 +288,35 @@ import Layout from '../../../../../layouts/Layout.astro';
                 labelsHtml += `<text x="${px}" y="${xAxisY + 22}" text-anchor="middle" class="tick-label">${x}</text>`;
             }
 
+            // EJE X — gridlines y ticks secundarios (1,5 - 2,5 - 3,5 - 4,5)
+            xSecondaryTicks.forEach(x => {
+                const px = mapX(x);
+                gridHtml += `<line x1="${px}" y1="${mapY(0)}" x2="${px}" y2="${mapY(Y_MAX)}" class="grid-line-secondary" />`;
+                labelsHtml += `<line x1="${px}" y1="${xAxisY}" x2="${px}" y2="${xAxisY + 4}" class="tick-mark-secondary" />`;
+                labelsHtml += `<text x="${px}" y="${xAxisY + 22}" text-anchor="middle" class="tick-label-secondary">${x.toString().replace('.', ',')}</text>`;
+            });
+
+            // EJE Y — gridlines (cada 2) + etiquetas (cada 2 en zona activa [20,30], cada 4 fuera)
             for (let y = 0; y <= Y_MAX; y += 2) {
                 const py = mapY(y);
                 if (y > 0) {
                     gridHtml += `<line x1="${mapX(0)}" y1="${py}" x2="${mapX(X_MAX)}" y2="${py}" class="grid-line" />`;
                 }
                 labelsHtml += `<line x1="${yAxisX - 5}" y1="${py}" x2="${yAxisX}" y2="${py}" class="axis-line" />`;
-                if (y % 4 === 0) {
+
+                const inActiveZone = y >= 20 && y <= 30;
+                if (inActiveZone || y % 4 === 0) {
                     labelsHtml += `<text x="${yAxisX - 10}" y="${py + 4}" text-anchor="end" class="tick-label">${y}</text>`;
                 }
             }
+
+            // EJE Y — gridlines y ticks secundarios (23, 25, 27, 29)
+            ySecondaryTicks.forEach(y => {
+                const py = mapY(y);
+                gridHtml += `<line x1="${mapX(0)}" y1="${py}" x2="${mapX(X_MAX)}" y2="${py}" class="grid-line-secondary" />`;
+                labelsHtml += `<line x1="${yAxisX - 4}" y1="${py}" x2="${yAxisX}" y2="${py}" class="tick-mark-secondary" />`;
+                labelsHtml += `<text x="${yAxisX - 10}" y="${py + 4}" text-anchor="end" class="tick-label-secondary">${y}</text>`;
+            });
 
             labelsHtml += `<text x="${mapX(X_MAX) + 25}" y="${xAxisY + 5}" text-anchor="end" class="axis-label">x</text>`;
             labelsHtml += `<text x="${yAxisX - 15}" y="${mapY(Y_MAX) - 20}" text-anchor="start" class="axis-label">y</text>`;
@@ -285,7 +324,7 @@ import Layout from '../../../../../layouts/Layout.astro';
             // Puntos base estáticos con etiquetas
             staticPoints.forEach(p => {
                 staticHtml += `<circle cx="${mapX(p.x)}" cy="${mapY(p.y)}" r="5" class="static-point"></circle>`;
-                staticHtml += `<text x="${mapX(p.x) + 10}" y="${mapY(p.y) + 15}" class="point-label" style="opacity: 1;">(${p.x}; ${p.y})</text>`;
+                staticHtml += `<text x="${mapX(p.x) + 10}" y="${mapY(p.y) + 15}" class="point-label" style="opacity: 1;">(${p.x},${p.y})</text>`;
             });
 
             grid.innerHTML = gridHtml;
@@ -294,7 +333,7 @@ import Layout from '../../../../../layouts/Layout.astro';
             staticLayer.innerHTML = staticHtml;
         }
 
-        function getMouseCoords(e: MouseEvent) {
+        function getMouseCoords(e: MouseEvent): Point {
             const rect = activeSvg.getBoundingClientRect();
             const viewBoxRatioX = SVG_W / rect.width;
             const viewBoxRatioY = SVG_H / rect.height;
@@ -430,14 +469,12 @@ import Layout from '../../../../../layouts/Layout.astro';
                 // Etiquetas de los puntos decimales validados
                 stateObj.points.forEach(p => {
                     const text = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-                    const labelX = p.x.toString().replace('.', ',');
-                    const labelY = p.y.toString().replace('.', ',');
 
                     text.setAttribute('x', String(mapX(p.x) - 12));
                     text.setAttribute('y', String(mapY(p.y) - 12));
                     text.setAttribute('text-anchor', 'end');
                     text.setAttribute('class', 'point-label');
-                    text.textContent = `(${labelX}; ${labelY})`;
+                    text.textContent = `(${p.x},${p.y})`;
 
                     pointsLayer.appendChild(text);
                     void (text as SVGTextElement).getBoundingClientRect(); // Force reflow
