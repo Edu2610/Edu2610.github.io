@@ -1,0 +1,612 @@
+---
+import Layout from '../../../../../layouts/Layout.astro';
+---
+
+<Layout titulo="Recurso gráfico de deltas">
+  <div class="recurso-deltas-wrapper">
+    <main class="wrap">
+      <section class="graphBox">
+        <svg id="svg" viewBox="0 0 690 540" aria-hidden="true">
+          <defs id="defs"></defs>
+          <g id="grid"></g>
+          <g id="axes"></g>
+          <g id="arrowLayer"></g>
+          <g id="pointLayer"></g>
+        </svg>
+      </section>
+
+      <aside class="panel">
+        <div class="tile chips" id="chips"></div>
+
+        <div class="tile mathGrid">
+          <div class="formula"><span>ΔV</span><span>=</span><span>20·Δt</span></div>
+
+          <div class="mathLine">
+            <span>ΔV</span>
+            <input id="dvInput" inputmode="decimal" autocomplete="off" />
+          </div>
+
+          <div class="formula"><span>(t,V)</span><span>=</span><span>(3+Δt,160+ΔV)</span></div>
+
+          <div class="pair">
+            <input id="tInput" inputmode="decimal" autocomplete="off" />
+            <input id="vInput" inputmode="decimal" autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="tile">
+          <div class="btns">
+            <button id="checkBtn" disabled>✓</button>
+          </div>
+        </div>
+
+        <div class="tile tries" id="tries"></div>
+        <div class="tile status" id="statusDots"></div>
+      </aside>
+    </main>
+  </div>
+</Layout>
+
+<style is:global>
+  /* --- VARIABLES Y CONFIGURACIÓN BASE --- */
+  :root {
+    --bg: #f4f4f2;
+    --card: #ffffff;
+    --ink: #4a4a49;
+    --grid: #e5e7eb;
+    --grid2: #d1d5db;
+    --red: #d33c31;
+    --red2: #e87461;
+    --terracotta: #8b2e28;
+    --green: #10b981;
+    --greenDark: #047857;
+    --amber: #f59e0b;
+    --amberBg: #fffbeb;
+    --bad: #ef4444;
+    --badBg: #fef2f2;
+    --shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .recurso-deltas-wrapper,
+  .recurso-deltas-wrapper * {
+    box-sizing: border-box;
+  }
+
+  .recurso-deltas-wrapper {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: var(--bg);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+  }
+
+  /* --- ESTRUCTURA DEL CONTENEDOR --- */
+  .recurso-deltas-wrapper .wrap {
+    width: min(850px, calc(100vw - 24px));
+    background: var(--card);
+    border: 1px solid rgba(74, 74, 73, 0.12);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 14px;
+    display: grid;
+    grid-template-columns: 1.34fr 0.66fr;
+    gap: 12px;
+  }
+
+  .recurso-deltas-wrapper .graphBox {
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    position: relative;
+    min-height: 470px;
+  }
+
+  .recurso-deltas-wrapper svg {
+    width: 100%;
+    height: 100%;
+    min-height: 470px;
+    display: block;
+    user-select: none;
+  }
+
+  .recurso-deltas-wrapper .panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .recurso-deltas-wrapper .tile {
+    border: 1px solid rgba(74, 74, 73, 0.14);
+    border-radius: 14px;
+    background: #fff;
+    padding: 10px;
+  }
+
+  /* --- COMPONENTE CHIPS (BOTONES DINÁMICOS) --- */
+  .recurso-deltas-wrapper .chips {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .recurso-deltas-wrapper .chip {
+    min-height: 44px;
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    background: white;
+    color: var(--ink);
+    font-size: 1.02rem;
+    font-weight: 850;
+    cursor: pointer;
+    transition: 0.18s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .recurso-deltas-wrapper .chip:hover:not(:disabled) {
+    border-color: var(--red2);
+    color: var(--red);
+    transform: translateY(-1px);
+  }
+
+  .recurso-deltas-wrapper .chip.active {
+    background: var(--red2);
+    border-color: var(--red2);
+    color: #fff;
+  }
+
+  .recurso-deltas-wrapper .chip.correct {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: var(--green);
+    color: var(--greenDark);
+  }
+
+  .recurso-deltas-wrapper .chip.revealed {
+    background: var(--amberBg);
+    border-color: var(--amber);
+    color: #92400e;
+  }
+
+  /* --- CAMPOS MATEMÁTICOS INPUTS --- */
+  .recurso-deltas-wrapper .mathGrid {
+    display: grid;
+    gap: 8px;
+  }
+
+  .recurso-deltas-wrapper .formula {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    border: 1px solid rgba(74, 74, 73, 0.14);
+    border-radius: 12px;
+    background: #fafafa;
+    font-weight: 850;
+    gap: 6px;
+    padding: 6px;
+    white-space: nowrap;
+    font-size: 0.98rem;
+  }
+
+  .recurso-deltas-wrapper .mathLine {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 7px;
+    align-items: center;
+    font-weight: 850;
+    font-size: 1rem;
+  }
+
+  .recurso-deltas-wrapper input {
+    width: 100%;
+    height: 39px;
+    border: 2px solid #cbd5e1;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.02rem;
+    font-weight: 850;
+    color: var(--ink);
+    outline: none;
+    background: #fff;
+  }
+
+  .recurso-deltas-wrapper input:focus {
+    border-color: var(--red2);
+    box-shadow: 0 0 0 4px rgba(232, 116, 97, 0.16);
+  }
+
+  .recurso-deltas-wrapper input.ok { border-color: var(--green); background: #ecfdf5; color: var(--greenDark); }
+  .recurso-deltas-wrapper input.bad { border-color: var(--bad); background: var(--badBg); color: #b91c1c; }
+  .recurso-deltas-wrapper input.reveal { border-color: var(--amber); background: var(--amberBg); color: #92400e; }
+
+  .recurso-deltas-wrapper .pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+
+  .recurso-deltas-wrapper .btns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .recurso-deltas-wrapper button#checkBtn {
+    width: 100%;
+    height: 42px;
+    border: none;
+    border-radius: 12px;
+    background: var(--red);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: 0.18s ease;
+  }
+
+  .recurso-deltas-wrapper button#checkBtn:hover:not(:disabled) {
+    background: var(--terracotta);
+    transform: translateY(-1px);
+  }
+
+  .recurso-deltas-wrapper button#checkBtn:disabled {
+    background: #d1d5db;
+    color: #9ca3af;
+    cursor: default;
+    transform: none;
+  }
+
+  /* --- ESTADOS, INTENTOS Y ELEMENTOS SVG DINÁMICOS --- */
+  .recurso-deltas-wrapper .status {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .recurso-deltas-wrapper .dot { height: 11px; border-radius: 999px; background: #e5e7eb; }
+  .recurso-deltas-wrapper .dot.correct { background: var(--green); }
+  .recurso-deltas-wrapper .dot.revealed { background: var(--amber); }
+
+  .recurso-deltas-wrapper .tries {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
+  }
+
+  .recurso-deltas-wrapper .tryDot { height: 9px; border-radius: 999px; background: #e5e7eb; }
+  .recurso-deltas-wrapper .tryDot.used { background: var(--terracotta); }
+
+  .recurso-deltas-wrapper .grid { stroke: var(--grid); stroke-width: 1; }
+  .recurso-deltas-wrapper .gridStrong { stroke: var(--grid2); stroke-width: 1.3; }
+  .recurso-deltas-wrapper .axis { stroke: var(--ink); stroke-width: 2.4; }
+  .recurso-deltas-wrapper .tick { stroke: var(--ink); stroke-width: 1.5; }
+  .recurso-deltas-wrapper .tickText { fill: var(--ink); font-size: 11px; font-weight: 750; }
+  .recurso-deltas-wrapper .axisText { fill: var(--ink); font-size: 17px; font-weight: 850; font-style: italic; }
+  .recurso-deltas-wrapper .basePoint { fill: var(--ink); stroke: #fff; stroke-width: 3; }
+  
+  .recurso-deltas-wrapper .point { stroke: #fff; stroke-width: 2.4; opacity: 0; transform-box: fill-box; transform-origin: center; animation: pointPop 0.42s ease forwards; }
+  .recurso-deltas-wrapper .point.revealed { stroke: #92400e; stroke-width: 2.2; }
+  .recurso-deltas-wrapper .pointLabel { fill: var(--ink); font-size: 11px; font-weight: 850; paint-order: stroke; stroke: #fff; stroke-width: 4; stroke-linejoin: round; opacity: 0; animation: fade 0.35s ease forwards; }
+  
+  .recurso-deltas-wrapper .thinArrow { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.55; stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw 0.9s ease forwards; }
+  .recurso-deltas-wrapper .thinArrow.v { animation-duration: 1s; }
+  .recurso-deltas-wrapper .connector { stroke-width: 1; stroke-dasharray: 3 6; opacity: 0.28; fill: none; }
+  .recurso-deltas-wrapper .deltaLabel { fill: var(--ink); font-size: 10.2px; font-weight: 850; paint-order: stroke; stroke: #fff; stroke-width: 4; stroke-linejoin: round; opacity: 0; animation: fade 0.35s ease forwards; }
+
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fade { to { opacity: 1; } }
+  @keyframes pointPop {
+    0% { opacity: 0; transform: scale(0.45); }
+    60% { opacity: 1; transform: scale(1.18); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* --- MEDIA QUERIES RESPONSIVE --- */
+  @media (max-width: 760px) {
+    .recurso-deltas-wrapper .wrap { grid-template-columns: 1fr; }
+    .recurso-deltas-wrapper .graphBox, .recurso-deltas-wrapper svg { min-height: 430px; }
+    .recurso-deltas-wrapper .chips { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  @media (max-width: 520px) {
+    .recurso-deltas-wrapper .chips { grid-template-columns: repeat(2, 1fr); }
+    .recurso-deltas-wrapper .wrap { padding: 10px; }
+  }
+</style>
+
+<script>
+  // @ts-nocheck
+  // Este comentario le dice al linter estricto de VS Code que ignore este bloque,
+  // permitiendo escribir JavaScript puro sin errores de "implicit any" o similares.
+
+  const SVG_W = 690;
+  const SVG_H = 540;
+  const PAD = { l: 66, r: 38, t: 34, b: 58 };
+  const PW = SVG_W - PAD.l - PAD.r;
+  const PH = SVG_H - PAD.t - PAD.b;
+
+  const domain = { xMin: 0, xMax: 8.25, yMin: 80, yMax: 280 };
+  const base = { t: 3, V: 160 };
+  const rate = 20;
+
+  const deltas = [
+    { id: "d1", dt: 1, color: "#7c3aed", labelDx: 9, labelDy: -18, dtLabelDx: -8, dtLabelDy: 17, dvDx: 10, dvDy: 2 },
+    { id: "d2", dt: 2, color: "#10b981", labelDx: 9, labelDy: -18, dtLabelDx: -8, dtLabelDy: 17, dvDx: 10, dvDy: 0 },
+    { id: "d4", dt: 4, color: "#f59e0b", labelDx: 9, labelDy: -16, dtLabelDx: -8, dtLabelDy: 17, dvDx: 10, dvDy: 0 },
+    { id: "d5", dt: 5, color: "#0ea5e9", labelDx: -74, labelDy: -16, dtLabelDx: -55, dtLabelDy: 17, dvDx: -62, dvDy: 0 }
+  ];
+
+  const STORAGE_KEY = "suma_sigue_recurso_34_delta_v7";
+
+  let state = {
+    selected: "d1",
+    completed: {},
+    attempts: {},
+    inputs: { dv: "", t: "", v: "" }
+  };
+
+  function saveLocalState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function loadLocalState() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        state = Object.assign(state, parsed);
+      }
+    } catch (e) {}
+  }
+
+  const $ = (id) => document.getElementById(id);
+  const defs = $("defs");
+  const grid = $("grid");
+  const axes = $("axes");
+  const arrowLayer = $("arrowLayer");
+  const pointLayer = $("pointLayer");
+  const chips = $("chips");
+  const dots = $("statusDots");
+  const tries = $("tries");
+  const dvInput = $("dvInput");
+  const tInput = $("tInput");
+  const vInput = $("vInput");
+  const checkBtn = $("checkBtn");
+
+  const sx = (x) => PAD.l + ((x - domain.xMin) / (domain.xMax - domain.xMin)) * PW;
+  const sy = (y) => PAD.t + PH - ((y - domain.yMin) / (domain.yMax - domain.yMin)) * PH;
+  const fmt = (n) => String(Math.round(n * 1e9) / 1e9).replace(".", ",");
+  
+  const parseNum = (s) => {
+    if (typeof s !== "string") return NaN;
+    const clean = s.trim().replace(/\s/g, "").replace(",", ".");
+    return clean === "" ? NaN : Number(clean);
+  };
+
+  const selectedObj = () => deltas.find((d) => d.id === state.selected);
+  const expected = (d) => ({ dt: d.dt, dv: rate * d.dt, t: base.t + d.dt, V: base.V + (rate * d.dt) });
+  const near = (a, b) => Math.abs(a - b) < 1e-9;
+
+  function drawDefs() {
+    defs.innerHTML = deltas.map((d) => `
+      <marker id="arrow-${d.id}" viewBox="0 0 10 10" refX="8.2" refY="5" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 Z" fill="${d.color}"></path>
+      </marker>`).join("");
+  }
+
+  function drawGrid() {
+    let gh = "", ah = "";
+    for (let x = domain.xMin; x <= 8; x += 0.5) {
+      const cls = Number.isInteger(x) ? "gridStrong" : "grid";
+      gh += `<line x1="${sx(x)}" y1="${sy(domain.yMin)}" x2="${sx(x)}" y2="${sy(domain.yMax)}" class="${cls}"></line>`;
+      if (Number.isInteger(x)) {
+        ah += `<line x1="${sx(x)}" y1="${sy(domain.yMin)}" x2="${sx(x)}" y2="${sy(domain.yMin) + 6}" class="tick"></line>`;
+        ah += `<text x="${sx(x)}" y="${sy(domain.yMin) + 24}" text-anchor="middle" class="tickText">${fmt(x)}</text>`;
+      }
+    }
+
+    for (let y = domain.yMin; y <= domain.yMax; y += 10) {
+      const cls = y % 20 === 0 ? "gridStrong" : "grid";
+      gh += `<line x1="${sx(domain.xMin)}" y1="${sy(y)}" x2="${sx(domain.xMax)}" y2="${sy(y)}" class="${cls}"></line>`;
+      if (y % 20 === 0) {
+        ah += `<line x1="${sx(domain.xMin) - 6}" y1="${sy(y)}" x2="${sx(domain.xMin)}" y2="${sy(y)}" class="tick"></line>`;
+        ah += `<text x="${sx(domain.xMin) - 12}" y="${sy(y) + 4}" text-anchor="end" class="tickText">${fmt(y)}</text>`;
+      }
+    }
+
+    ah += `<line x1="${sx(domain.xMin)}" y1="${sy(domain.yMin)}" x2="${sx(domain.xMax) + 18}" y2="${sy(domain.yMin)}" class="axis"></line>`;
+    ah += `<line x1="${sx(domain.xMin)}" y1="${sy(domain.yMin)}" x2="${sx(domain.xMin)}" y2="${sy(domain.yMax) - 18}" class="axis"></line>`;
+    ah += `<path d="M ${sx(domain.xMax) + 18} ${sy(domain.yMin)} l -9 -5 l 0 10 z" fill="#4a4a49"></path>`;
+    ah += `<path d="M ${sx(domain.xMin)} ${sy(domain.yMax) - 18} l -5 9 l 10 0 z" fill="#4a4a49"></path>`;
+    ah += `<text x="${sx(domain.xMax) + 25}" y="${sy(domain.yMin) + 6}" class="axisText">t</text>`;
+    ah += `<text x="${sx(domain.xMin) - 3}" y="${sy(domain.yMax) - 27}" text-anchor="middle" class="axisText">V</text>`;
+
+    grid.innerHTML = gh; axes.innerHTML = ah;
+  }
+
+  function drawChips() {
+    chips.innerHTML = "";
+    deltas.forEach((d) => {
+      const b = document.createElement("button");
+      b.className = "chip";
+      const status = state.completed[d.id];
+      if (state.selected === d.id) b.classList.add("active");
+      if (status === "correct") b.classList.add("correct");
+      if (status === "revealed") b.classList.add("revealed");
+      b.innerHTML = `Δt=${fmt(d.dt)}`;
+      b.addEventListener("click", () => {
+        state.selected = d.id;
+        state.inputs = { dv: "", t: "", v: "" };
+        syncInputs();
+        render();
+      });
+      chips.appendChild(b);
+    });
+  }
+
+  function drawDots() {
+    dots.innerHTML = "";
+    deltas.forEach((d) => {
+      const div = document.createElement("div");
+      const status = state.completed[d.id];
+      div.className = "dot" + (status ? " " + status : "");
+      dots.appendChild(div);
+    });
+  }
+
+  function drawTries() {
+    tries.innerHTML = "";
+    const used = state.attempts[state.selected] || 0;
+    for (let i = 0; i < 2; i++) {
+      const div = document.createElement("div");
+      div.className = "tryDot" + (i < used ? " used" : "");
+      tries.appendChild(div);
+    }
+  }
+
+  const completedList = () => deltas.filter((d) => state.completed[d.id]);
+
+  function drawBaseAndPoints() {
+    let html = `<circle cx="${sx(base.t)}" cy="${sy(base.V)}" r="6.5" class="basePoint"></circle>`;
+    html += `<text x="${sx(base.t) - 63}" y="${sy(base.V) - 10}" class="pointLabel" style="opacity:1;animation:none">(3,160)</text>`;
+    completedList().forEach((d, idx) => {
+      const e = expected(d);
+      const status = state.completed[d.id];
+      const delay = idx * 0.11 + 0.88;
+      const fill = status === "revealed" ? "#f59e0b" : d.color;
+      html += `<circle cx="${sx(e.t)}" cy="${sy(e.V)}" r="6.5" class="point ${status}" fill="${fill}" style="animation-delay:${delay}s"></circle>`;
+      html += `<text x="${sx(e.t) + d.labelDx}" y="${sy(e.V) + d.labelDy}" class="pointLabel" style="animation-delay:${delay + 0.18}s">(${fmt(e.t)},${fmt(e.V)})</text>`;
+    });
+    pointLayer.innerHTML = html;
+  }
+
+  function drawArrows() {
+    let html = "";
+    const arrows = [...completedList()].sort((a, b) => b.dt - a.dt);
+    arrows.forEach((d, idx) => {
+      const e = expected(d);
+      const status = state.completed[d.id];
+      const color = status === "revealed" ? "#f59e0b" : d.color;
+      const markerFinal = ` marker-end="url(#arrow-${d.id})"`;
+      const baseDelay = idx * 0.11;
+      const x0 = sx(base.t), y0 = sy(base.V), x1 = sx(e.t), y1 = sy(e.V), midY = (y0 + y1) / 2;
+
+      html += `<path d="M ${x1} ${y0} L ${x1} ${y1}" class="connector" stroke="${color}" style="animation-delay:${baseDelay + 0.58}s"></path>`;
+      html += `<path d="M ${x0} ${y0} L ${x1} ${y0}" class="thinArrow h" stroke="${color}"${markerFinal} style="animation-delay:${baseDelay}s"></path>`;
+      html += `<text x="${x1 + d.dtLabelDx}" y="${y0 + d.dtLabelDy}" text-anchor="end" class="deltaLabel" style="animation-delay:${baseDelay + 0.45}s">Δt=${fmt(d.dt)}</text>`;
+      html += `<path d="M ${x1} ${y0} L ${x1} ${y1}" class="thinArrow v" stroke="${color}"${markerFinal} style="animation-delay:${baseDelay + 0.58}s"></path>`;
+      html += `<text x="${x1 + d.dvDx}" y="${midY + d.dvDy}" class="deltaLabel" style="animation-delay:${baseDelay + 1.05}s">ΔV=${fmt(e.dv)}</text>`;
+    });
+    arrowLayer.innerHTML = html;
+  }
+
+  function syncInputs() {
+    dvInput.value = state.inputs.dv || "";
+    tInput.value = state.inputs.t || "";
+    vInput.value = state.inputs.v || "";
+    [dvInput, tInput, vInput].forEach((i) => i.classList.remove("ok", "bad", "reveal"));
+  }
+
+  function setInputsDisabled(disabled) {
+    [dvInput, tInput, vInput, checkBtn].forEach((el) => { el.disabled = disabled; });
+  }
+
+  const currentIsCompleted = () => !!state.completed[state.selected];
+
+  function validateCurrent() {
+    if (currentIsCompleted()) return;
+    const d = selectedObj();
+    const e = expected(d);
+    const dv = parseNum(dvInput.value), t = parseNum(tInput.value), V = parseNum(vInput.value);
+    const okDv = near(dv, e.dv), okT = near(t, e.t), okV = near(V, e.V);
+
+    dvInput.classList.toggle("ok", okDv); dvInput.classList.toggle("bad", !okDv);
+    tInput.classList.toggle("ok", okT); tInput.classList.toggle("bad", !okT);
+    vInput.classList.toggle("ok", okV); vInput.classList.toggle("bad", !okV);
+
+    if (okDv && okT && okV) {
+      state.completed[d.id] = "correct";
+      finishCard(false);
+      return;
+    }
+
+    state.attempts[d.id] = (state.attempts[d.id] || 0) + 1;
+    drawTries();
+
+    if (state.attempts[d.id] >= 2) {
+      dvInput.value = fmt(e.dv); tInput.value = fmt(e.t); vInput.value = fmt(e.V);
+      [dvInput, tInput, vInput].forEach((i) => {
+        i.classList.remove("ok", "bad");
+        i.classList.add("reveal");
+      });
+      state.completed[d.id] = "revealed";
+      finishCard(true);
+    }
+  }
+
+  function finishCard(waitLonger) {
+    setInputsDisabled(true);
+    render();
+    setTimeout(() => {
+      state.inputs = { dv: "", t: "", v: "" };
+      syncInputs();
+      const next = deltas.find((x) => !state.completed[x.id]);
+      if (next) state.selected = next.id;
+      setInputsDisabled(false);
+      render();
+    }, waitLonger ? 1500 : 1250);
+  }
+
+  function inputsChanged() {
+    state.inputs = { dv: dvInput.value, t: tInput.value, v: vInput.value };
+    [dvInput, tInput, vInput].forEach((i) => i.classList.remove("ok", "bad", "reveal"));
+    checkBtn.disabled = currentIsCompleted() || !(dvInput.value.trim() && tInput.value.trim() && vInput.value.trim());
+  }
+
+  function render() {
+    saveLocalState();
+    drawChips(); drawDots(); drawTries(); drawArrows(); drawBaseAndPoints();
+    checkBtn.disabled = currentIsCompleted() || !(dvInput.value.trim() && tInput.value.trim() && vInput.value.trim());
+  }
+
+  dvInput.addEventListener("input", inputsChanged);
+  tInput.addEventListener("input", inputsChanged);
+  vInput.addEventListener("input", inputsChanged);
+  checkBtn.addEventListener("click", validateCurrent);
+
+  function buildSubmission() {
+    const allCompleted = deltas.every((d) => state.completed[d.id]);
+    const allCorrect = deltas.every((d) => state.completed[d.id] === "correct");
+    const revealed = deltas.some((d) => state.completed[d.id] === "revealed");
+    const totalAttempts = deltas.reduce((sum, d) => sum + (state.attempts[d.id] || 0), 0);
+
+    return {
+      correct: allCorrect, score: allCorrect ? 1 : 0, completed: allCompleted,
+      revealed, totalAttempts, selected: state.selected,
+      completedByDelta: state.completed, attemptsByDelta: state.attempts, inputs: state.inputs
+    };
+  }
+
+  window.getGrade = () => JSON.stringify(buildSubmission());
+  window.getState = () => JSON.stringify(state);
+  window.setState = (saved) => {
+    try {
+      if (typeof saved === "string" && saved.trim()) {
+        state = Object.assign(state, JSON.parse(saved));
+        syncInputs();
+        render();
+      }
+    } catch (e) {}
+  };
+  window.getSubmission = () => JSON.stringify(buildSubmission());
+
+  loadLocalState();
+  drawDefs();
+  drawGrid();
+  syncInputs();
+  render();
+</script>
