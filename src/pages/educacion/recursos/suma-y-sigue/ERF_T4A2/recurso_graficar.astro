@@ -1,0 +1,465 @@
+---
+import Layout from '../../../../../layouts/Layout.astro';
+---
+
+<Layout titulo="Recurso gráfico de función afín">
+  <div class="recurso-grafico-afin-wrapper">
+    <div class="resource-container">
+      <div class="graph-wrapper">
+        <svg viewBox="0 0 600 500" id="cartesian-plane">
+          <g id="grid"></g>
+          <g id="axes"></g>
+          <g id="labels"></g>
+          <g id="line-layer"></g>
+          <g id="points-layer"></g>
+          <circle id="hover-shadow" r="7" display="none"></circle>
+        </svg>
+      </div>
+
+      <div class="controls">
+        <button id="btn-verify" disabled>Verificar</button>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style is:global>
+  :root {
+    --red-main: #D33C31;
+    --terracotta: #8B2E28;
+    --red-light: #E87461;
+    --grey-dark: #4A4A49;
+    --bg-color: #F4F4F2;
+    --white: #FFFFFF;
+    --correct-green: #10b981;
+    --grid-light: #e5e7eb;
+    --grid-dark: #9ca3af;
+  }
+
+  .recurso-grafico-afin-wrapper,
+  .recurso-grafico-afin-wrapper * {
+    box-sizing: border-box;
+  }
+
+  .recurso-grafico-afin-wrapper {
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: var(--grey-dark);
+  }
+
+  .recurso-grafico-afin-wrapper .resource-container {
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 650px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid rgba(74, 74, 73, 0.1);
+  }
+
+  .recurso-grafico-afin-wrapper .graph-wrapper {
+    width: 100%;
+    position: relative;
+    background: var(--white);
+    border: 2px solid var(--grey-dark);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .recurso-grafico-afin-wrapper svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: crosshair;
+  }
+
+  .recurso-grafico-afin-wrapper .grid-line { stroke: var(--grid-light); stroke-width: 1; }
+  .recurso-grafico-afin-wrapper .grid-line-major { stroke: var(--grid-dark); stroke-width: 1.5; }
+
+  /* Destacar ligeramente el eje Y para dar una pista visual sutil */
+  .recurso-grafico-afin-wrapper .axis-line { stroke: var(--grey-dark); stroke-width: 2.5; }
+  .recurso-grafico-afin-wrapper .axis-y-highlight { stroke: var(--red-light); stroke-width: 4; opacity: 0.3; transition: opacity 0.3s; }
+
+  .recurso-grafico-afin-wrapper .axis-label {
+    fill: var(--grey-dark);
+    font-size: 16px;
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  .recurso-grafico-afin-wrapper .tick-label {
+    fill: var(--grey-dark);
+    font-size: 12px;
+    font-weight: 600;
+    user-select: none;
+  }
+
+  .recurso-grafico-afin-wrapper .function-line {
+    stroke: var(--red-main);
+    stroke-width: 3;
+    transition: stroke 0.3s ease;
+  }
+
+  .recurso-grafico-afin-wrapper .function-line.correct { stroke: var(--correct-green); }
+  .recurso-grafico-afin-wrapper .function-line.incorrect { stroke: var(--terracotta); stroke-dasharray: 6 4; }
+
+  .recurso-grafico-afin-wrapper .plotted-point {
+    fill: var(--red-main);
+    stroke: var(--white);
+    stroke-width: 2;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .recurso-grafico-afin-wrapper .plotted-point:hover {
+    r: 9;
+    fill: var(--terracotta);
+  }
+
+  .recurso-grafico-afin-wrapper .plotted-point.correct { fill: var(--correct-green); pointer-events: none; }
+  .recurso-grafico-afin-wrapper .plotted-point.incorrect { fill: var(--terracotta); }
+
+  .recurso-grafico-afin-wrapper #hover-shadow {
+    fill: var(--red-light);
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.1s;
+  }
+
+  .recurso-grafico-afin-wrapper .controls {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 15px;
+    border-top: 1px solid rgba(74, 74, 73, 0.15);
+  }
+
+  .recurso-grafico-afin-wrapper button {
+    background-color: var(--red-main);
+    color: var(--white);
+    border: none;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .recurso-grafico-afin-wrapper button:hover:not(:disabled) {
+    background-color: var(--terracotta);
+    transform: translateY(-2px);
+  }
+
+  .recurso-grafico-afin-wrapper button:disabled {
+    background-color: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+  }
+</style>
+
+<script>
+  // @ts-nocheck
+  // Este comentario le dice al linter estricto de VS Code que ignore este bloque,
+  // permitiendo escribir JavaScript puro sin errores de "implicit any" o similares.
+
+  const SVG_W = 600;
+  const SVG_H = 500;
+  const PAD = { l: 30, r: 30, t: 30, b: 30 };
+  const PLOT_W = SVG_W - PAD.l - PAD.r;
+  const PLOT_H = SVG_H - PAD.t - PAD.b;
+
+  const X_MIN = -5;
+  const X_MAX = 7;
+  const Y_MIN = -4;
+  const Y_MAX = 8;
+
+  const rangeX = X_MAX - X_MIN;
+  const rangeY = Y_MAX - Y_MIN;
+
+  const scaleX = PLOT_W / rangeX;
+  const scaleY = PLOT_H / rangeY;
+
+  const mapX = (x) => PAD.l + (x - X_MIN) * scaleX;
+  const mapY = (y) => PAD.t + PLOT_H - (y - Y_MIN) * scaleY;
+
+  const svg = document.getElementById('cartesian-plane');
+  const pointsLayer = document.getElementById('points-layer');
+  const lineLayer = document.getElementById('line-layer');
+  const hoverShadow = document.getElementById('hover-shadow');
+  const btnVerify = document.getElementById('btn-verify');
+
+  let stateObj = { points: [] };
+  let statusObj = { graded: false };
+  let lastHoverCoords = null;
+
+  function drawGrid() {
+    const grid = document.getElementById('grid');
+    const axes = document.getElementById('axes');
+    const labels = document.getElementById('labels');
+
+    let gridHtml = '';
+    let axesHtml = '';
+    let labelsHtml = '';
+
+    const yAxisX = mapX(0);
+    const xAxisY = mapY(0);
+
+    for (let x = X_MIN; x <= X_MAX; x++) {
+      let px = mapX(x);
+      if (x === 0) continue;
+
+      gridHtml += `<line x1="${px}" y1="${mapY(Y_MIN)}" x2="${px}" y2="${mapY(Y_MAX)}" class="grid-line" />`;
+      labelsHtml += `<line x1="${px}" y1="${xAxisY - 4}" x2="${px}" y2="${xAxisY + 4}" class="grid-line-major" />`;
+      labelsHtml += `<text x="${px}" y="${xAxisY + 18}" text-anchor="middle" class="tick-label">${x}</text>`;
+    }
+
+    for (let y = Y_MIN; y <= Y_MAX; y++) {
+      let py = mapY(y);
+      if (y === 0) continue;
+
+      gridHtml += `<line x1="${mapX(X_MIN)}" y1="${py}" x2="${mapX(X_MAX)}" y2="${py}" class="grid-line" />`;
+      labelsHtml += `<line x1="${yAxisX - 4}" y1="${py}" x2="${yAxisX + 4}" y2="${py}" class="grid-line-major" />`;
+      labelsHtml += `<text x="${yAxisX - 8}" y="${py + 4}" text-anchor="end" class="tick-label">${y}</text>`;
+    }
+
+    // Indicador visual opcional en el eje Y cuando no hay puntos (removible si lo consideras muy obvio)
+    axesHtml += `<line id="y-axis-highlight" x1="${yAxisX}" y1="${mapY(Y_MIN)}" x2="${yAxisX}" y2="${mapY(Y_MAX)}" class="axis-y-highlight" />`;
+
+    axesHtml += `<line x1="${mapX(X_MIN)}" y1="${xAxisY}" x2="${mapX(X_MAX)}" y2="${xAxisY}" class="axis-line" />`;
+    axesHtml += `<line x1="${yAxisX}" y1="${mapY(Y_MIN)}" x2="${yAxisX}" y2="${mapY(Y_MAX)}" class="axis-line" />`;
+
+    labelsHtml += `<text x="${mapX(X_MAX) + 15}" y="${xAxisY + 5}" text-anchor="start" class="axis-label">x</text>`;
+    labelsHtml += `<text x="${yAxisX}" y="${mapY(Y_MAX) - 15}" text-anchor="middle" class="axis-label">y</text>`;
+
+    grid.innerHTML = gridHtml;
+    axes.innerHTML = axesHtml;
+    labels.innerHTML = labelsHtml;
+  }
+
+  function getMouseCoords(e) {
+    const rect = svg.getBoundingClientRect();
+    const viewBoxRatioX = SVG_W / rect.width;
+    const viewBoxRatioY = SVG_H / rect.height;
+
+    const svgX = (e.clientX - rect.left) * viewBoxRatioX;
+    const svgY = (e.clientY - rect.top) * viewBoxRatioY;
+
+    const mathX = Math.round(X_MIN + (svgX - PAD.l) / scaleX);
+    const mathY = Math.round(Y_MIN + (PAD.t + PLOT_H - svgY) / scaleY);
+
+    return {
+      x: Math.max(X_MIN, Math.min(X_MAX, mathX)),
+      y: Math.max(Y_MIN, Math.min(Y_MAX, mathY))
+    };
+  }
+
+  function handleHoverShadow() {
+    if (statusObj.graded || !lastHoverCoords || stateObj.points.length >= 2) {
+      hoverShadow.style.display = 'none';
+      return;
+    }
+
+    const {x, y} = lastHoverCoords;
+
+    // RESTRICCIÓN: El primer punto solo puede estar sobre el eje Y
+    if (stateObj.points.length === 0 && x !== 0) {
+      hoverShadow.style.display = 'none';
+      return;
+    }
+
+    const exists = stateObj.points.some(p => p.x === x && p.y === y);
+
+    if (exists) {
+      hoverShadow.style.display = 'none';
+      return;
+    }
+
+    hoverShadow.setAttribute('cx', mapX(x));
+    hoverShadow.setAttribute('cy', mapY(y));
+    hoverShadow.style.display = 'block';
+  }
+
+  function addPoint(x, y) {
+    if (statusObj.graded) return;
+
+    // RESTRICCIÓN: Impedir clic fuera del eje Y si no hay puntos
+    if (stateObj.points.length === 0 && x !== 0) return;
+
+    const exists = stateObj.points.some(p => p.x === x && p.y === y);
+    if (!exists && stateObj.points.length < 2) {
+      stateObj.points.push({x, y});
+      updateState();
+    }
+  }
+
+  function removePoint(index) {
+    if (statusObj.graded) return;
+    stateObj.points.splice(index, 1);
+    updateState();
+  }
+
+  function drawLine() {
+    lineLayer.innerHTML = '';
+    if (stateObj.points.length !== 2) return;
+
+    const p1 = stateObj.points[0];
+    const p2 = stateObj.points[1];
+
+    let x1, y1, x2, y2;
+
+    if (p1.x === p2.x) {
+      x1 = x2 = p1.x;
+      y1 = Y_MIN;
+      y2 = Y_MAX;
+    } else {
+      const m = (p2.y - p1.y) / (p2.x - p1.x);
+      const n = p1.y - m * p1.x;
+
+      x1 = X_MIN;
+      y1 = m * X_MIN + n;
+      x2 = X_MAX;
+      y2 = m * X_MAX + n;
+    }
+
+    const line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+    line.setAttribute('x1', mapX(x1));
+    line.setAttribute('y1', mapY(y1));
+    line.setAttribute('x2', mapX(x2));
+    line.setAttribute('y2', mapY(y2));
+    line.setAttribute('class', 'function-line');
+    line.setAttribute('id', 'drawn-line');
+
+    lineLayer.appendChild(line);
+  }
+
+  function updateState() {
+    const circles = pointsLayer.querySelectorAll('.plotted-point');
+    circles.forEach(c => c.classList.remove('incorrect'));
+
+    const yAxisHighlight = document.getElementById('y-axis-highlight');
+    if (yAxisHighlight) {
+      yAxisHighlight.style.opacity = stateObj.points.length === 0 ? '0.3' : '0';
+    }
+
+    renderPoints();
+    drawLine();
+    handleHoverShadow();
+
+    btnVerify.disabled = stateObj.points.length !== 2;
+  }
+
+  function renderPoints() {
+    pointsLayer.innerHTML = '';
+    stateObj.points.forEach((p, index) => {
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+      circle.setAttribute('cx', mapX(p.x));
+      circle.setAttribute('cy', mapY(p.y));
+      circle.setAttribute('r', '7');
+      circle.setAttribute('class', 'plotted-point');
+
+      circle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        removePoint(index);
+      });
+
+      pointsLayer.appendChild(circle);
+    });
+  }
+
+  function applyValidationState() {
+    if (stateObj.points.length !== 2) return;
+
+    const p1 = stateObj.points[0];
+    const p2 = stateObj.points[1];
+
+    // Validación estricta acorde a la restricción:
+    // 1. El primer punto forzosamente tiene x=0 (ya está validado por la UI), debe ser (0, 4).
+    // 2. El segundo punto debe pertenecer a la recta.
+    const firstIsIntercept = (p1.y === 4);
+    const secondIsOnLine = (p2.y === -2 * p2.x + 4);
+    const isCorrect = firstIsIntercept && secondIsOnLine && (p1.x !== p2.x);
+
+    const drawnLine = document.getElementById('drawn-line');
+    const circles = pointsLayer.querySelectorAll('.plotted-point');
+
+    if (isCorrect) {
+      drawnLine.classList.add('correct');
+      circles.forEach(c => c.classList.add('correct'));
+      statusObj.graded = true;
+      btnVerify.disabled = true;
+      hoverShadow.style.display = 'none';
+    } else {
+      drawnLine.classList.add('incorrect');
+      circles.forEach(c => c.classList.add('incorrect'));
+    }
+  }
+
+  svg.addEventListener('mousemove', (e) => {
+    lastHoverCoords = getMouseCoords(e);
+    handleHoverShadow();
+  });
+
+  svg.addEventListener('mouseleave', () => {
+    lastHoverCoords = null;
+    hoverShadow.style.display = 'none';
+  });
+
+  svg.addEventListener('click', (e) => {
+    if(stateObj.points.length >= 2) return;
+    const coords = getMouseCoords(e);
+    addPoint(coords.x, coords.y);
+  });
+
+  btnVerify.addEventListener('click', () => {
+    if (stateObj.points.length !== 2) return;
+    applyValidationState();
+  });
+
+  drawGrid();
+
+  // Integración EdX
+  const fullState = () => ({ stateObj, statusObj });
+
+  window.getGrade = () => {
+    if (stateObj.points.length !== 2) return JSON.stringify(fullState());
+
+    const p1 = stateObj.points[0];
+    const p2 = stateObj.points[1];
+
+    const isPerfect = (p1.x === 0 && p1.y === 4) &&
+                      (p2.y === -2 * p2.x + 4) &&
+                      (p1.x !== p2.x);
+
+    return JSON.stringify({...fullState(), isCorrect: isPerfect});
+  };
+
+  window.getState = () => JSON.stringify(fullState());
+
+  window.setState = (stateStr) => {
+    if (!stateStr) return;
+    try {
+      const parsed = JSON.parse(stateStr);
+      Object.assign(stateObj, parsed.stateObj || { points: [] });
+      Object.assign(statusObj, parsed.statusObj || { graded: false });
+      updateState();
+      if (statusObj.graded) {
+        applyValidationState();
+      }
+    } catch(e) {
+      console.error("Error restaurando estado", e);
+    }
+  };
+</script>
