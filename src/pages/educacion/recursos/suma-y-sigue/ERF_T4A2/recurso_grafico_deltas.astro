@@ -50,7 +50,7 @@ import Layout from '../../../../../layouts/Layout.astro';
 <style is:global>
   /* --- VARIABLES Y CONFIGURACIÓN BASE --- */
   :root {
-    --bg: #f4f4f2;
+    --bg: #ffffff;
     --card: #ffffff;
     --ink: #4a4a49;
     --grid: #e5e7eb;
@@ -73,10 +73,12 @@ import Layout from '../../../../../layouts/Layout.astro';
   }
 
   .recurso-deltas-wrapper {
+    width: 100%;
     margin: 0;
     min-height: 100vh;
     display: grid;
     place-items: center;
+    padding: 12px;
     background: var(--bg);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     color: var(--ink);
@@ -84,7 +86,9 @@ import Layout from '../../../../../layouts/Layout.astro';
 
   /* --- ESTRUCTURA DEL CONTENEDOR --- */
   .recurso-deltas-wrapper .wrap {
-    width: min(850px, calc(100vw - 24px));
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
     background: var(--card);
     border: 1px solid rgba(74, 74, 73, 0.12);
     border-radius: 18px;
@@ -337,10 +341,10 @@ import Layout from '../../../../../layouts/Layout.astro';
     { id: "d1", dt: 1, color: "#7c3aed", labelDx: 9, labelDy: -18, dtLabelDx: -8, dtLabelDy: 17, dvDx: 10, dvDy: 2 },
     { id: "d2", dt: 2, color: "#10b981", labelDx: 9, labelDy: -18, dtLabelDx: -8, dtLabelDy: 17, dvDx: 10, dvDy: 0 },
     { id: "d4", dt: 4, color: "#f59e0b", labelDx: 9, labelDy: -16, dtLabelDx: -8, dtLabelDy: 17, dvDx: 10, dvDy: 0 },
-    { id: "d5", dt: 5, color: "#0ea5e9", labelDx: -74, labelDy: -16, dtLabelDx: -55, dtLabelDy: 17, dvDx: -62, dvDy: 0 }
+    { id: "dm1", dt: -1, color: "#0ea5e9", labelDx: -58, labelDy: 20, dtLabelDx: 48, dtLabelDy: 17, dvDx: 10, dvDy: 2 }
   ];
 
-  const STORAGE_KEY = "suma_sigue_recurso_34_delta_v7";
+  const STORAGE_KEY = "suma_sigue_recurso_34_delta_v8";
 
   let state = {
     selected: "d1",
@@ -565,6 +569,23 @@ import Layout from '../../../../../layouts/Layout.astro';
     state.inputs = { dv: dvInput.value, t: tInput.value, v: vInput.value };
     [dvInput, tInput, vInput].forEach((i) => i.classList.remove("ok", "bad", "reveal"));
     checkBtn.disabled = currentIsCompleted() || !(dvInput.value.trim() && tInput.value.trim() && vInput.value.trim());
+  }
+
+  function resetInternalOnly() {
+    state = {
+      selected: "d1",
+      completed: {},
+      attempts: {},
+      inputs: { dv: "", t: "", v: "" }
+    };
+
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (e) {}
+
+    setInputsDisabled(false);
+    syncInputs();
+    render();
   }
 
   function render() {
